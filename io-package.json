@@ -25,10 +25,11 @@
     },
     "objects": [
 
+
     ],
     "instanceObjects": [
         {
-            "_id": "begin",
+            "_id": "warning.begin",
             "type": "state",
             "common": {
                 "name": "Warning begin",
@@ -36,10 +37,11 @@
                 "read": true,
                 "write": false
             },
-            "native": {}
+            "native": {},
+            "parent": "warning"
         },
         {
-            "_id": "end",
+            "_id": "warning.end",
             "type": "state",
             "common": {
                 "name": "Warning end",
@@ -47,10 +49,11 @@
                 "read": true,
                 "write": false
             },
-            "native": {}
+            "native": {},
+            "parent": "warning"
         },
         {
-            "_id": "severity",
+            "_id": "warning.severity",
             "type": "state",
             "common": {
                 "name": "Warning severity",
@@ -65,10 +68,11 @@
                     "4":    "Extreme"
                 }
             },
-            "native": {}
+            "native": {},
+            "parent": "warning"
         },
         {
-            "_id": "text",
+            "_id": "warning.text",
             "type": "state",
             "common": {
                 "name": "Warning text",
@@ -76,10 +80,11 @@
                 "read": true,
                 "write": false
             },
-            "native": {}
+            "native": {},
+            "parent": "warning"
         },
         {
-            "_id": "headline",
+            "_id": "warning.headline",
             "type": "state",
             "common": {
                 "name": "Warning headline",
@@ -87,10 +92,11 @@
                 "read": true,
                 "write": false
             },
-            "native": {}
+            "native": {},
+            "parent": "warning"
         },
         {
-            "_id": "description",
+            "_id": "warning.description",
             "type": "state",
             "common": {
                 "name": "Warning description",
@@ -98,7 +104,8 @@
                 "read": true,
                 "write": false
             },
-            "native": {}
+            "native": {},
+            "parent": "warning"
         }
     ]
 }

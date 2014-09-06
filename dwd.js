@@ -1,8 +1,62 @@
-var adapter = require(__dirname + '/../../lib/adapter.js')({
+// TODO handle FTP timeouts
+
+"use strict";
+
+var JSFtp =         require('jsftp');
+var parseString =   require('xml2js').parseString;
+
+var ftp;
+var files = [];
+var xml = [];
+
+var severity = {
+    "Minor":    1,
+    "Moderate": 2,
+    "Severe":   3,
+    "Extreme":  4
+};
+
+var adapter =       require(__dirname + '/../../lib/adapter.js')({
 
     name:           'dwd',
 
     ready: function () {
+
+        adapter.config.kreis = (adapter.config.kreis + 'XXX').slice(0, 4);
+
+        adapter.extendObject('warning', {
+            type: 'channel',
+            role: 'forecast',
+            common: {
+                name: 'dwd warning ' + adapter.config.dienststelle + ' ' + adapter.config.kreis
+            },
+            native: {
+
+            },
+            children: [
+                "warning.begin",
+                "warning.end",
+                "warning.severity",
+                "warning.text",
+                "warning.headline",
+                "warning.desc"
+            ]
+        });
+
+
+        ftp = new JSFtp({
+            host: adapter.config.host,
+            user: adapter.config.user, // defaults to "anonymous"
+            pass: adapter.config.pass // defaults to "@anonymous"
+        });
+
+        ftp.on('jsftp_debug', function (eventType, data) {
+            adapter.log.debug('DEBUG: ', eventType);
+            adapter.log.debug(JSON.stringify(data, null, 2));
+        });
+
+        ftp.setDebugMode(true);
+
         ftp.ls('gds/specials/warnings/xml/' + adapter.config.dienststelle, function(err, res) {
             if (err) {
                 adapter.log.info('ftp ls error');
@@ -21,56 +75,14 @@ var adapter = require(__dirname + '/../../lib/adapter.js')({
 });
 
 
-
-setTimeout(stop, 1800000);
-
-var severity = {
-        "Minor":    1,
-        "Moderate": 2,
-        "Severe":   3,
-        "Extreme":  4
-    };
-
-var JSFtp =         require('jsftp');
-var parseString =   require('xml2js').parseString;
-
-
-function stop() {
-    adapter.log.info("terminating");
-    setTimeout(function () {
-        process.exit();
-    }, 250);
-}
-
-process.on('SIGINT', function () {
-    stop();
-});
-
-process.on('SIGTERM', function () {
-    stop();
-});
-
-
-
-adapter.config.kreis = (adapter.config.kreis + 'XXX').slice(0, 4);
-
-var ftp = new JSFtp({
-    host: adapter.config.host,
-    user: adapter.config.user, // defaults to "anonymous"
-    pass: adapter.config.pass // defaults to "@anonymous"
-});
-
-var files = [];
-var xml = [];
-
-
-
 function getFile(i) {
-    if (!i) { i = 0; }
+    if (!i) i = 0;
     if (!files[i]) {
         received();
         return;
     }
+    adapter.log.info('getFile ' + files[i]);
+
     ftp.get('gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[i], function(err, socket) {
         if (err) {
             adapter.log.error('ftp get error');
@@ -105,7 +117,7 @@ function received() {
 
     for (var i = 0; i < xml.length; i++) {
         parseString(xml[i], {explicitArray: false}, function(err, res) {
-            //console.log(res.alert.msgType+" "+res.alert.info.eventCode.value+" "+res.alert.info.event+" "+res.alert.info.severity+" "+res.alert.info.effective+" "+res.alert.info.expires);
+            adapter.log.debug(res.alert.msgType+" "+res.alert.info.eventCode.value+" "+res.alert.info.event+" "+res.alert.info.severity+" "+res.alert.info.effective+" "+res.alert.info.expires);
             var effective = formatTimestamp(res.alert.info.effective),
                 expires =   formatTimestamp(res.alert.info.expires);
 
@@ -137,9 +149,8 @@ function received() {
         severity: 0
     };
 
-
     var first = true;
-    for (item in warnungen) {
+    for (var item in warnungen) {
         if (!first) {
             warnung.text += ', ';
             warnung.desc += ' ';
@@ -147,7 +158,8 @@ function received() {
         } else {
             first = false;
         }
-        if (warnung.expires < warnungen[item].expires) warnung.expires = warnungen[item].expires;
+        if (warnung.expires < warnungen[item].expires)  warnung.expires =   warnungen[item].expires;
+        if (warnung.start > warnungen[item].start)      warnung.start =     warnungen[item].start;
         warnung.text += warnungen[item].text;
         warnung.desc += warnungen[item].desc;
         warnung.head += warnungen[item].head;
@@ -156,65 +168,22 @@ function received() {
 
     }
 
-    if (warnung.start === '2037-01-01') warnung.start = '';
-    if (warnung.expires === '0000-00-00') warnung.expires = '';
+    if (warnung.start === '2037-01-01')     warnung.start = '';
+    if (warnung.expires === '0000-00-00')   warnung.expires = '';
 
-    console.log(warnungen);
+    adapter.log.debug('warnung', warnung);
+    adapter.log.info('setting states');
+    adapter.setState('warning.begin',       {ack: true, val: warnung.start});
+    adapter.setState('warning.end',         {ack: true, val: warnung.expires});
+    adapter.setState('warning.severity',    {ack: true, val: warnung.severity});
+    adapter.setState('warning.text',        {ack: true, val: warnung.text});
+    adapter.setState('warning.headline',    {ack: true, val: warnung.head});
+    adapter.setState('warning.description', {ack: true, val: warnung.desc});
 
+    setTimeout(stop, 5000);
 
-    /*
-    var firstId = settings.adapters.dwd.firstId;
-
-    socket.emit("setObject", firstId, {
-        Name: "DWD Warnung Beginn",
-        DPInfo: "",
-        TypeName: "VARDP",
-    }, function() {
-        socket.emit("setState", [firstId, warnung.start || ""]);
-    });
-
-    socket.emit("setObject", firstId+1, {
-        Name: "DWD Warnung Ende",
-        DPInfo: "",
-        TypeName: "VARDP",
-    }, function() {
-        socket.emit("setState", [firstId+1, warnung.expires || ""]);
-    });
-
-    socket.emit("setObject", firstId+2, {
-        Name: "DWD Warnung Severity",
-        DPInfo: "0=None, 1=Minor, 2=Moderate, 3=Severe, 4=Extreme",
-        TypeName: "VARDP",
-    }, function() {
-        socket.emit("setState", [firstId+2, warnung.severity || ""]);
-    });
-
-    socket.emit("setObject", firstId+3, {
-        Name: "DWD Warnung Text",
-        DPInfo: "",
-        TypeName: "VARDP",
-    }, function() {
-        socket.emit("setState", [firstId+3, warnung.text || ""]);
-    });
-
-    socket.emit("setObject", firstId+4, {
-        Name: "DWD Warnung Headline",
-        DPInfo: "",
-        TypeName: "VARDP",
-    }, function() {
-        socket.emit("setState", [firstId+4, warnung.head || ""]);
-    });
-
-    socket.emit("setObject", firstId+5, {
-        Name: "DWD Warnung Beschreibung",
-        DPInfo: "",
-        TypeName: "VARDP",
-    }, function() {
-        socket.emit("setState", [firstId+5, warnung.desc || ""]);
-        setTimeout(stop, 10000);
-    });
-*/
 }
+
 
 function formatTimestamp(str) {
     var ts = new Date(str);
@@ -225,3 +194,22 @@ function formatTimestamp(str) {
         ("0" + (ts.getMinutes()).toString(10)).slice(-2) + ':' +
         ("0" + (ts.getSeconds()).toString(10)).slice(-2);
 }
+
+
+setTimeout(stop, 1800000);
+
+
+function stop() {
+    adapter.log.info("terminating");
+    setTimeout(function () {
+        process.exit();
+    }, 250);
+}
+
+process.on('SIGINT', function () {
+    stop();
+});
+
+process.on('SIGTERM', function () {
+    stop();
+});
