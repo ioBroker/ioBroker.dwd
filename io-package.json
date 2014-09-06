@@ -1,0 +1,104 @@
+{
+    "common": {
+        "name":                     "dwd",
+        "title":                    "DWD",
+        "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
+        "version":                  "0.0.1",
+        "mode":                     "schedule",
+        "schedule":                 "0 * * * *",
+        "platform":                 "javascript/Node.js",
+        "loglevel":                 "info",
+        "keywords":                 ["weather", "Wetter", "warning", "Warnung", "forecast", "Vorhersage", "rain", "Regen", "wind"],
+        "main":                     "dwd.js",
+        "authors": [
+            "hobbyquaker <hq@ccu.io>"
+        ],
+        "license":                  "MIT",
+        "readme":                   "https://github.com/ioBroker/ioBroker.dwd/blob/master/README.md"
+    },
+    "native": {
+        "host": "ftp-outgoing2.dwd.de",
+        "user": "gds12345",
+        "pass": "xxxx",
+        "dienststelle": "SU",
+        "kreis": "S"
+    },
+    "objects": [
+
+    ],
+    "instanceObjects": [
+        {
+            "_id": "begin",
+            "type": "state",
+            "common": {
+                "name": "Warning begin",
+                "type": "datetime",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "end",
+            "type": "state",
+            "common": {
+                "name": "Warning end",
+                "type": "datetime",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "severity",
+            "type": "state",
+            "common": {
+                "name": "Warning severity",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "states": {
+                    "0":    "None",
+                    "1":    "Minor",
+                    "2":    "Moderate",
+                    "3":    "Severe",
+                    "4":    "Extreme"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "text",
+            "type": "state",
+            "common": {
+                "name": "Warning text",
+                "type": "string",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "headline",
+            "type": "state",
+            "common": {
+                "name": "Warning headline",
+                "type": "string",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "description",
+            "type": "state",
+            "common": {
+                "name": "Warning description",
+                "type": "string",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        }
+    ]
+}
