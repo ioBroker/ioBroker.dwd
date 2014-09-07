@@ -70,6 +70,10 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
                 getFile(0);
             }
         });
+    },
+
+    unload: function (callback) {
+        callback();
     }
 
 });
@@ -196,20 +200,9 @@ function formatTimestamp(str) {
 }
 
 
-setTimeout(stop, 1800000);
+setTimeout(function () {
+    adapter.log.info("force terminating after 4 minutes");
+    process.exit();
+}, 240000);
 
 
-function stop() {
-    adapter.log.info("terminating");
-    setTimeout(function () {
-        process.exit();
-    }, 250);
-}
-
-process.on('SIGINT', function () {
-    stop();
-});
-
-process.on('SIGTERM', function () {
-    stop();
-});
