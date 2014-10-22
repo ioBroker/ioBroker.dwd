@@ -3,6 +3,8 @@
 Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 
 ## Changelog
+### 0.0.3 (2014-10-22)
+* (bluefox) fix error if ftp problem
 
 ## Todo
 

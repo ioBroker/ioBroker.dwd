@@ -3,7 +3,7 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version":                  "0.0.2",
+        "version":                  "0.0.3",
         "mode":                     "schedule",
         "schedule":                 "0 * * * *",
         "platform":                 "javascript/Node.js",

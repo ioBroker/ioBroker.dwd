@@ -1,5 +1,7 @@
-// TODO handle FTP timeouts
+/* jshint -W097 */// jshint strict:false
+/*jslint node: true */
 
+// TODO handle FTP timeouts
 "use strict";
 
 var JSFtp =         require('jsftp');
@@ -57,13 +59,13 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
 
         ftp.setDebugMode(true);
 
-        ftp.ls('gds/specials/warnings/xml/' + adapter.config.dienststelle, function(err, res) {
+        ftp.ls('gds/specials/warnings/xml/' + adapter.config.dienststelle, function (err, res) {
             if (err) {
                 adapter.log.info('ftp ls error');
-                stop();
+                adapter.stop();
             } else {
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].name.match(new RegExp(adapter.config.kreis + '\.xml$'))) {
+                    if (res[i].name.match(new RegExp(adapter.config.kreis + '.xml$'))) {
                         files.push(res[i].name);
                     }
                 }
@@ -87,7 +89,7 @@ function getFile(i) {
     }
     adapter.log.info('getFile ' + files[i]);
 
-    ftp.get('gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[i], function(err, socket) {
+    ftp.get('gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[i], function (err, socket) {
         if (err) {
             adapter.log.error('ftp get error');
             return;
@@ -100,7 +102,7 @@ function getFile(i) {
         socket.on('close', function (hadErr) {
             if (hadErr) {
                 adapter.log.error('error retrieving file');
-                stop();
+                adapter.stop();
             } else {
                 adapter.log.info('got weather warning');
             }
@@ -119,29 +121,31 @@ function received() {
     var warnungen = {};
     var now = formatTimestamp(new Date());
 
+    function parseResult(err, res) {
+        adapter.log.debug(res.alert.msgType + ' ' + res.alert.info.eventCode.value + ' ' + res.alert.info.event + ' ' + res.alert.info.severity + ' ' + res.alert.info.effective + ' ' + res.alert.info.expires);
+        var effective = formatTimestamp(res.alert.info.effective);
+        var expires =   formatTimestamp(res.alert.info.expires);
+
+        if (res.alert.msgType === 'Alert' && res.alert.info.eventCode.value > 30 && expires > now && effective < now) {
+            warnungen[res.alert.info.eventCode.value] = {
+                text:       res.alert.info.event,
+                desc:       res.alert.info.description,
+                head:       res.alert.info.headline,
+                start:      effective,
+                expires:    expires,
+                severity:   res.alert.info.severity
+            };
+        }
+
+        if (res.alert.msgType === 'Cancel') {
+            if (warnungen[res.alert.info.eventCode.value]) {
+                delete(warnungen[res.alert.info.eventCode.value]);
+            }
+        }
+    }
+
     for (var i = 0; i < xml.length; i++) {
-        parseString(xml[i], {explicitArray: false}, function(err, res) {
-            adapter.log.debug(res.alert.msgType+" "+res.alert.info.eventCode.value+" "+res.alert.info.event+" "+res.alert.info.severity+" "+res.alert.info.effective+" "+res.alert.info.expires);
-            var effective = formatTimestamp(res.alert.info.effective),
-                expires =   formatTimestamp(res.alert.info.expires);
-
-            if (res.alert.msgType === 'Alert' && res.alert.info.eventCode.value > 30 && expires > now && effective < now) {
-                warnungen[res.alert.info.eventCode.value] = {
-                    text:       res.alert.info.event,
-                    desc:       res.alert.info.description,
-                    head:       res.alert.info.headline,
-                    start:      effective,
-                    expires:    expires,
-                    severity:   res.alert.info.severity
-                };
-            }
-
-            if (res.alert.msgType === 'Cancel') {
-                if (warnungen[res.alert.info.eventCode.value]) {
-                    delete(warnungen[res.alert.info.eventCode.value]);
-                }
-            }
-        });
+        parseString(xml[i], {explicitArray: false}, parseResult);
 
     }
     var warnung = {
@@ -184,7 +188,7 @@ function received() {
     adapter.setState('warning.headline',    {ack: true, val: warnung.head});
     adapter.setState('warning.description', {ack: true, val: warnung.desc});
 
-    setTimeout(stop, 5000);
+    setTimeout(adapter.stop, 5000);
 
 }
 
