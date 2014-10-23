@@ -10,40 +10,121 @@
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 
 <script type="text/javascript">
+    changed = false;
 
-    function load(settings) {
-        for (var key in settings) {
-            $('#' + key + '.value').val(settings[key]);
+    function setValue(id, value) {
+        // example: select elements with id=key and class=value and insert value
+        if ($('#' + id + '.value').attr('type') == 'checkbox') {
+            $('#' + id + '.value').prop('checked', value).change(function() {
+                changed = true;
+                $('#save').button("enable");
+            });
+        } else {
+            $('#' + id + '.value').val(value).change(function() {
+                changed = true;
+                $('#save').button("enable");
+            }).keyup(function() {
+                changed = true;
+                $('#save').button("enable");
+            });
         }
     }
 
-    function save(callback) {
+    function loadHelper(settings, param, subparam) {
+        if (!settings) return;
+
+        if (subparam && param) {
+            for (var key in settings[param][subparam]) {
+                if (typeof settings[param][subparam][key] != 'object') {
+                    setValue(param + '_' + subparam + '_' + key, settings[param][subparam][key]);
+                } else {
+                    alert("4th level is not supported");
+                }
+            }
+        } else if (param) {
+            for (var key in settings[param]) {
+                if (typeof settings[param][key] != 'object') {
+                    setValue(param + '_' + key, settings[param][key]);
+                } else {
+                    loadHelper(settings, param, key);
+                }
+            }
+        } else {
+            for (var key in settings) {
+                if (typeof settings[key] != 'object') {
+                    setValue(key, settings[key]);
+                } else {
+                    loadHelper(settings, key);
+                }
+            }
+        }
+    }
+
+    // the function loadSettings has to exist ...
+    function load(settings) {
+        loadHelper(settings);
+        $('#pass_confirm').val($('#pass').val());
+        $('#save').button("disable");
+    }
+
+    function saveHelper(obj, id, value) {
+        var ids = id.split('_');
+
+        if (ids.length === 1) {
+            obj[id] = value;
+        } else if (ids.length === 2) {
+            if (!obj[ids[0]]) obj[ids[0]] = {};
+            obj[ids[0]][ids[1]] = value;
+        } else if (ids.length === 3) {
+            if (!obj[ids[0]]) obj[ids[0]] = {};
+            if (!obj[ids[0]][ids[1]]) obj[ids[0]][ids[1]] = {};
+            obj[ids[0]][ids[1]][ids[2]] = value;
+        }
+        return obj;
+    }
+
+    function getSettings() {
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
-            obj[$this.attr('id')] = $this.val();
+            var id = $this.attr('id');
+
+            if ($this.attr('type') == 'checkbox') {
+                obj = saveHelper(obj, id, $this.prop('checked'))
+            } else {
+                obj = saveHelper(obj, id, $this.val())
+            }
         });
-        callback(obj);
+        return obj;
     }
+
+    // ... and the function save has to exist.
+    // you have to make sure the callback is called with the settings object as first param!
+    function save(callback) {
+        changed = false;
+        callback(getSettings());
+        $('#save').button("disable");
+    }
+
 </script>
 
 <div id="adapter-container">
 
     <table>
         <tr>
-            <td>Hostname:</td>
+            <td class="translate">Hostname:</td>
             <td><input class="value" id="host" type="text"/></td>
         </tr>
         <tr>
-            <td>Username:</td>
+            <td class="translate">Username:</td>
             <td><input class="value" id="user" type="text"/></td>
         </tr>
         <tr>
-            <td>Password:</td>
+            <td class="translate">Password:</td>
             <td><input class="value" id="pass" type="text"/></td>
         </tr>
         <tr>
-            <td>Bundesland:</td>
+            <td class="translate">Bundesland:</td>
             <td>
                 <select class="value" id="dienststelle">
                     <option value="HA">Schleswig-Holstein/Hamburg</option>
@@ -63,8 +144,8 @@
             </td>
         </tr>
         <tr>
-            <td>Kreis:</td>
-            <td><input class="value" id="kreis" type="text"/> (KFZ-Kennzeichen)</td>
+            <td class="translate">Kreis:</td>
+            <td><input class="value" id="kreis" type="text"/>(KFZ-Kennzeichen)</td>
         </tr>
     </table>
 </div>

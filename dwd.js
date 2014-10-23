@@ -80,7 +80,7 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
 
 });
 
-
+var timeout = null;
 function getFile(i) {
     if (!i) i = 0;
     if (!files[i]) {
@@ -89,6 +89,13 @@ function getFile(i) {
     }
     adapter.log.info('getFile ' + files[i]);
 
+    timeout = setTimeout(function (_i) {
+        adapter.log.error('ftp timeout by ' + 'gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[_i]);
+        // Try next time
+        setTimeout(function (c) {
+            getFile(c);
+        }, 1000, _i + 1);
+    }, 10000, i);
     ftp.get('gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[i], function (err, socket) {
         if (err) {
             adapter.log.error('ftp get error');
@@ -100,6 +107,10 @@ function getFile(i) {
         });
 
         socket.on('close', function (hadErr) {
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = 0;
+            }
             if (hadErr) {
                 adapter.log.error('error retrieving file');
                 adapter.stop();
@@ -176,11 +187,12 @@ function received() {
 
     }
 
-    if (warnung.start === '2037-01-01')     warnung.start = '';
-    if (warnung.expires === '0000-00-00')   warnung.expires = '';
+    if (warnung.start   === '2037-01-01') warnung.start = '';
+    if (warnung.expires === '0000-00-00') warnung.expires = '';
 
     adapter.log.debug('warnung', warnung);
     adapter.log.info('setting states');
+
     adapter.setState('warning.begin',       {ack: true, val: warnung.start});
     adapter.setState('warning.end',         {ack: true, val: warnung.expires});
     adapter.setState('warning.severity',    {ack: true, val: warnung.severity});
@@ -189,7 +201,6 @@ function received() {
     adapter.setState('warning.description', {ack: true, val: warnung.desc});
 
     setTimeout(adapter.stop, 5000);
-
 }
 
 
