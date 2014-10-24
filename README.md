@@ -1,4 +1,6 @@
-# ioBroker.dwd
+![Logo](admin/dwd.png)
+ioBroker DWD Adapter
+==============
 
 Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 
