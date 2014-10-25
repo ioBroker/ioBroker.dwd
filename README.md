@@ -3,6 +3,9 @@
 Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 
 ## Changelog
+### 0.1.0 (2014-10-25)
+* (bluefox) change variables to io.*
+
 ### 0.0.4 (2014-10-23)
 * (bluefox) support of timeouts
 

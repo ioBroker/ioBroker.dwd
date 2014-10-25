@@ -3,7 +3,7 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version":                  "0.0.4",
+        "version":                  "0.1.0",
         "mode":                     "schedule",
         "schedule":                 "0 * * * *",
         "platform":                 "javascript/Node.js",
@@ -31,79 +31,90 @@
     ],
     "instanceObjects": [
         {
-            "_id": "warning.begin",
+            "_id":  "warning",
+            "type": "channel",
+            "role": "forecast",
+            "common": {
+                "name": ""
+            },
+            "native": {},
+            "children": [],
+            "parent": null
+        },
+        {
+            "_id":  "io.warning.begin",
             "type": "state",
             "common": {
-                "name": "Warning begin",
-                "type": "datetime",
-                "read": true,
+                "name":  "Warning begin",
+                "type":  "datetime",
+                "read":  true,
                 "write": false
             },
             "native": {},
             "parent": "warning"
         },
         {
-            "_id": "warning.end",
+            "_id": "io.warning.end",
             "type": "state",
             "common": {
-                "name": "Warning end",
-                "type": "datetime",
-                "read": true,
+                "name":  "Warning end",
+                "type":  "datetime",
+                "read":  true,
                 "write": false
             },
             "native": {},
             "parent": "warning"
         },
         {
-            "_id": "warning.severity",
+            "_id": "io.warning.severity",
             "type": "state",
             "common": {
-                "name": "Warning severity",
-                "type": "number",
-                "read": true,
+                "name":  "Warning severity",
+                "type":  "number",
+                "read":  true,
                 "write": false,
                 "states": {
-                    "0":    "None",
-                    "1":    "Minor",
-                    "2":    "Moderate",
-                    "3":    "Severe",
-                    "4":    "Extreme"
+                    "0": "None",
+                    "1": "Minor",
+                    "2": "Moderate",
+                    "3": "Severe",
+                    "4": "Extreme"
                 }
             },
             "native": {},
             "parent": "warning"
         },
         {
-            "_id": "warning.text",
+            "_id":  "io.warning.text",
             "type": "state",
             "common": {
-                "name": "Warning text",
-                "type": "string",
-                "read": true,
+                "name":  "Warning text",
+                "type":  "string",
+                "read":  true,
                 "write": false
             },
             "native": {},
             "parent": "warning"
         },
         {
-            "_id": "warning.headline",
+            "_id":  "io.warning.headline",
             "type": "state",
             "common": {
-                "name": "Warning headline",
-                "type": "string",
-                "read": true,
+                "name":  "Warning headline",
+                "type":  "string",
+                "read":  true,
                 "write": false
             },
             "native": {},
             "parent": "warning"
         },
         {
-            "_id": "warning.description",
+            "_id":  "io.warning.description",
             "type": "state",
             "common": {
-                "name": "Warning description",
-                "type": "string",
-                "read": true,
+                "name":  "Warning description",
+                "type":  "string",
+                "read":  true,
                 "write": false
             },
             "native": {},

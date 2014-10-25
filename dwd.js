@@ -36,12 +36,12 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
 
             },
             children: [
-                "warning.begin",
-                "warning.end",
-                "warning.severity",
-                "warning.text",
-                "warning.headline",
-                "warning.desc"
+                'io.' + adapter.namespace + 'warning.begin',
+                'io.' + adapter.namespace + 'warning.end',
+                'io.' + adapter.namespace + 'warning.severity',
+                'io.' + adapter.namespace + 'warning.text',
+                'io.' + adapter.namespace + 'warning.headline',
+                'io.' + adapter.namespace + 'warning.desc'
             ]
         });
 
@@ -193,12 +193,12 @@ function received() {
     adapter.log.debug('warnung', warnung);
     adapter.log.info('setting states');
 
-    adapter.setState('warning.begin',       {ack: true, val: warnung.start});
-    adapter.setState('warning.end',         {ack: true, val: warnung.expires});
-    adapter.setState('warning.severity',    {ack: true, val: warnung.severity});
-    adapter.setState('warning.text',        {ack: true, val: warnung.text});
-    adapter.setState('warning.headline',    {ack: true, val: warnung.head});
-    adapter.setState('warning.description', {ack: true, val: warnung.desc});
+    adapter.setState('io.warning.begin',       {ack: true, val: warnung.start});
+    adapter.setState('io.warning.end',         {ack: true, val: warnung.expires});
+    adapter.setState('io.warning.severity',    {ack: true, val: warnung.severity});
+    adapter.setState('io.warning.text',        {ack: true, val: warnung.text});
+    adapter.setState('io.warning.headline',    {ack: true, val: warnung.head});
+    adapter.setState('io.warning.description', {ack: true, val: warnung.desc});
 
     setTimeout(adapter.stop, 5000);
 }
