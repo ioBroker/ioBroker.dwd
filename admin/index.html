@@ -11,6 +11,13 @@
 
 <script type="text/javascript">
     changed = false;
+    systemDictionary = {
+        "Deutsche Wetter Dienst adapter settings": {
+            "en": "Deutsche Wetter Dienst adapter settings",
+            "de": "Deutsche Wetter Dienst Adapter-Einstellungen",
+            "ru": "Настройки адаптера Deutsche Wetter Dienst "
+        }
+    };
 
     function setValue(id, value) {
         // example: select elements with id=key and class=value and insert value
@@ -109,6 +116,7 @@
 </script>
 
 <div id="adapter-container">
+    <table><tr><td><img src="dwd.png" width="64" height="64"></td><td><h3 class="translate">Deutsche Wetter Dienst adapter settings</h3></td></tr></table>
 
     <table>
         <tr>

@@ -36,12 +36,12 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
 
             },
             children: [
-                'io.' + adapter.namespace + 'warning.begin',
-                'io.' + adapter.namespace + 'warning.end',
-                'io.' + adapter.namespace + 'warning.severity',
-                'io.' + adapter.namespace + 'warning.text',
-                'io.' + adapter.namespace + 'warning.headline',
-                'io.' + adapter.namespace + 'warning.desc'
+                'io.warning.begin',
+                'io.warning.end',
+                'io.warning.severity',
+                'io.warning.text',
+                'io.warning.headline',
+                'io.warning.desc'
             ]
         });
 
@@ -58,6 +58,17 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
         });
 
         ftp.setDebugMode(true);
+        adapter.getState('io.warning.begin', function (err, obj) {
+            if (err || !obj) {
+                adapter.setState('io.warning.begin',       {ack: true, val: ''});
+                adapter.setState('io.warning.end',         {ack: true, val: ''});
+                adapter.setState('io.warning.severity',    {ack: true, val: 0});
+                adapter.setState('io.warning.text',        {ack: true, val: 'no data'});
+                adapter.setState('io.warning.headline',    {ack: true, val: 'no data'});
+                adapter.setState('io.warning.description', {ack: true, val: 'no data'});
+
+            }
+        });
 
         ftp.ls('gds/specials/warnings/xml/' + adapter.config.dienststelle, function (err, res) {
             if (err) {
