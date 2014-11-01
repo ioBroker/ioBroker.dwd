@@ -16,7 +16,8 @@
         "license":                  "MIT",
         "readme":                   "https://github.com/ioBroker/ioBroker.dwd/blob/master/README.md",
         "icon":                     "dwd.png",
-        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png"
+        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png",
+        "localLink":                "http://www.dwd.de/"
     },
     "native": {
         "host": "ftp-outgoing2.dwd.de",
