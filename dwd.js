@@ -36,12 +36,12 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
 
             },
             children: [
-                'io.warning.begin',
-                'io.warning.end',
-                'io.warning.severity',
-                'io.warning.text',
-                'io.warning.headline',
-                'io.warning.desc'
+                'warning.begin',
+                'warning.end',
+                'warning.severity',
+                'warning.text',
+                'warning.headline',
+                'warning.desc'
             ]
         });
 
@@ -58,14 +58,14 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
         });
 
         ftp.setDebugMode(true);
-        adapter.getState('io.warning.begin', function (err, obj) {
+        adapter.getState('warning.begin', function (err, obj) {
             if (err || !obj) {
-                adapter.setState('io.warning.begin',       {ack: true, val: ''});
-                adapter.setState('io.warning.end',         {ack: true, val: ''});
-                adapter.setState('io.warning.severity',    {ack: true, val: 0});
-                adapter.setState('io.warning.text',        {ack: true, val: 'no data'});
-                adapter.setState('io.warning.headline',    {ack: true, val: 'no data'});
-                adapter.setState('io.warning.description', {ack: true, val: 'no data'});
+                adapter.setState('warning.begin',       {ack: true, val: ''});
+                adapter.setState('warning.end',         {ack: true, val: ''});
+                adapter.setState('warning.severity',    {ack: true, val: 0});
+                adapter.setState('warning.text',        {ack: true, val: 'no data'});
+                adapter.setState('warning.headline',    {ack: true, val: 'no data'});
+                adapter.setState('warning.description', {ack: true, val: 'no data'});
 
             }
         });
@@ -204,12 +204,12 @@ function received() {
     adapter.log.debug('warnung', warnung);
     adapter.log.info('setting states');
 
-    adapter.setState('io.warning.begin',       {ack: true, val: warnung.start});
-    adapter.setState('io.warning.end',         {ack: true, val: warnung.expires});
-    adapter.setState('io.warning.severity',    {ack: true, val: warnung.severity});
-    adapter.setState('io.warning.text',        {ack: true, val: warnung.text});
-    adapter.setState('io.warning.headline',    {ack: true, val: warnung.head});
-    adapter.setState('io.warning.description', {ack: true, val: warnung.desc});
+    adapter.setState('warning.begin',       {ack: true, val: warnung.start});
+    adapter.setState('warning.end',         {ack: true, val: warnung.expires});
+    adapter.setState('warning.severity',    {ack: true, val: warnung.severity});
+    adapter.setState('warning.text',        {ack: true, val: warnung.text});
+    adapter.setState('warning.headline',    {ack: true, val: warnung.head});
+    adapter.setState('warning.description', {ack: true, val: warnung.desc});
 
     setTimeout(adapter.stop, 5000);
 }

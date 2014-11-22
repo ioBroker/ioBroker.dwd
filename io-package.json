@@ -3,7 +3,7 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version":                  "0.1.0",
+        "version":                  "0.1.1",
         "mode":                     "schedule",
         "schedule":                 "0 * * * *",
         "platform":                 "javascript/Node.js",
@@ -43,7 +43,7 @@
             "parent": null
         },
         {
-            "_id":  "io.warning.begin",
+            "_id":  "warning.begin",
             "type": "state",
             "common": {
                 "name":  "Warning begin",
@@ -55,7 +55,7 @@
             "parent": "warning"
         },
         {
-            "_id": "io.warning.end",
+            "_id": "warning.end",
             "type": "state",
             "common": {
                 "name":  "Warning end",
@@ -67,7 +67,7 @@
             "parent": "warning"
         },
         {
-            "_id": "io.warning.severity",
+            "_id": "warning.severity",
             "type": "state",
             "common": {
                 "name":  "Warning severity",
@@ -86,7 +86,7 @@
             "parent": "warning"
         },
         {
-            "_id":  "io.warning.text",
+            "_id":  "warning.text",
             "type": "state",
             "common": {
                 "name":  "Warning text",
@@ -98,7 +98,7 @@
             "parent": "warning"
         },
         {
-            "_id":  "io.warning.headline",
+            "_id":  "warning.headline",
             "type": "state",
             "common": {
                 "name":  "Warning headline",
@@ -110,7 +110,7 @@
             "parent": "warning"
         },
         {
-            "_id":  "io.warning.description",
+            "_id":  "warning.description",
             "type": "state",
             "common": {
                 "name":  "Warning description",
