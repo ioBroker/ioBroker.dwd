@@ -89,41 +89,80 @@ function getFile(i) {
         received();
         return;
     }
+    var str = '';
+    var finished = false;
+
     adapter.log.info('getFile ' + files[i]);
 
     timeout = setTimeout(function (_i) {
-        adapter.log.error('ftp timeout by ' + 'gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[_i]);
-        // Try next time
-        setTimeout(function (c) {
-            getFile(c);
-        }, 1000, _i + 1);
+        if (!finished) {
+            finished = true;
+            xml[i] = str;
+            if (!str) adapter.log.error('ftp timeout by ' + 'gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[_i]);
+            // Try next time
+            setTimeout(function (c) {
+                getFile(c);
+            }, 1000, _i + 1);
+        }
     }, 10000, i);
+
     ftp.get('gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[i], function (err, socket) {
         if (err) {
             adapter.log.error('ftp get error');
             return;
         }
-        var str = '';
         socket.on('data', function (d) {
             str += d.toString();
+            if (!finished) {
+                finished = true;
+                if (str.indexOf('</alert>') != -1) {
+                    // bug under windows. Try to detect the end of transmission
+                    if (timeout) {
+                        clearTimeout(timeout);
+                        timeout = 0;
+                    }
+                    xml[i] = str;
+                    setTimeout(function (c) {
+                        getFile(c);
+                    }, 1000, i + 1);
+                }
+            }
         });
 
         socket.on('close', function (hadErr) {
-            if (timeout) {
-                clearTimeout(timeout);
-                timeout = 0;
+            if (!finished) {
+                finished = true;
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = 0;
+                }
+                if (hadErr) {
+                    adapter.log.error('error retrieving file');
+                    adapter.stop();
+                } else {
+                    adapter.log.info('got weather warning');
+                }
+                xml[i] = str;
+                setTimeout(function (c) {
+                    getFile(c);
+                }, 1000, i + 1);
             }
-            if (hadErr) {
-                adapter.log.error('error retrieving file');
-                adapter.stop();
-            } else {
-                adapter.log.info('got weather warning');
-            }
-            xml[i] = str;
-            setTimeout(function (c) {
-                getFile(c);
-            }, 1000, i + 1);
         });
+        socket.on('error', function (err) {
+            if (!finished) {
+                finished = true;
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = 0;
+                }
+
+                adapter.log.error('error retrieving file "' + files[i] + '": ' + err);
+                xml[i] = str;
+                setTimeout(function (c) {
+                    getFile(c);
+                }, 1000, i + 1);
+            }
+        })
         socket.resume();
     });
 }
@@ -218,8 +257,8 @@ function formatTimestamp(str) {
 
 
 setTimeout(function () {
-    adapter.log.info("force terminating after 4 minutes");
-    process.exit();
+    adapter.log.info('force terminating after 4 minutes');
+    adapter.stop();
 }, 240000);
 
 
