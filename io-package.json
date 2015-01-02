@@ -3,7 +3,7 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version":                  "0.1.1",
+        "version": "0.1.2",
         "mode":                     "schedule",
         "schedule":                 "0 * * * *",
         "platform":                 "javascript/Node.js",
@@ -38,9 +38,7 @@
             "common": {
                 "name": ""
             },
-            "native": {},
-            "children": [],
-            "parent": null
+            "native": {}
         },
         {
             "_id":  "warning.begin",
@@ -51,8 +49,7 @@
                 "read":  true,
                 "write": false
             },
-            "native": {},
-            "parent": "warning"
+            "native": {}
         },
         {
             "_id": "warning.end",
@@ -63,8 +60,7 @@
                 "read":  true,
                 "write": false
             },
-            "native": {},
-            "parent": "warning"
+            "native": {}
         },
         {
             "_id": "warning.severity",
@@ -82,8 +78,7 @@
                     "4": "Extreme"
                 }
             },
-            "native": {},
-            "parent": "warning"
+            "native": {}
         },
         {
             "_id":  "warning.text",
@@ -94,8 +89,7 @@
                 "read":  true,
                 "write": false
             },
-            "native": {},
-            "parent": "warning"
+            "native": {}
         },
         {
             "_id":  "warning.headline",
@@ -106,8 +100,7 @@
                 "read":  true,
                 "write": false
             },
-            "native": {},
-            "parent": "warning"
+            "native": {}
         },
         {
             "_id":  "warning.description",
@@ -118,8 +111,7 @@
                 "read":  true,
                 "write": false
             },
-            "native": {},
-            "parent": "warning"
+            "native": {}
         }
     ]
 }

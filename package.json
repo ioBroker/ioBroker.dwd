@@ -1,5 +1,24 @@
 {
-  "private": true,
+  "name": "iobroker.dwd",
+  "description": "Wetterwarnungen des deutschen Wetterdienstes",
+  "version": "0.1.2",
+  "author": "hobbyquaker <hq@ccu.io>",
+  "contributors": [
+    "hobbyquaker <hq@ccu.io>",
+    "bluefox <bluefox@ccu.io>"
+  ],
+  "homepage": "https://github.com/ioBroker/ioBroker.dwd",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.dwd"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "wetter",
+    "weather",
+    "home automation"
+  ],
   "dependencies": {
     "jsftp": "~1.3.1",
     "xml2js": "~0.4.4"
@@ -14,5 +33,12 @@
     "grunt-contrib-compress": "~0.8.0",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-exec": "~0.4.5"
+  },
+  "bugs": {
+    "url": "https://github.com/ioBroker/ioBroker.dwd/issues"
+  },
+  "main": "dwd.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

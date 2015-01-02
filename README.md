@@ -3,6 +3,9 @@
 Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 
 ## Changelog
+### 0.1.2 (2015-01-02)
+* (bluefox) enable npm install
+
 ### 0.1.1 (2014-11-22)
 * (bluefox) change variables to no-"io.*"
 

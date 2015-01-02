@@ -4,8 +4,9 @@
 // TODO handle FTP timeouts
 "use strict";
 
-var JSFtp =         require('jsftp');
-var parseString =   require('xml2js').parseString;
+var JSFtp =       require('jsftp');
+var parseString = require('xml2js').parseString;
+var utils =       require(__dirname + '/lib/utils'); // Get common adapter utils
 
 var ftp;
 var files = [];
@@ -18,10 +19,8 @@ var severity = {
     "Extreme":  4
 };
 
-var adapter =       require(__dirname + '/../../lib/adapter.js')({
-
+var adapter = utils.adapter({
     name:           'dwd',
-
     ready: function () {
 
         adapter.config.kreis = (adapter.config.kreis + 'XXX').slice(0, 4);
@@ -34,15 +33,7 @@ var adapter =       require(__dirname + '/../../lib/adapter.js')({
             },
             native: {
 
-            },
-            children: [
-                'warning.begin',
-                'warning.end',
-                'warning.severity',
-                'warning.text',
-                'warning.headline',
-                'warning.desc'
-            ]
+            }
         });
 
 
@@ -171,11 +162,11 @@ function received() {
 
     }
     var warnung = {
-        text: '',
-        desc: '',
-        head: '',
-        start: '2037-01-01',
-        expires: '0000-00-00',
+        text:     '',
+        desc:     '',
+        head:     '',
+        start:    '2037-01-01',
+        expires:  '0000-00-00',
         severity: 0
     };
 
