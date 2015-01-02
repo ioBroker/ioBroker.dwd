@@ -113,9 +113,9 @@ function getFile(i) {
         }
         socket.on('data', function (d) {
             str += d.toString();
-            if (!finished) {
-                finished = true;
-                if (str.indexOf('</alert>') != -1) {
+            if (str.indexOf('</alert>') != -1) {
+                if (!finished) {
+                    finished = true;
                     // bug under windows. Try to detect the end of transmission
                     if (timeout) {
                         clearTimeout(timeout);
