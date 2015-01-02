@@ -3,7 +3,7 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version": "0.1.2",
+        "version": "0.1.3",
         "mode":                     "schedule",
         "schedule":                 "0 * * * *",
         "platform":                 "javascript/Node.js",
@@ -17,7 +17,8 @@
         "readme":                   "https://github.com/ioBroker/ioBroker.dwd/blob/master/README.md",
         "icon":                     "dwd.png",
         "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png",
-        "localLink":                "http://www.dwd.de/"
+        "localLink":                "http://www.dwd.de/",
+		"allowInit":                true
     },
     "native": {
         "host": "ftp-outgoing2.dwd.de",
