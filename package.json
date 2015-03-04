@@ -1,7 +1,7 @@
 {
   "name": "iobroker.dwd",
   "description": "Wetterwarnungen des deutschen Wetterdienstes",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "author": "hobbyquaker <hq@ccu.io>",
   "contributors": [
     "hobbyquaker <hq@ccu.io>",

@@ -21,9 +21,12 @@ var severity = {
 
 var adapter = utils.adapter({
     name:           'dwd',
+    useFormatDate:  true,
     ready: function () {
 
         adapter.config.kreis = (adapter.config.kreis + 'XXX').slice(0, 4);
+
+        adapter.config.dienststelle = adapter.config.dienststelle.substring(0, 2);
 
         adapter.extendObject('warning', {
             type: 'channel',
@@ -171,12 +174,12 @@ function received() {
     ftp.raw.quit();
 
     var warnungen = {};
-    var now = formatTimestamp(new Date());
+    var now = adapter.formatDate(new Date());
 
     function parseResult(err, res) {
         adapter.log.debug(res.alert.msgType + ' ' + res.alert.info.eventCode.value + ' ' + res.alert.info.event + ' ' + res.alert.info.severity + ' ' + res.alert.info.effective + ' ' + res.alert.info.expires);
-        var effective = formatTimestamp(res.alert.info.effective);
-        var expires =   formatTimestamp(res.alert.info.expires);
+        var effective = adapter.formatDate(new Date(res.alert.info.effective));
+        var expires =   adapter.formatDate(new Date(res.alert.info.expires));
 
         if (res.alert.msgType === 'Alert' && res.alert.info.eventCode.value > 30 && expires > now && effective < now) {
             warnungen[res.alert.info.eventCode.value] = {
@@ -244,21 +247,16 @@ function received() {
     setTimeout(adapter.stop, 5000);
 }
 
-
-function formatTimestamp(str) {
-    var ts = new Date(str);
-    return ts.getFullYear() + '-' +
-        ("0" + (ts.getMonth() + 1).toString(10)).slice(-2) + '-' +
-        ("0" + (ts.getDate()).toString(10)).slice(-2) + ' ' +
-        ("0" + (ts.getHours()).toString(10)).slice(-2) + ':' +
-        ("0" + (ts.getMinutes()).toString(10)).slice(-2) + ':' +
-        ("0" + (ts.getSeconds()).toString(10)).slice(-2);
-}
-
-
 setTimeout(function () {
     adapter.log.info('force terminating after 4 minutes');
     adapter.stop();
 }, 240000);
 
-
+process.on('uncaughtException', function (err) {
+    if (err.arguments && err.arguments[0].indexOf('ECONNREFUSED') != -1) {
+        adapter.log.warn('Possible DWD service temporary unavailable. Terminating.');
+    } else {
+        adapter.log.error('Unexpected error: "' + err.toString() + '" Terminating.');
+    }
+    adapter.stop();
+});

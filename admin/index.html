@@ -10,7 +10,6 @@
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 
 <script type="text/javascript">
-    changed = false;
     systemDictionary = {
         "Deutsche Wetter Dienst adapter settings": {
             "en": "Deutsche Wetter Dienst adapter settings",
@@ -19,20 +18,19 @@
         }
     };
 
+    var onChange;
+
     function setValue(id, value) {
         // example: select elements with id=key and class=value and insert value
         if ($('#' + id + '.value').attr('type') == 'checkbox') {
             $('#' + id + '.value').prop('checked', value).change(function() {
-                changed = true;
-                $('#save').button("enable");
+                onChange();
             });
         } else {
             $('#' + id + '.value').val(value).change(function() {
-                changed = true;
-                $('#save').button("enable");
+                onChange();
             }).keyup(function() {
-                changed = true;
-                $('#save').button("enable");
+                onChange();
             });
         }
     }
@@ -68,10 +66,11 @@
     }
 
     // the function loadSettings has to exist ...
-    function load(settings) {
+    function load(settings, _onChange) {
+        onChange = _onChange;
         loadHelper(settings);
         $('#pass_confirm').val($('#pass').val());
-        $('#save').button("disable");
+        onChange(false);
     }
 
     function saveHelper(obj, id, value) {
@@ -108,9 +107,7 @@
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
     function save(callback) {
-        changed = false;
         callback(getSettings());
-        $('#save').button("disable");
     }
 
 </script>
@@ -135,16 +132,16 @@
             <td class="translate">Bundesland:</td>
             <td>
                 <select class="value" id="dienststelle">
-                    <option value="HA">Schleswig-Holstein/Hamburg</option>
-                    <option value="HA">Niedersachsen/Bremen</option>
-                    <option value="PD">Berlin/Brandenburg</option>
-                    <option value="PD">Mecklenburg-Vorpommern</option>
-                    <option value="EM">Nordrhein-Westfalen</option>
-                    <option value="LZ">Sachsen-Anhalt</option>
-                    <option value="LZ">Sachsen</option>
-                    <option value="LZ">Thüringen</option>
-                    <option value="OF">Hessen</option>
-                    <option value="OF">Rheinland-Pfalz/Saarland</option>
+                    <option value="HA_SH">Schleswig-Holstein/Hamburg</option>
+                    <option value="HA_NB">Niedersachsen/Bremen</option>
+                    <option value="PD_BB">Berlin/Brandenburg</option>
+                    <option value="PD_MV">Mecklenburg-Vorpommern</option>
+                    <option value="EM_NW">Nordrhein-Westfalen</option>
+                    <option value="EM_H">Hessen</option>
+                    <option value="EM_RPS">Rheinland-Pfalz/Saarland</option>
+                    <option value="LZ_SA">Sachsen-Anhalt</option>
+                    <option value="LZ_S">Sachsen</option>
+                    <option value="LZ_T">Thüringen</option>
                     <option value="SU">Baden-Württemberg</option>
                     <option value="MS">Bayern</option>
                 </select>

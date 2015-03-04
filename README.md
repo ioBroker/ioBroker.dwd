@@ -3,6 +3,9 @@
 Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 
 ## Changelog
+### 0.1.7 (2015-03-04)
+* (bluefox) change the codes of regions
+
 ### 0.1.6 (2015-02-14)
 * (bluefox) fix "forecast" object
 
