@@ -47,8 +47,8 @@ var adapter = utils.adapter({
         });
 
         ftp.on('jsftp_debug', function (eventType, data) {
-            adapter.log.debug('DEBUG: ', eventType);
-            adapter.log.debug(JSON.stringify(data, null, 2));
+            console.log('DEBUG: ', eventType);
+            console.log(JSON.stringify(data, null, 2));
         });
 
         ftp.setDebugMode(true);
@@ -60,7 +60,6 @@ var adapter = utils.adapter({
                 adapter.setState('warning.text',        {ack: true, val: 'no data'});
                 adapter.setState('warning.headline',    {ack: true, val: 'no data'});
                 adapter.setState('warning.description', {ack: true, val: 'no data'});
-
             }
         });
 
@@ -181,15 +180,19 @@ function received() {
         var effective = adapter.formatDate(new Date(res.alert.info.effective));
         var expires =   adapter.formatDate(new Date(res.alert.info.expires));
 
+
         if (res.alert.msgType === 'Alert' && res.alert.info.eventCode.value > 30 && expires > now && effective < now) {
+            adapter.log.debug('Found: ' + res.alert.msgType + ' from ' + effective + ' to ' + expires + '. Event: ' + res.alert.info.event + ', ' + res.alert.info.description);
             warnungen[res.alert.info.eventCode.value] = {
                 text:       res.alert.info.event,
-                desc:       res.alert.info.description,
+                desc:       res.alert.info.description + (res.alert.info.instruction ? '<br>' + res.alert.info.instruction : ''),
                 head:       res.alert.info.headline,
                 start:      effective,
                 expires:    expires,
                 severity:   res.alert.info.severity
             };
+        } else {
+            adapter.log.debug('Ignored: ' + res.alert.msgType + ' from ' + effective + ' to ' + expires + '. Event: ' + res.alert.info.event + ', ' + res.alert.info.description);
         }
 
         if (res.alert.msgType === 'Cancel') {

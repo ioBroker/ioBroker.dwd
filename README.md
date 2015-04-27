@@ -1,23 +1,11 @@
-![Logo](admin/dwd.png)
 # ioBroker.dwd
 
 Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 
-Anmeldung zur Grundversorgung des DWD, freier Direktzugriff
-Der Deutsche Wetterdienst bietet viele, der zur Grundversorgung (Katalog) gehörenden meteorologischen Daten, Produkte und Spezialdienstleistungen (Katalog) über FTP im freien Direktzugriff an.
-
-Registrieren können Sie sich über den folgenden Link:
-[http://kunden.dwd.de/gdsRegistration/gdsRegistrationStart.do](http://kunden.dwd.de/gdsRegistration/gdsRegistrationStart.do)
-
-mit Ihrer Email-Adresse und Sie erhalten von uns nach einer Email-Bestätigung die FTP-Zugangsdaten (User, Password), mit denen Sie sich ca. 1 Stunde später einloggen können.
-
-Dann können sie die Wetterinformationen vom FTP-Server herunterladen.
-Hierzu bieten sich verschiedene Programme an:
-
-- z.B. Filezilla oder Total Commander etc., die diesen FTP-Transfer in übersichtlicher Form integriert haben.
-- Über Ihren Browser können Sie den Dienst auch nutzen mit ftp://username:password@ftp-outgoing2.dwd.de (Hier müssen Sie Ihren "username" und Ihr "password" einsetzen).
-
 ## Changelog
+### 0.1.8 (2015-04-27)
+* (bluefox) add debug output
+
 ### 0.1.7 (2015-03-04)
 * (bluefox) change the codes of regions
 
