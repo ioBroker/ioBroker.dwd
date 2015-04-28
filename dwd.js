@@ -169,19 +169,29 @@ function getFile(i) {
     });
 }
 
+function formatDate(date) {
+    if (!date) return date;
+    var h = date.getHours();
+    var m = date.getMinutes();
+
+    if (h < 10) h = '0' + h.toString();
+    if (m < 10) m = '0' + m.toString();
+
+    return adapter.formatDate(date) + ' ' + h + ':' + m;
+}
+
 function received() {
     ftp.raw.quit();
 
     var warnungen = {};
-    var now = adapter.formatDate(new Date());
+    var now = new Date();
 
     function parseResult(err, res) {
         adapter.log.debug(res.alert.msgType + ' ' + res.alert.info.eventCode.value + ' ' + res.alert.info.event + ' ' + res.alert.info.severity + ' ' + res.alert.info.effective + ' ' + res.alert.info.expires);
-        var effective = adapter.formatDate(new Date(res.alert.info.effective));
-        var expires =   adapter.formatDate(new Date(res.alert.info.expires));
+        var effective = new Date(res.alert.info.effective);
+        var expires =   new Date(res.alert.info.expires);
 
-
-        if (res.alert.msgType === 'Alert' && res.alert.info.eventCode.value > 30 && expires > now && effective < now) {
+        if (res.alert.msgType === 'Alert' && parseInt(res.alert.info.eventCode.value, 10) > 30 && expires > now && effective < now) {
             adapter.log.debug('Found: ' + res.alert.msgType + ' from ' + effective + ' to ' + expires + '. Event: ' + res.alert.info.event + ', ' + res.alert.info.description);
             warnungen[res.alert.info.eventCode.value] = {
                 text:       res.alert.info.event,
@@ -234,14 +244,14 @@ function received() {
 
     }
 
-    if (warnung.start   === '2037-01-01') warnung.start = '';
+    if (warnung.start   === '2037-01-01') warnung.start   = '';
     if (warnung.expires === '0000-00-00') warnung.expires = '';
 
     adapter.log.debug('warnung', warnung);
     adapter.log.info('setting states');
 
-    adapter.setState('warning.begin',       {ack: true, val: warnung.start});
-    adapter.setState('warning.end',         {ack: true, val: warnung.expires});
+    adapter.setState('warning.begin',       {ack: true, val: formatDate(warnung.start)});
+    adapter.setState('warning.end',         {ack: true, val: formatDate(warnung.expires)});
     adapter.setState('warning.severity',    {ack: true, val: warnung.severity});
     adapter.setState('warning.text',        {ack: true, val: warnung.text});
     adapter.setState('warning.headline',    {ack: true, val: warnung.head});
