@@ -220,8 +220,8 @@ function received() {
         text:     '',
         desc:     '',
         head:     '',
-        start:    '2037-01-01',
-        expires:  '0000-00-00',
+        start:    new Date('2037-01-01'),
+        expires:  new Date('1970-01-01'),
         severity: 0
     };
 
@@ -244,8 +244,8 @@ function received() {
 
     }
 
-    if (warnung.start   === '2037-01-01') warnung.start   = '';
-    if (warnung.expires === '0000-00-00') warnung.expires = '';
+    if (warnung.start.getFullYear()   === 2037) warnung.start   = '';
+    if (warnung.expires.getFullYear() === 1970) warnung.expires = '';
 
     adapter.log.debug('warnung', warnung);
     adapter.log.info('setting states');
