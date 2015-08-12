@@ -164,7 +164,7 @@ function getFile(i) {
                     getFile(c);
                 }, 1000, i + 1);
             }
-        })
+        });
         socket.resume();
     });
 }
