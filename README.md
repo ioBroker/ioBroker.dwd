@@ -3,6 +3,10 @@
 Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 
 ## Changelog
+### 0.1.10 (2015-08-12)
+* (bluefox) update packages
+* (bluefox) change for Hessen and Rheinland-Pfalz: EM_H => OF_H
+
 ### 0.1.9 (2015-04-28)
 * (bluefox) fix error with date
 
