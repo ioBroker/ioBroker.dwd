@@ -1,8 +1,15 @@
+![Logo](admin/dwd.png)
 # ioBroker.dwd
+=================
 
 Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 
+To do: http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.html
+
 ## Changelog
+### 1.0.0 (2015-11-04)
+* (bluefox) adapt to new structure of DWD FTP Server
+
 ### 0.1.10 (2015-08-12)
 * (bluefox) update packages
 * (bluefox) change for Hessen and Rheinland-Pfalz: EM_H => OF_H

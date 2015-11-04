@@ -63,7 +63,7 @@ var adapter = utils.adapter({
             }
         });
 
-        ftp.ls('gds/specials/warnings/xml/' + adapter.config.dienststelle, function (err, res) {
+        ftp.ls('gds/specials/alerts/cap/' + adapter.config.dienststelle, function (err, res) {
             if (err) {
                 adapter.log.info('ftp ls error');
                 adapter.stop();
@@ -100,7 +100,7 @@ function getFile(i) {
         if (!finished) {
             finished = true;
             xml[i] = str;
-            if (!str) adapter.log.error('ftp timeout by ' + 'gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[_i]);
+            if (!str) adapter.log.error('ftp timeout by ' + 'gds/specials/alerts/cap/' + adapter.config.dienststelle + '/' + files[_i]);
             // Try next time
             setTimeout(function (c) {
                 getFile(c);
@@ -108,7 +108,7 @@ function getFile(i) {
         }
     }, 10000, i);
 
-    ftp.get('gds/specials/warnings/xml/' + adapter.config.dienststelle + '/' + files[i], function (err, socket) {
+    ftp.get('gds/specials/alerts/cap/' + adapter.config.dienststelle + '/' + files[i], function (err, socket) {
         if (err) {
             adapter.log.error('ftp get error');
             return;
@@ -187,13 +187,13 @@ function received() {
     var now = new Date();
 
     function parseResult(err, res) {
-        adapter.log.debug(res.alert.msgType + ' ' + res.alert.info.eventCode.value + ' ' + res.alert.info.event + ' ' + res.alert.info.severity + ' ' + res.alert.info.effective + ' ' + res.alert.info.expires);
+        adapter.log.debug(res.alert.msgType + ' ' + res.alert.info.eventCode[2].value + ' ' + res.alert.info.event + ' ' + res.alert.info.severity + ' ' + res.alert.info.effective + ' ' + res.alert.info.expires);
         var effective = new Date(res.alert.info.effective);
         var expires =   new Date(res.alert.info.expires);
 
-        if (res.alert.msgType === 'Alert' && parseInt(res.alert.info.eventCode.value, 10) > 30 && expires > now && effective < now) {
+        if (res.alert.msgType === 'Alert' && parseInt(res.alert.info.eventCode[2].value, 10) > 30 && expires > now && effective < now) {
             adapter.log.debug('Found: ' + res.alert.msgType + ' from ' + effective + ' to ' + expires + '. Event: ' + res.alert.info.event + ', ' + res.alert.info.description);
-            warnungen[res.alert.info.eventCode.value] = {
+            warnungen[res.alert.info.eventCode[2].value] = {
                 text:       res.alert.info.event,
                 desc:       res.alert.info.description + (res.alert.info.instruction ? '<br>' + res.alert.info.instruction : ''),
                 head:       res.alert.info.headline,
@@ -206,8 +206,8 @@ function received() {
         }
 
         if (res.alert.msgType === 'Cancel') {
-            if (warnungen[res.alert.info.eventCode.value]) {
-                delete(warnungen[res.alert.info.eventCode.value]);
+            if (warnungen[res.alert.info.eventCode[2].value]) {
+                delete(warnungen[res.alert.info.eventCode[2].value]);
             }
         }
     }
