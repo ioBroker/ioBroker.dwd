@@ -7,6 +7,9 @@ Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
 To do: http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.html
 
 ## Changelog
+### 1.0.1 (2015-11-04)
+* (bluefox) check files yyyC too
+
 ### 1.0.0 (2015-11-04)
 * (bluefox) adapt to new structure of DWD FTP Server
 

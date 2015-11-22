@@ -24,7 +24,9 @@ var adapter = utils.adapter({
     useFormatDate:  true,
     ready: function () {
 
-        adapter.config.kreis = (adapter.config.kreis + 'XXX').slice(0, 4);
+        adapter.config.kreisReg = (adapter.config.kreis + '___').slice(0, 4);
+        adapter.config.kreis  = (adapter.config.kreis + 'XXX').slice(0, 4);
+        adapter.config.kreisReg = new RegExp(adapter.config.kreisReg.replace(/_/g, '[A-Z]') + '.xml$');
 
         adapter.config.dienststelle = adapter.config.dienststelle.substring(0, 2);
 
@@ -69,7 +71,7 @@ var adapter = utils.adapter({
                 adapter.stop();
             } else {
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].name.match(new RegExp(adapter.config.kreis + '.xml$'))) {
+                    if (adapter.config.kreisReg.test(res[i].name))  {
                         files.push(res[i].name);
                     }
                 }
