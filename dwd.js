@@ -49,11 +49,12 @@ var adapter = utils.adapter({
         });
 
         ftp.on('jsftp_debug', function (eventType, data) {
-            console.log('DEBUG: ', eventType);
-            console.log(JSON.stringify(data, null, 2));
+            /*console.log('DEBUG: ', eventType);
+            console.log(JSON.stringify(data, null, 2));*/
         });
 
-        ftp.setDebugMode(true);
+        process.env.DEBUG = "1";
+
         adapter.getState('warning.begin', function (err, obj) {
             if (err || !obj) {
                 adapter.setState('warning.begin',       {ack: true, val: ''});
@@ -67,10 +68,11 @@ var adapter = utils.adapter({
 
         ftp.ls('gds/specials/alerts/cap/' + adapter.config.dienststelle, function (err, res) {
             if (err) {
-                adapter.log.info('ftp ls error');
+                adapter.log.error('ftp ls error');
                 adapter.stop();
             } else {
                 for (var i = 0; i < res.length; i++) {
+                    adapter.log.debug(res[i].name);
                     if (adapter.config.kreisReg.test(res[i].name))  {
                         files.push(res[i].name);
                     }
@@ -96,7 +98,7 @@ function getFile(i) {
     var str = '';
     var finished = false;
 
-    adapter.log.info('getFile ' + files[i]);
+    adapter.log.info('getFile gds/specials/alerts/cap/' + adapter.config.dienststelle + '/' + files[i]);
 
     timeout = setTimeout(function (_i) {
         if (!finished) {
