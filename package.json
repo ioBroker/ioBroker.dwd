@@ -1,19 +1,15 @@
 {
   "name": "iobroker.dwd",
   "description": "Wetterwarnungen des deutschen Wetterdienstes",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "author": {
-    "name": "hobbyquaker",
-    "email": "hq@ccu.io"
+    "name": "bluefox",
+    "email": "dogafox@gmail.com"
   },
   "contributors": [
     {
-      "name": "hobbyquaker",
-      "email": "hq@ccu.io"
-    },
-    {
       "name": "bluefox",
-      "email": "bluefox@ccu.io"
+      "email": "dogafox@gmail.com"
     }
   ],
   "homepage": "https://github.com/ioBroker/ioBroker.dwd",
@@ -29,8 +25,7 @@
     "home automation"
   ],
   "dependencies": {
-    "jsftp": "^1.5.2",
-    "xml2js": "^0.4.10"
+    "request": "^2.69.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -38,17 +33,15 @@
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-jscs": "^2.0.0",
     "grunt-http": "^1.6.0",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-compress": "^0.13.0",
-    "grunt-contrib-copy": "^0.8.0",
-    "grunt-exec": "^0.4.6"
+    "mocha": "^2.3.4",
+    "chai": "^3.4.1"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.dwd/issues"
   },
   "main": "dwd.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node node_modules/mocha/bin/mocha"
   },
   "maintainers": [
     {

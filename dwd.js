@@ -1,180 +1,273 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 
-// TODO handle FTP timeouts
 "use strict";
 
-var JSFtp =       require('jsftp');
-var parseString = require('xml2js').parseString;
-var utils =       require(__dirname + '/lib/utils'); // Get common adapter utils
+var utils   = require(__dirname + '/lib/utils'); // Get common adapter utils
+var request = require('request');
 
-var ftp;
-var files = [];
-var xml = [];
+var severity = [
+    '',
+    'Minor',
+    'Moderate',
+    'Severe',
+    'Extreme'
+];
 
-var severity = {
-    "Minor":    1,
-    "Moderate": 2,
-    "Severe":   3,
-    "Extreme":  4
-};
+var channels = [];
+var iopkg;
 
 var adapter = utils.adapter({
-    name:           'dwd',
-    useFormatDate:  true,
-    ready: function () {
-
-        adapter.config.kreisReg = (adapter.config.kreis + '___').slice(0, 4);
-        adapter.config.kreis  = (adapter.config.kreis + 'XXX').slice(0, 4);
-        adapter.config.kreisReg = new RegExp(adapter.config.kreisReg.replace(/_/g, '[A-Z]') + '.xml$');
-
-        adapter.config.dienststelle = adapter.config.dienststelle.substring(0, 2);
-
-        adapter.extendObject('warning', {
-            type: 'channel',
-            role: 'forecast',
-            common: {
-                name: 'dwd warning ' + adapter.config.dienststelle + ' ' + adapter.config.kreis
-            },
-            native: {
-
-            }
-        });
-
-
-        ftp = new JSFtp({
-            host: adapter.config.host,
-            user: adapter.config.user, // defaults to "anonymous"
-            pass: adapter.config.pass // defaults to "@anonymous"
-        });
-
-        ftp.on('jsftp_debug', function (eventType, data) {
-            /*console.log('DEBUG: ', eventType);
-            console.log(JSON.stringify(data, null, 2));*/
-        });
-
-        process.env.DEBUG = "1";
-
-        adapter.getState('warning.begin', function (err, obj) {
-            if (err || !obj) {
-                adapter.setState('warning.begin',       {ack: true, val: ''});
-                adapter.setState('warning.end',         {ack: true, val: ''});
-                adapter.setState('warning.severity',    {ack: true, val: 0});
-                adapter.setState('warning.text',        {ack: true, val: 'no data'});
-                adapter.setState('warning.headline',    {ack: true, val: 'no data'});
-                adapter.setState('warning.description', {ack: true, val: 'no data'});
-            }
-        });
-
-        ftp.ls('gds/specials/alerts/cap/' + adapter.config.dienststelle, function (err, res) {
-            if (err) {
-                adapter.log.error('ftp ls error');
-                adapter.stop();
-            } else {
-                for (var i = 0; i < res.length; i++) {
-                    adapter.log.debug(res[i].name);
-                    if (adapter.config.kreisReg.test(res[i].name))  {
-                        files.push(res[i].name);
-                    }
-                }
-                getFile(0);
-            }
-        });
-    },
-
-    unload: function (callback) {
-        callback();
-    }
-
+    name: 'dwd',
+    useFormatDate: true
 });
 
-var timeout = null;
-function getFile(i) {
-    if (!i) i = 0;
-    if (!files[i]) {
-        received();
+adapter.on('ready', function () {
+    adapter.config.warnings = parseInt(adapter.config.warnings, 10) || 1;
+
+    adapter.getForeignObjects(adapter.namespace + '.*', 'state', function (err, states) {
+        for (var s in states) {
+            var chName = s.split('.');
+            chName.pop();
+            chName = chName.join('.');
+            if (channels.indexOf(chName) === -1) channels.push(chName);
+        }
+        if (channels.length > adapter.config.warnings) {
+            // delete warnings
+            var toDelete = [];
+            for (var i = adapter.config.warnings; i < channels.length; i++) {
+                toDelete.push(channels[i] + '.begin');
+                toDelete.push(channels[i] + '.end');
+                toDelete.push(channels[i] + '.severity');
+                toDelete.push(channels[i] + '.text');
+                toDelete.push(channels[i] + '.headline');
+                toDelete.push(channels[i] + '.description');
+                toDelete.push(channels[i] + '.object');
+                toDelete.push(channels[i]);
+            }
+            deleteObjects(toDelete);
+            channels.splice(adapter.config.warnings, channels.length);
+            checkNames(ready);
+        } else if (channels.length < adapter.config.warnings){
+            var toAdd    = [];
+            // add warnings
+            for (var j = channels.length; j < adapter.config.warnings; j++) {
+                toAdd.push(adapter.namespace + '.warning' + j);
+                toAdd.push(adapter.namespace + '.warning' + j + '.begin');
+                toAdd.push(adapter.namespace + '.warning' + j + '.end');
+                toAdd.push(adapter.namespace + '.warning' + j + '.severity');
+                toAdd.push(adapter.namespace + '.warning' + j + '.text');
+                toAdd.push(adapter.namespace + '.warning' + j + '.headline');
+                toAdd.push(adapter.namespace + '.warning' + j + '.description');
+                toAdd.push(adapter.namespace + '.warning' + j + '.object');
+                channels.push(adapter.namespace + '.warning' + j);
+            }
+            addObjects(toAdd, function () {
+                checkNames(ready);
+            });
+        } else {
+            checkNames(ready);
+        }
+    });
+
+    /*adapter.getState('warning.begin', function (err, obj) {
+     if (err || !obj) {
+     adapter.setState('warning.begin',       {ack: true, val: ''});
+     adapter.setState('warning.end',         {ack: true, val: ''});
+     adapter.setState('warning.severity',    {ack: true, val: 0});
+     adapter.setState('warning.text',        {ack: true, val: 'no data'});
+     adapter.setState('warning.headline',    {ack: true, val: 'no data'});
+     adapter.setState('warning.description', {ack: true, val: 'no data'});
+     }
+     });
+
+     ftp.ls('gds/specials/alerts/cap/' + adapter.config.dienststelle, function (err, res) {
+     if (err) {
+     adapter.log.error('ftp ls error');
+     adapter.stop();
+     } else {
+     for (var i = 0; i < res.length; i++) {
+     adapter.log.debug(res[i].name);
+     if (adapter.config.kreisReg.test(res[i].name))  {
+     files.push(res[i].name);
+     }
+     }
+     getFile(0);
+     }
+     });*/
+});
+
+function deleteObjects(objs) {
+    if (!objs && !objs.length) {
         return;
     }
-    var str = '';
-    var finished = false;
+    var id = objs.pop();
+    adapter.delForeignObject(id, function (err) {
+        if (err) adapter.log.error(err);
+        adapter.delForeignState(id, function (err) {
+            setTimeout(deleteObjects, 0, objs);
+        });
+    });
+}
 
-    adapter.log.info('getFile gds/specials/alerts/cap/' + adapter.config.dienststelle + '/' + files[i]);
+function addObjects(objs) {
+    iopkg = iopkg || require(__dirname + '/io-package.json');
 
-    timeout = setTimeout(function (_i) {
-        if (!finished) {
-            finished = true;
-            xml[i] = str;
-            if (!str) adapter.log.error('ftp timeout by ' + 'gds/specials/alerts/cap/' + adapter.config.dienststelle + '/' + files[_i]);
-            // Try next time
-            setTimeout(function (c) {
-                getFile(c);
-            }, 1000, _i + 1);
-        }
-    }, 10000, i);
-
-    ftp.get('gds/specials/alerts/cap/' + adapter.config.dienststelle + '/' + files[i], function (err, socket) {
-        if (err) {
-            adapter.log.error('ftp get error');
+    if (!objs || !objs.length) {
+        return;
+    }
+    var id = objs.pop();
+    var _id = id.replace(/warning\d+/, 'warning');
+    for (var i = 0; i < iopkg.instanceObjects.length; i++) {
+        if (adapter.namespace + '.' + iopkg.instanceObjects[i]._id == _id) {
+            var obj = iopkg.instanceObjects[i];
+            adapter.setForeignObject(id, obj, function (err) {
+                if (err) adapter.log.error(err);
+                if (obj.type === 'state') {
+                    adapter.setForeignState(id, '', true, function (err) {
+                        setTimeout(addObjects, 0, objs);
+                    });
+                } else {
+                    setTimeout(addObjects, 0, objs);
+                }
+            });
             return;
         }
-        socket.on('data', function (d) {
-            str += d.toString();
-            if (str.indexOf('</alert>') != -1) {
-                if (!finished) {
-                    finished = true;
-                    // bug under windows. Try to detect the end of transmission
-                    if (timeout) {
-                        clearTimeout(timeout);
-                        timeout = 0;
+    }
+    adapter.log.warn('Object ' + id + ' not found');
+    setTimeout(addObjects, 0, objs);
+}
+
+function checkNames(cb) {
+    for (var j = 0; j < channels.length; j++) {
+        adapter.getForeignObject(channels[j], function (err, obj) {
+            if (obj && obj.common.name != 'DWD Warnung für ' + adapter.config.region) {
+                obj.common.name = 'DWD Warnung für ' + adapter.config.region;
+                adapter.setForeignObject(obj._id, obj, function (err) {
+                    if (err) adapter.log.error(err);
+                });
+            }
+        });
+    }
+    channels.sort();
+    cb && cb();
+}
+
+function ready() {
+    getFile(processFile);
+}
+
+function getFile(cb) {
+    if (!adapter.config.url) {
+        var body = require('fs').readFileSync(__dirname + '/test/lib/warnings.json').toString();
+        try {
+            if (body.substring(0, 'warnWetter.loadWarnings('.length) == 'warnWetter.loadWarnings(') {
+                body = body.substring('warnWetter.loadWarnings('.length);
+                while (body[body.length - 1] !== '}') {
+                    body = body.substring(0, body.length - 1);
+                }
+            }
+            cb(JSON.parse(body));
+        } catch (e) {
+            require('fs').writeFileSync(__dirname + '/problem.json', body);
+            adapter.log.error('Cannot parse JSON file.');
+            cb();
+        }
+        return;
+    }
+
+    request(adapter.config.url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            try {
+                if (body.substring(0, 'warnWetter.loadWarnings('.length) == 'warnWetter.loadWarnings(') {
+                    body = body.substring('warnWetter.loadWarnings('.length);
+                    while (body[body.length - 1] !== '}') {
+                        body = body.substring(0, body.length - 1);
                     }
-                    xml[i] = str;
-                    setTimeout(function (c) {
-                        getFile(c);
-                    }, 1000, i + 1);
+                }
+                cb(JSON.parse(body));
+            } catch (e) {
+                require('fs').writeFileSync(__dirname + '/problem.json', body);
+                adapter.log.error('Cannot parse JSON file.');
+                cb();
+            }
+        } else {
+            adapter.log.error('Cannot read JSON file: ' + error || response.statusCode);
+            cb();
+        }
+    });
+}
+
+function placeWarning(channelName, warnObj) {
+    warnObj = warnObj || {};
+    //{
+    //    "stateShort" : "RP",
+    //    "regionName" : "Kreis und Stadt Kaiserslautern",
+    //    "description" : "Es tritt im Warnzeitraum leichter Schneefall mit Mengen zwischen 1 cm und 5 cm auf. Verbreitet wird es glatt.",
+    //    "end" : 1457002800000,
+    //    "start" : 1456986960000,
+    //    "headline" : "Amtliche WARNUNG vor LEICHTEM SCHNEEFALL",
+    //    "event" : "LEICHTER SCHNEEFALL",
+    //    "instruction" : "",
+    //    "altitudeStart" : null,
+    //    "altitudeEnd" : null,
+    //    "type" : 3,
+    //    "level" : 2,
+    //    "state" : "Rheinland-Pfalz"
+    //}
+    adapter.setForeignState(channelName + '.begin',         formatDate(warnObj.start),  true);
+    adapter.setForeignState(channelName + '.end',           formatDate(warnObj.end),    true);
+    adapter.setForeignState(channelName + '.severity',      warnObj.level || 0,         true);
+    adapter.setForeignState(channelName + '.text',          warnObj.event || '',        true);
+    adapter.setForeignState(channelName + '.headline',      warnObj.headline || '',     true);
+    adapter.setForeignState(channelName + '.description',   warnObj.description || '',  true);
+    adapter.setForeignState(channelName + '.object',        JSON.stringify(warnObj),    true);
+}
+
+function processFile(data) {
+    if (!data) {
+        adapter.log.error('Empty or invalid JSON');
+        return;
+    }
+    if (data.warnings) {
+        var count = 0;
+        var warnings = [];
+        for (var w in data.warnings) {
+            var arr = data.warnings[w];
+            for (var a = 0; a < arr.length; a++) {
+                if (arr[a].regionName == adapter.config.region) {
+                    warnings.push(arr[a]);
                 }
             }
+        }
+        warnings.sort(function (a, b) {
+            if (a && !b)  return 1;
+            if (b && !a)  return -1;
+            if (!a && !b) return 0;
+            if (a.type > b.type) return 1;
+            if (b.type > a.type) return -1;
+            if (a.start > b.start) return 1;
+            if (b.start > a.start) return -1;
+            if (a.end > b.end) return 1;
+            if (b.end > a.end) return -1;
+            if (a.level > b.level) return 1;
+            if (b.level > a.level) return -1;
+            return 0;
         });
 
-        socket.on('close', function (hadErr) {
-            if (!finished) {
-                finished = true;
-                if (timeout) {
-                    clearTimeout(timeout);
-                    timeout = 0;
-                }
-                if (hadErr) {
-                    adapter.log.error('error retrieving file');
-                    adapter.stop();
-                } else {
-                    adapter.log.info('got weather warning');
-                }
-                xml[i] = str;
-                setTimeout(function (c) {
-                    getFile(c);
-                }, 1000, i + 1);
-            }
-        });
-        socket.on('error', function (err) {
-            if (!finished) {
-                finished = true;
-                if (timeout) {
-                    clearTimeout(timeout);
-                    timeout = 0;
-                }
-
-                adapter.log.error('error retrieving file "' + files[i] + '": ' + err);
-                xml[i] = str;
-                setTimeout(function (c) {
-                    getFile(c);
-                }, 1000, i + 1);
-            }
-        });
-        socket.resume();
+        for (var c = 0; c < channels.length; c++) {
+            placeWarning(channels[c], warnings[c]);
+        }
+    }
+    setTimeout(function () {
+        adapter.stop();
     });
 }
 
 function formatDate(date) {
-    if (!date) return date;
+    if (!date) return '';
+    if (typeof date !== 'object') date = new Date(date);
+
     var h = date.getHours();
     var m = date.getMinutes();
 
@@ -183,7 +276,7 @@ function formatDate(date) {
 
     return adapter.formatDate(date) + ' ' + h + ':' + m;
 }
-
+/*
 function received() {
     ftp.raw.quit();
 
@@ -263,17 +356,8 @@ function received() {
 
     setTimeout(adapter.stop, 5000);
 }
-
+*/
 setTimeout(function () {
     adapter.log.info('force terminating after 4 minutes');
     adapter.stop();
 }, 240000);
-
-process.on('uncaughtException', function (err) {
-    if (err.arguments && err.arguments[0].indexOf('ECONNREFUSED') != -1) {
-        adapter.log.warn('Possible DWD service temporary unavailable. Terminating.');
-    } else {
-        adapter.log.error('Unexpected error: "' + err.toString() + '" Terminating.');
-    }
-    adapter.stop();
-});

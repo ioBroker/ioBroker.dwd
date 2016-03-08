@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
 <script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+<script type="text/javascript" src="regions.js"></script>
 
 <script type="text/javascript">
     systemDictionary = {
@@ -18,96 +19,53 @@
         }
     };
 
-    var onChange;
-
-    function setValue(id, value) {
-        // example: select elements with id=key and class=value and insert value
-        if ($('#' + id + '.value').attr('type') == 'checkbox') {
-            $('#' + id + '.value').prop('checked', value).change(function() {
-                onChange();
-            });
-        } else {
-            $('#' + id + '.value').val(value).change(function() {
-                onChange();
-            }).keyup(function() {
-                onChange();
-            });
-        }
-    }
-
-    function loadHelper(settings, param, subparam) {
-        if (!settings) return;
-
-        if (subparam && param) {
-            for (var key in settings[param][subparam]) {
-                if (typeof settings[param][subparam][key] != 'object') {
-                    setValue(param + '_' + subparam + '_' + key, settings[param][subparam][key]);
-                } else {
-                    alert("4th level is not supported");
-                }
-            }
-        } else if (param) {
-            for (var key in settings[param]) {
-                if (typeof settings[param][key] != 'object') {
-                    setValue(param + '_' + key, settings[param][key]);
-                } else {
-                    loadHelper(settings, param, key);
-                }
-            }
-        } else {
-            for (var key in settings) {
-                if (typeof settings[key] != 'object') {
-                    setValue(key, settings[key]);
-                } else {
-                    loadHelper(settings, key);
-                }
+    function load(settings, onChange) {
+        for (var key in settings) {
+            if ($('#' + key + '.value').attr('type') == 'checkbox') {
+                $('#' + key + '.value').prop('checked', settings[key]).change(function() {
+                    onChange();
+                });
+            } else {
+                $('#' + key + '.value').val(settings[key]).change(function() {
+                    onChange();
+                }).keyup(function () {
+                    $(this).trigger('change');
+                })
             }
         }
-    }
+        $('#region').autocomplete({
+            minLength: 0,
+            source: function (request, response) {
+                var responseArr = [];
+                var req = request.term.toLowerCase();
 
-    // the function loadSettings has to exist ...
-    function load(settings, _onChange) {
-        onChange = _onChange;
-        loadHelper(settings);
-        $('#pass_confirm').val($('#pass').val());
+                for (var r = 0; r < regions.length; r++) {
+                    if (regions[r].toLowerCase().indexOf(req) !== -1) {
+                        responseArr.push(regions[r]);
+                    }
+                }
+                response(responseArr);
+            }
+        });
+
         onChange(false);
     }
 
-    function saveHelper(obj, id, value) {
-        var ids = id.split('_');
-
-        if (ids.length === 1) {
-            obj[id] = value;
-        } else if (ids.length === 2) {
-            if (!obj[ids[0]]) obj[ids[0]] = {};
-            obj[ids[0]][ids[1]] = value;
-        } else if (ids.length === 3) {
-            if (!obj[ids[0]]) obj[ids[0]] = {};
-            if (!obj[ids[0]][ids[1]]) obj[ids[0]][ids[1]] = {};
-            obj[ids[0]][ids[1]][ids[2]] = value;
-        }
-        return obj;
-    }
-
-    function getSettings() {
-        var obj = {};
+    function save(callback) {
+        // example: select elements with class=value and build settings object
+        var settings = {};
         $('.value').each(function () {
             var $this = $(this);
             var id = $this.attr('id');
 
             if ($this.attr('type') == 'checkbox') {
-                obj = saveHelper(obj, id, $this.prop('checked'))
+                settings[id] = $this.prop('checked');
             } else {
-                obj = saveHelper(obj, id, $this.val())
+                settings[id] = $this.val();
             }
         });
-        return obj;
-    }
 
-    // ... and the function save has to exist.
-    // you have to make sure the callback is called with the settings object as first param!
-    function save(callback) {
-        callback(getSettings());
+        callback(settings);
     }
 
 </script>
@@ -117,40 +75,23 @@
 
     <table>
         <tr>
-            <td class="translate">Hostname:</td>
-            <td><input class="value" id="host" type="text"/></td>
+            <td class="translate">Region:</td>
+            <td><input class="value" id="region"/></td>
         </tr>
         <tr>
-            <td class="translate">Username:</td>
-            <td><input class="value" id="user" type="text"/></td>
-        </tr>
-        <tr>
-            <td class="translate">Password:</td>
-            <td><input class="value" id="pass" type="text"/></td>
-        </tr>
-        <tr>
-            <td class="translate">Bundesland:</td>
-            <td>
-                <select class="value" id="dienststelle">
-                    <option value="HA_SH">Schleswig-Holstein/Hamburg</option>
-                    <option value="HA_NB">Niedersachsen/Bremen</option>
-                    <option value="PD_BB">Berlin/Brandenburg</option>
-                    <option value="PD_MV">Mecklenburg-Vorpommern</option>
-                    <option value="EM_NW">Nordrhein-Westfalen</option>
-                    <option value="OF_H">Hessen</option>
-                    <option value="OF_RPS">Rheinland-Pfalz/Saarland</option>
-                    <option value="LZ_SA">Sachsen-Anhalt</option>
-                    <option value="LZ_S">Sachsen</option>
-                    <option value="LZ_T">Thüringen</option>
-                    <option value="SU">Baden-Württemberg</option>
-                    <option value="MS">Bayern</option>
-                </select>
-
-            </td>
-        </tr>
-        <tr>
-            <td class="translate">Kreis:</td>
-            <td><input class="value" id="kreis" type="text"/>(KFZ-Kennzeichen)</td>
+            <td class="translate">Number of warnings:</td>
+            <td><select class="value" id="warnings">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select></td>
         </tr>
     </table>
 </div>

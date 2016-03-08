@@ -3,15 +3,15 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version": "1.0.1",
+        "version": "2.0.0",
         "mode":                     "schedule",
-        "schedule":                 "0 * * * *",
+        "schedule":                 "3 * * * *",
         "platform":                 "javascript/Node.js",
         "loglevel":                 "info",
         "keywords":                 ["weather", "Wetter", "warning", "Warnung", "forecast", "Vorhersage", "rain", "Regen", "wind"],
         "main":                     "dwd.js",
         "authors": [
-            "hobbyquaker <hq@ccu.io>"
+            "bluefox <dogafox@gmail.com>"
         ],
         "license":                  "MIT",
         "readme":                   "https://github.com/ioBroker/ioBroker.dwd/blob/master/README.md",
@@ -22,11 +22,9 @@
         "type":                     "weather"
     },
     "native": {
-        "host": "ftp-outgoing2.dwd.de",
-        "user": "gds12345",
-        "pass": "xxxx",
-        "dienststelle": "SU",
-        "kreis": "S"
+        "url":      "http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json",
+        "region":   "Kreis Calw",
+        "warnings": 2
     },
     "objects": [
 
@@ -110,6 +108,17 @@
             "common": {
                 "name":  "Warning description",
                 "type":  "string",
+                "read":  true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id":  "warning.object",
+            "type": "state",
+            "common": {
+                "name":  "JSON object with warning",
+                "type":  "object",
                 "read":  true,
                 "write": false
             },

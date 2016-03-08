@@ -2,11 +2,20 @@
 # ioBroker.dwd
 =================
 
-Dieser Adapter lädt per FTP Wetterwarnungen vom deutschen Wetterdienst.
+[![NPM version](http://img.shields.io/npm/v/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
+[![Tests](https://travis-ci.org/ioBroker/ioBroker.dwd.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.dwd)
 
-To do: http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.html
+[![NPM](https://nodei.co/npm/iobroker.dwd.png?downloads=true)](https://nodei.co/npm/iobroker.dwd/)
+
+Copyright Deutscher Wetterdienst
+
+Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON link.
 
 ## Changelog
+### 2.0.0 (2016-03-03)
+* (bluefox) use json file as source
+
 ### 1.0.1 (2015-11-04)
 * (bluefox) check files yyyC too
 
@@ -55,7 +64,7 @@ To do: http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.html
 
 The MIT License (MIT)
 
-Copyright (c) 2014 hobbyquaker <hq@ccu.io>
+Copyright (c) 2016 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
