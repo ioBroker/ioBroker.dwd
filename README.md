@@ -13,6 +13,10 @@ Copyright Deutscher Wetterdienst
 Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON link.
 
 ## Changelog
+### 2.0.1 (2016-03-15)
+* (bluefox) add tests
+* (bluefox) change colors
+
 ### 2.0.0 (2016-03-03)
 * (bluefox) use json file as source
 

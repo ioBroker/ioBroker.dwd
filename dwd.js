@@ -4,15 +4,15 @@
 "use strict";
 
 var utils   = require(__dirname + '/lib/utils'); // Get common adapter utils
-var request = require('request');
+var tools   = require(__dirname + '/lib/tools');
 
-var severity = [
+/*var severity = [
     '',
     'Minor',
     'Moderate',
     'Severe',
     'Extreme'
-];
+];*/
 
 var channels = [];
 var iopkg;
@@ -110,10 +110,11 @@ function deleteObjects(objs) {
     });
 }
 
-function addObjects(objs) {
+function addObjects(objs, cb) {
     iopkg = iopkg || require(__dirname + '/io-package.json');
 
     if (!objs || !objs.length) {
+        cb && cb();
         return;
     }
     var id = objs.pop();
@@ -125,17 +126,17 @@ function addObjects(objs) {
                 if (err) adapter.log.error(err);
                 if (obj.type === 'state') {
                     adapter.setForeignState(id, '', true, function (err) {
-                        setTimeout(addObjects, 0, objs);
+                        setTimeout(addObjects, 0, objs, cb);
                     });
                 } else {
-                    setTimeout(addObjects, 0, objs);
+                    setTimeout(addObjects, 0, objs, cb);
                 }
             });
             return;
         }
     }
     adapter.log.warn('Object ' + id + ' not found');
-    setTimeout(addObjects, 0, objs);
+    setTimeout(addObjects, 0, objs, cb);
 }
 
 function checkNames(cb) {
@@ -154,48 +155,7 @@ function checkNames(cb) {
 }
 
 function ready() {
-    getFile(processFile);
-}
-
-function getFile(cb) {
-    if (!adapter.config.url) {
-        var body = require('fs').readFileSync(__dirname + '/test/lib/warnings.json').toString();
-        try {
-            if (body.substring(0, 'warnWetter.loadWarnings('.length) == 'warnWetter.loadWarnings(') {
-                body = body.substring('warnWetter.loadWarnings('.length);
-                while (body[body.length - 1] !== '}') {
-                    body = body.substring(0, body.length - 1);
-                }
-            }
-            cb(JSON.parse(body));
-        } catch (e) {
-            require('fs').writeFileSync(__dirname + '/problem.json', body);
-            adapter.log.error('Cannot parse JSON file.');
-            cb();
-        }
-        return;
-    }
-
-    request(adapter.config.url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            try {
-                if (body.substring(0, 'warnWetter.loadWarnings('.length) == 'warnWetter.loadWarnings(') {
-                    body = body.substring('warnWetter.loadWarnings('.length);
-                    while (body[body.length - 1] !== '}') {
-                        body = body.substring(0, body.length - 1);
-                    }
-                }
-                cb(JSON.parse(body));
-            } catch (e) {
-                require('fs').writeFileSync(__dirname + '/problem.json', body);
-                adapter.log.error('Cannot parse JSON file.');
-                cb();
-            }
-        } else {
-            adapter.log.error('Cannot read JSON file: ' + error || response.statusCode);
-            cb();
-        }
-    });
+    tools.getFile(adapter.config.url, processFile);
 }
 
 function placeWarning(channelName, warnObj) {
@@ -215,22 +175,23 @@ function placeWarning(channelName, warnObj) {
     //    "level" : 2,
     //    "state" : "Rheinland-Pfalz"
     //}
-    adapter.setForeignState(channelName + '.begin',         formatDate(warnObj.start),  true);
-    adapter.setForeignState(channelName + '.end',           formatDate(warnObj.end),    true);
-    adapter.setForeignState(channelName + '.severity',      warnObj.level || 0,         true);
+    adapter.setForeignState(channelName + '.begin',         tools.formatDate(adapter.formatDate, warnObj.start),  true);
+    adapter.setForeignState(channelName + '.end',           tools.formatDate(adapter.formatDate, warnObj.end),    true);
+    adapter.setForeignState(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,            true);
     adapter.setForeignState(channelName + '.text',          warnObj.event || '',        true);
     adapter.setForeignState(channelName + '.headline',      warnObj.headline || '',     true);
     adapter.setForeignState(channelName + '.description',   warnObj.description || '',  true);
     adapter.setForeignState(channelName + '.object',        JSON.stringify(warnObj),    true);
+    adapter.log.debug('Add warning "' + channelName + '": ' + tools.formatDate(adapter.formatDate, warnObj.start));
 }
 
-function processFile(data) {
+function processFile(err, data) {
     if (!data) {
-        adapter.log.error('Empty or invalid JSON');
+        adapter.log.error('Empty or invalid JSON: ' + err);
         return;
     }
+
     if (data.warnings) {
-        var count = 0;
         var warnings = [];
         for (var w in data.warnings) {
             var arr = data.warnings[w];
@@ -240,20 +201,7 @@ function processFile(data) {
                 }
             }
         }
-        warnings.sort(function (a, b) {
-            if (a && !b)  return 1;
-            if (b && !a)  return -1;
-            if (!a && !b) return 0;
-            if (a.type > b.type) return 1;
-            if (b.type > a.type) return -1;
-            if (a.start > b.start) return 1;
-            if (b.start > a.start) return -1;
-            if (a.end > b.end) return 1;
-            if (b.end > a.end) return -1;
-            if (a.level > b.level) return 1;
-            if (b.level > a.level) return -1;
-            return 0;
-        });
+        warnings.sort(tools.sort);
 
         for (var c = 0; c < channels.length; c++) {
             placeWarning(channels[c], warnings[c]);
@@ -264,18 +212,6 @@ function processFile(data) {
     });
 }
 
-function formatDate(date) {
-    if (!date) return '';
-    if (typeof date !== 'object') date = new Date(date);
-
-    var h = date.getHours();
-    var m = date.getMinutes();
-
-    if (h < 10) h = '0' + h.toString();
-    if (m < 10) m = '0' + m.toString();
-
-    return adapter.formatDate(date) + ' ' + h + ':' + m;
-}
 /*
 function received() {
     ftp.raw.quit();
