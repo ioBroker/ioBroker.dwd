@@ -188,6 +188,9 @@ function placeWarning(channelName, warnObj) {
 function processFile(err, data) {
     if (!data) {
         adapter.log.error('Empty or invalid JSON: ' + err);
+        setTimeout(function () {
+            adapter.stop();
+        });
         return;
     }
 
