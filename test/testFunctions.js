@@ -137,7 +137,9 @@ describe('Test DWD', function() {
                 states.getState('dwd.0.warning.end', function (err, state) {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
-                    expect(state.val).to.be.ok;
+
+                    // some warnings does not have end
+                    //expect(state.val).to.be.ok;
 
                     states.getState('dwd.0.warning.severity', function (err, state) {
                         expect(err).to.be.not.ok;
