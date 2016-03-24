@@ -25,6 +25,8 @@ var adapter = utils.adapter({
 adapter.on('ready', function () {
     adapter.config.warnings = parseInt(adapter.config.warnings, 10) || 1;
 
+    adapter.config.url = adapter.config.url || 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
+
     adapter.getForeignObjects(adapter.namespace + '.*', 'state', function (err, states) {
         for (var s in states) {
             var chName = s.split('.');
