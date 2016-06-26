@@ -3,7 +3,14 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version": "2.0.3",
+        "version": "2.1.0",
+        "news": {
+            "2.1.0": {
+                "en": "add widgets to adapter",
+                "de": "add widgets to adapter",
+                "ru": "add widgets to adapter"
+            }
+        },
         "mode":                     "schedule",
         "schedule":                 "3 * * * *",
         "platform":                 "javascript/Node.js",

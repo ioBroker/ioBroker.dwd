@@ -1,7 +1,7 @@
 {
   "name": "iobroker.dwd",
   "description": "Wetterwarnungen des deutschen Wetterdienstes",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "author": {
     "name": "bluefox",
     "email": "dogafox@gmail.com"
