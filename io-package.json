@@ -3,8 +3,13 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version": "2.1.0",
+        "version": "2.1.1",
         "news": {
+			"2.1.1": {
+                "en": "fixed bug where cb() needs to be called with a null parameter",
+                "de": "fixed bug where cb() needs to be called with a null parameter",
+                "ru": "fixed bug where cb() needs to be called with a null parameter"
+            },
             "2.1.0": {
                 "en": "add widgets to adapter",
                 "de": "add widgets to adapter",
