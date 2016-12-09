@@ -123,11 +123,11 @@ describe('Test DWD', function() {
                 expect(obj._id).to.be.equal('dwd.0.warning2.begin');
                 done();
             });
-        }, 100);
+        }, 1000);
     });
 
     it('Test DWD: check warning', function (done) {
-        this.timeout(5000);
+        this.timeout(10000);
 
         setTimeout(function () {
             states.getState('dwd.0.warning.begin', function (err, state) {
@@ -150,7 +150,7 @@ describe('Test DWD', function() {
                     });
                 });
             });
-        }, 500);
+        }, 5000);
     });
 
     after('Test DWD: Stop js-controller', function (done) {
