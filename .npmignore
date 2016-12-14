@@ -4,4 +4,5 @@ test
 .travis.yml
 .idea
 .git
-node-modulesappveyor.yml
+node-modules
+appveyor.yml
