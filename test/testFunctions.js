@@ -78,7 +78,8 @@ describe('Test DWD', function() {
 
             warnings.sort(tools.sort);
 
-            console.log('Use: ' + data.warnings[0].regionName);
+            console.log('Warnings: ' + JSON.stringify(warnings));
+            console.log('Use: ' + warnings[0].regionName);
 
             setup.setupController(function () {
                 var config = setup.getAdapterConfig();
