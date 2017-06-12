@@ -71,6 +71,7 @@ adapter.on('ready', function () {
             for (var i = adapter.config.warnings; i < channels.length; i++) {
                 toDelete.push(channels[i] + '.begin');
                 toDelete.push(channels[i] + '.end');
+                toDelete.push(channels[i] + '.severity');
                 toDelete.push(channels[i] + '.level');
                 toDelete.push(channels[i] + '.type');                
                 toDelete.push(channels[i] + '.text');
@@ -89,6 +90,7 @@ adapter.on('ready', function () {
                 toAdd.push(adapter.namespace + '.warning' + j);
                 toAdd.push(adapter.namespace + '.warning' + j + '.begin');
                 toAdd.push(adapter.namespace + '.warning' + j + '.end');
+                toAdd.push(adapter.namespace + '.warning' + j + '.severity');
                 toAdd.push(adapter.namespace + '.warning' + j + '.level');
                 toAdd.push(adapter.namespace + '.warning' + j + '.type');
                 toAdd.push(adapter.namespace + '.warning' + j + '.text');
@@ -172,6 +174,7 @@ function placeWarning(channelName, warnObj) {
     
     adapter.setForeignState(channelName + '.begin',         tools.formatDate(adapter.formatDate, warnObj.start),  true);
     adapter.setForeignState(channelName + '.end',           tools.formatDate(adapter.formatDate, warnObj.end),    true);
+    adapter.setForeignState(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,            true);
     adapter.setForeignState(channelName + '.level',         warnObj.level || '',        true);
     adapter.setForeignState(channelName + '.type',          warnObj.type  || '',        true);    
     adapter.setForeignState(channelName + '.text',          warnObj.event || '',        true);
