@@ -3,8 +3,13 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version": "2.1.1",
+        "version": "2.1.2",
         "news": {
+            "2.1.2": {
+                "en": "fixed missing warning type and level from DWD JSON data",
+                "de": "fixed missing warning type and level from DWD JSON data",
+                "ru": "fixed missing warning type and level from DWD JSON data"
+            },
 			"2.1.1": {
                 "en": "fixed bug where cb() needs to be called with a null parameter",
                 "de": "fixed bug where cb() needs to be called with a null parameter",
@@ -35,7 +40,7 @@
     },
     "native": {
         "url":      "http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json",
-        "region":   "Kreis Calw",
+        "region":   "Kreis Harburg",
         "warnings": 2
     },
     "objects": [
