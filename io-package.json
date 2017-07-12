@@ -2,9 +2,14 @@
     "common": {
         "name":                     "dwd",
         "title":                    "DWD",
-        "desc":                     "Wetterwarnungen des deutschen Wetterdienstes",
-        "version": "2.1.1",
+        "desc":                     "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
+        "version": "2.1.2",
         "news": {
+            "2.1.2": {
+                "en": "fixed missing warning type and level from DWD JSON data",
+                "de": "fixed missing warning type and level from DWD JSON data",
+                "ru": "fixed missing warning type and level from DWD JSON data"
+            },
 			"2.1.1": {
                 "en": "fixed bug where cb() needs to be called with a null parameter",
                 "de": "fixed bug where cb() needs to be called with a null parameter",
@@ -17,7 +22,7 @@
             }
         },
         "mode":                     "schedule",
-        "schedule":                 "3 * * * *",
+        "schedule":                 "*/5 * * * *",
         "platform":                 "javascript/Node.js",
         "loglevel":                 "info",
         "keywords":                 ["weather", "Wetter", "warning", "Warnung", "forecast", "Vorhersage", "rain", "Regen", "wind"],
@@ -35,8 +40,8 @@
     },
     "native": {
         "url":      "http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json",
-        "region":   "Kreis Calw",
-        "warnings": 2
+        "region":   "Kreis Harburg",
+        "warnings": 1
     },
     "objects": [
 
@@ -88,6 +93,47 @@
                     "2": "Moderate",
                     "3": "Severe",
                     "4": "Extreme"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "warning.level",
+            "type": "state",
+            "common": {
+                "name":  "Warning level",
+                "type":  "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "1": "Preliminary info",
+                    "2": "Minor",
+                    "3": "Moderate",
+                    "4": "Severe",
+                    "5": "Extreme"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "warning.type",
+            "type": "state",
+            "common": {
+                "name":  "Warning type",
+                "type":  "number",
+                "read":  true,
+                "write": false,
+                "states": {
+                    "0": "Thunderstorm",
+                    "1": "Wind/Storm",
+                    "2": "Rain",
+                    "3": "Snow",
+                    "4": "Fog",
+                    "5": "Frost",
+                    "6": "Ice",
+                    "7": "Thawing",
+                    "8": "Heat",
+                    "9": "UV warning"
                 }
             },
             "native": {}

@@ -1,18 +1,49 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 
+// Message format
+//{
+//    "start":1497254400000,
+//    "end":1497290400000,
+//    "regionName":"Kreis Harburg",
+//    "level":2,
+//    "type":1,
+//    "altitudeStart":null,
+//    "event":"WINDBÖEN",
+//    "headline":"Amtliche WARNUNG vor WINDBÖEN",
+//    "description":"Es treten Windböen mit Geschwindigkeiten ... ",
+//    "altitudeEnd":null,
+//    "stateShort":"NS",
+//    "instruction":"",
+//    "state":"Niedersachsen"
+//}
+
+// Warning levels
+// 5 = Warnungen vor extremem Unwetter
+// 4 = Unwetterwarnungen
+// 3 = Warnungen vor markantem Wetter
+// 2 = Wetterwarnungen
+// 1 = Vorabinformatio Unwetter
+
+// Warning types
+// 0 = Gewitter inklusive Begleiterscheinungen
+// 1 = Wind/Sturm/Orkan
+// 2 = Stark- und Dauerregen
+// 3 = Schneefall/Schneeverwehungen
+// 4 = Nebel
+// 5 = Frost
+// 6 = Glätte/Glatteis
+// 7 = Tauwetter
+// 8 = Hitzewarnungen
+// 9 = UV-Warnungen
+//10 = Küstenwarnungen ??
+//11 = Binnenseewarnungen ??
+
+
 "use strict";
 
 var utils   = require(__dirname + '/lib/utils'); // Get common adapter utils
 var tools   = require(__dirname + '/lib/tools');
-
-/*var severity = [
-    '',
-    'Minor',
-    'Moderate',
-    'Severe',
-    'Extreme'
-];*/
 
 var channels = [];
 var iopkg;
@@ -41,6 +72,8 @@ adapter.on('ready', function () {
                 toDelete.push(channels[i] + '.begin');
                 toDelete.push(channels[i] + '.end');
                 toDelete.push(channels[i] + '.severity');
+                toDelete.push(channels[i] + '.level');
+                toDelete.push(channels[i] + '.type');                
                 toDelete.push(channels[i] + '.text');
                 toDelete.push(channels[i] + '.headline');
                 toDelete.push(channels[i] + '.description');
@@ -58,6 +91,8 @@ adapter.on('ready', function () {
                 toAdd.push(adapter.namespace + '.warning' + j + '.begin');
                 toAdd.push(adapter.namespace + '.warning' + j + '.end');
                 toAdd.push(adapter.namespace + '.warning' + j + '.severity');
+                toAdd.push(adapter.namespace + '.warning' + j + '.level');
+                toAdd.push(adapter.namespace + '.warning' + j + '.type');
                 toAdd.push(adapter.namespace + '.warning' + j + '.text');
                 toAdd.push(adapter.namespace + '.warning' + j + '.headline');
                 toAdd.push(adapter.namespace + '.warning' + j + '.description');
@@ -71,32 +106,6 @@ adapter.on('ready', function () {
             checkNames(ready);
         }
     });
-
-    /*adapter.getState('warning.begin', function (err, obj) {
-     if (err || !obj) {
-     adapter.setState('warning.begin',       {ack: true, val: ''});
-     adapter.setState('warning.end',         {ack: true, val: ''});
-     adapter.setState('warning.severity',    {ack: true, val: 0});
-     adapter.setState('warning.text',        {ack: true, val: 'no data'});
-     adapter.setState('warning.headline',    {ack: true, val: 'no data'});
-     adapter.setState('warning.description', {ack: true, val: 'no data'});
-     }
-     });
-
-     ftp.ls('gds/specials/alerts/cap/' + adapter.config.dienststelle, function (err, res) {
-     if (err) {
-     adapter.log.error('ftp ls error');
-     adapter.stop();
-     } else {
-     for (var i = 0; i < res.length; i++) {
-     adapter.log.debug(res[i].name);
-     if (adapter.config.kreisReg.test(res[i].name))  {
-     files.push(res[i].name);
-     }
-     }
-     getFile(0);
-     }
-     });*/
 });
 
 function deleteObjects(objs) {
@@ -162,24 +171,12 @@ function ready() {
 
 function placeWarning(channelName, warnObj) {
     warnObj = warnObj || {};
-    //{
-    //    "stateShort" : "RP",
-    //    "regionName" : "Kreis und Stadt Kaiserslautern",
-    //    "description" : "Es tritt im Warnzeitraum leichter Schneefall mit Mengen zwischen 1 cm und 5 cm auf. Verbreitet wird es glatt.",
-    //    "end" : 1457002800000,
-    //    "start" : 1456986960000,
-    //    "headline" : "Amtliche WARNUNG vor LEICHTEM SCHNEEFALL",
-    //    "event" : "LEICHTER SCHNEEFALL",
-    //    "instruction" : "",
-    //    "altitudeStart" : null,
-    //    "altitudeEnd" : null,
-    //    "type" : 3,
-    //    "level" : 2,
-    //    "state" : "Rheinland-Pfalz"
-    //}
+    
     adapter.setForeignState(channelName + '.begin',         tools.formatDate(adapter.formatDate, warnObj.start),  true);
     adapter.setForeignState(channelName + '.end',           tools.formatDate(adapter.formatDate, warnObj.end),    true);
     adapter.setForeignState(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,            true);
+    adapter.setForeignState(channelName + '.level',         warnObj.level || '',        true);
+    adapter.setForeignState(channelName + '.type',          warnObj.type  || '',        true);    
     adapter.setForeignState(channelName + '.text',          warnObj.event || '',        true);
     adapter.setForeignState(channelName + '.headline',      warnObj.headline || '',     true);
     adapter.setForeignState(channelName + '.description',   warnObj.description || '',  true);
@@ -217,87 +214,7 @@ function processFile(err, data) {
     });
 }
 
-/*
-function received() {
-    ftp.raw.quit();
 
-    var warnungen = {};
-    var now = new Date();
-
-    function parseResult(err, res) {
-        adapter.log.debug(res.alert.msgType + ' ' + res.alert.info.eventCode[2].value + ' ' + res.alert.info.event + ' ' + res.alert.info.severity + ' ' + res.alert.info.effective + ' ' + res.alert.info.expires);
-        var effective = new Date(res.alert.info.effective);
-        var expires =   new Date(res.alert.info.expires);
-
-        if (res.alert.msgType === 'Alert' && parseInt(res.alert.info.eventCode[2].value, 10) > 30 && expires > now && effective < now) {
-            adapter.log.debug('Found: ' + res.alert.msgType + ' from ' + effective + ' to ' + expires + '. Event: ' + res.alert.info.event + ', ' + res.alert.info.description);
-            warnungen[res.alert.info.eventCode[2].value] = {
-                text:       res.alert.info.event,
-                desc:       res.alert.info.description + (res.alert.info.instruction ? '<br>' + res.alert.info.instruction : ''),
-                head:       res.alert.info.headline,
-                start:      effective,
-                expires:    expires,
-                severity:   res.alert.info.severity
-            };
-        } else {
-            adapter.log.debug('Ignored: ' + res.alert.msgType + ' from ' + effective + ' to ' + expires + '. Event: ' + res.alert.info.event + ', ' + res.alert.info.description);
-        }
-
-        if (res.alert.msgType === 'Cancel') {
-            if (warnungen[res.alert.info.eventCode[2].value]) {
-                delete(warnungen[res.alert.info.eventCode[2].value]);
-            }
-        }
-    }
-
-    for (var i = 0; i < xml.length; i++) {
-        parseString(xml[i], {explicitArray: false}, parseResult);
-
-    }
-    var warnung = {
-        text:     '',
-        desc:     '',
-        head:     '',
-        start:    new Date('2037-01-01'),
-        expires:  new Date('1970-01-01'),
-        severity: 0
-    };
-
-    var first = true;
-    for (var item in warnungen) {
-        if (!first) {
-            warnung.text += ', ';
-            warnung.desc += ' ';
-            warnung.head += ', ';
-        } else {
-            first = false;
-        }
-        if (warnung.expires < warnungen[item].expires)  warnung.expires =   warnungen[item].expires;
-        if (warnung.start > warnungen[item].start)      warnung.start =     warnungen[item].start;
-        warnung.text += warnungen[item].text;
-        warnung.desc += warnungen[item].desc;
-        warnung.head += warnungen[item].head;
-
-        if (severity[warnungen[item].severity] > warnung.severity) warnung.severity = severity[warnungen[item].severity];
-
-    }
-
-    if (warnung.start.getFullYear()   === 2037) warnung.start   = '';
-    if (warnung.expires.getFullYear() === 1970) warnung.expires = '';
-
-    adapter.log.debug('warnung', warnung);
-    adapter.log.info('setting states');
-
-    adapter.setState('warning.begin',       {ack: true, val: formatDate(warnung.start)});
-    adapter.setState('warning.end',         {ack: true, val: formatDate(warnung.expires)});
-    adapter.setState('warning.severity',    {ack: true, val: warnung.severity});
-    adapter.setState('warning.text',        {ack: true, val: warnung.text});
-    adapter.setState('warning.headline',    {ack: true, val: warnung.head});
-    adapter.setState('warning.description', {ack: true, val: warnung.desc});
-
-    setTimeout(adapter.stop, 5000);
-}
-*/
 setTimeout(function () {
     adapter.log.info('force terminating after 4 minutes');
     adapter.stop();
