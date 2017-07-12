@@ -5,7 +5,7 @@
         "desc":                     "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
         "version": "2.2.0",
         "news": {
-            "2.1.2": {
+            "2.2.0": {
                 "en": "fixed missing warning type and level from DWD JSON data and warning display using widget",
                 "de": "fixed missing warning type and level from DWD JSON data and warning display using widget",
                 "ru": "fixed missing warning type and level from DWD JSON data and warning display using widget"
