@@ -241,7 +241,7 @@ var regions = [
     "Kreis Parchim-Ludwigslust",
     "Kreis Peine",
     "Kreis Pfaffenhofen a.d.Ilm",
-    "Kreis Pinneberg",
+    "Kreis Pinneberg (ohne Helgoland)",
     "Kreis Plön - Binnenland",
     "Kreis Plön - Küste",
     "Kreis Potsdam-Mittelmark",
