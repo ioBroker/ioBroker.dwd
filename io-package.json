@@ -3,8 +3,13 @@
         "name":                     "dwd",
         "title":                    "DWD",
         "desc":                     "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
-        "version": "2.2.0",
+        "version": "2.2.1",
         "news": {
+			"2.2.1": {
+                "en": "Updated region names and deleted duplicates\nUpdate names",
+                "de": "Die Regionennamen sind korrigiert und Wiederholungen sind gelöscht\nUpdate Namen",
+                "ru": "Обновлены regionNames и удалены повторения\nОбновлены имена"
+            },
             "2.2.0": {
                 "en": "fixed missing warning type and level from DWD JSON data and warning display using widget",
                 "de": "fixed missing warning type and level from DWD JSON data and warning display using widget",
