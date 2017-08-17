@@ -1,4 +1,4 @@
-warnWetter.loadWarnings({
+{
 	"time" : 1456998601000,
 	"warnings" : {
 		"108237000" : [{
@@ -1294,4 +1294,4 @@ warnWetter.loadWarnings({
 	},
 	"vorabInformation" : {},
 	"copyright" : "Copyright Deutscher Wetterdienst"
-});
+}
