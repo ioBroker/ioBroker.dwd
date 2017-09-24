@@ -52,7 +52,7 @@ function checkValueOfState(id, value, cb, counter) {
 function getFile(cb) {
     var url = 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
     tools.getFile(url, function (err, data) {
-        if (err || !data) {
+        if (err || !data || !data.warnings || !data.warnings.length) {
             url = __dirname + '/lib/warnings.json';
             tools.getFile(url, function (err, data) {
                 cb && cb(url, data);
