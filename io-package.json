@@ -5,7 +5,7 @@
         "desc":                     {
             "en": "Weather Warnings from German Weather Service (DWD)",
             "de": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
-            "ru": "Weather Warnings from German Weather Service (DWD)"
+            "ru": "Погодные предупреждения от немецкого сервиса German Weather Service (DWD)"
         },
         "version": "2.2.1",
         "news": {
