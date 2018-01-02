@@ -48,7 +48,7 @@ var tools   = require(__dirname + '/lib/tools');
 var channels = [];
 var iopkg;
 
-var adapter = utils.adapter({
+var adapter = utils.Adapter({
     name: 'dwd',
     useFormatDate: true
 });
