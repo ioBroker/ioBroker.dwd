@@ -13,6 +13,9 @@ Copyright Deutscher Wetterdienst
 Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON link.
 
 ## Changelog
+### 2.2.2 (2018-02-05)
+* (cernst1980) Changed sort order
+
 ### 2.2.1 (2017-08-16)
 * (BuZZy1337) Updated regionNames and deleted Duplicates
 * (BuZZy1337) Update Names

@@ -7,9 +7,14 @@
             "de": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
             "ru": "Погодные предупреждения от немецкого сервиса German Weather Service (DWD)"
         },
-        "version": "2.2.1",
+        "version": "2.2.2",
         "news": {
-			"2.2.1": {
+            "2.2.2": {
+                "en": "Changed sort order",
+                "de": "Sortierreihenfolge geändert",
+                "ru": "Changed sort order"
+            },
+            "2.2.1": {
                 "en": "Updated region names and deleted duplicates\nUpdate names",
                 "de": "Die Regionennamen sind korrigiert und Wiederholungen sind gelöscht\nUpdate Namen",
                 "ru": "Обновлены regionNames и удалены повторения\nОбновлены имена"
