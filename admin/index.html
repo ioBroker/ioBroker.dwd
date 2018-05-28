@@ -1,85 +1,82 @@
 <html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css"/>
+    <script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css"/>
-<script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
-<script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+    <script type="text/javascript" src="regions.js"></script>
+    <script type="text/javascript" src="words.js"></script>
 
-<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
-<script type="text/javascript" src="../../js/translate.js"></script>
-<script type="text/javascript" src="../../js/adapter-settings.js"></script>
-<script type="text/javascript" src="regions.js"></script>
+    <script type="text/javascript">
 
-<script type="text/javascript">
-    systemDictionary = {
-        "Deutsche Wetter Dienst adapter settings": {
-            "en": "Deutsche Wetter Dienst adapter settings",
-            "de": "Deutsche Wetter Dienst Adapter-Einstellungen",
-            "ru": "Настройки адаптера Deutsche Wetter Dienst "
-        }
-    };
-
-    function load(settings, onChange) {
-        for (var key in settings) {
-            if ($('#' + key + '.value').attr('type') == 'checkbox') {
-                $('#' + key + '.value').prop('checked', settings[key]).change(function() {
-                    onChange();
-                });
-            } else {
-                $('#' + key + '.value').val(settings[key]).change(function() {
-                    onChange();
-                }).keyup(function () {
-                    $(this).trigger('change');
-                })
-            }
-        }
-        $('#region').autocomplete({
-            minLength: 0,
-            source: function (request, response) {
-                var responseArr = [];
-                var req = request.term.toLowerCase();
-
-                for (var r = 0; r < regions.length; r++) {
-                    if (regions[r].toLowerCase().indexOf(req) !== -1) {
-                        responseArr.push(regions[r]);
-                    }
+        function load(settings, onChange) {
+            for (var key in settings) {
+                if (!settings.hasOwnProperty(key)) continue;
+                var $value = $('#' + key + '.value');
+                if ($value.attr('type') === 'checkbox') {
+                    $value.prop('checked', settings[key]).on('change', function() {
+                        onChange();
+                    });
+                } else {
+                    $value.val(settings[key]).change(function() {
+                        onChange();
+                    }).on('keyup', function () {
+                        $(this).trigger('change');
+                    })
                 }
-                response(responseArr);
             }
-        });
+            $('#region').autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    var responseArr = [];
+                    var req = request.term.toLowerCase();
 
-        onChange(false);
-    }
+                    for (var r = 0; r < regions.length; r++) {
+                        if (regions[r].toLowerCase().indexOf(req) !== -1) {
+                            responseArr.push(regions[r]);
+                        }
+                    }
+                    response(responseArr);
+                }
+            });
 
-    function save(callback) {
-        // example: select elements with class=value and build settings object
-        var settings = {};
-        $('.value').each(function () {
-            var $this = $(this);
-            var id = $this.attr('id');
+            onChange(false);
+        }
 
-            if ($this.attr('type') == 'checkbox') {
-                settings[id] = $this.prop('checked');
-            } else {
-                settings[id] = $this.val();
-            }
-        });
+        function save(callback) {
+            // example: select elements with class=value and build settings object
+            var settings = {};
+            $('.value').each(function () {
+                var $this = $(this);
+                var id = $this.attr('id');
 
-        callback(settings);
-    }
+                if ($this.attr('type') === 'checkbox') {
+                    settings[id] = $this.prop('checked');
+                } else {
+                    settings[id] = $this.val();
+                }
+            });
 
-</script>
+            callback(settings);
+        }
 
+    </script>
+</head>
+<body>
 <div id="adapter-container">
     <table><tr><td><img src="dwd.png" width="64" height="64"></td><td><h3 class="translate">Deutsche Wetter Dienst adapter settings</h3></td></tr></table>
 
     <table>
         <tr>
-            <td class="translate">Region:</td>
+            <td><label for="region" class="translate">Region:</label></td>
             <td><input class="value" id="region"/></td>
         </tr>
         <tr>
-            <td class="translate">Number of warnings:</td>
+            <td><label for="warnings" class="translate">Number of warnings:</label></td>
             <td><select class="value" id="warnings">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -95,4 +92,5 @@
         </tr>
     </table>
 </div>
+</body>
 </html>

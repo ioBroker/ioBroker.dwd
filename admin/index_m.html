@@ -1,0 +1,94 @@
+<html>
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css"/>
+<script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+<script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<script type="text/javascript" src="../../js/translate.js"></script>
+<script type="text/javascript" src="../../js/adapter-settings.js"></script>
+<script type="text/javascript" src="regions.js"></script>
+<script type="text/javascript" src="words.js"></script>
+
+<script type="text/javascript">
+
+    function load(settings, onChange) {
+        for (var key in settings) {
+            if (!settings.hasOwnProperty(key)) continue;
+            var $value = $('#' + key + '.value');
+            if ($value.attr('type') === 'checkbox') {
+                $value.prop('checked', settings[key]).on('change', function() {
+                    onChange();
+                });
+            } else {
+                $value.val(settings[key]).change(function() {
+                    onChange();
+                }).on('keyup', function () {
+                    $(this).trigger('change');
+                })
+            }
+        }
+        $('#region').autocomplete({
+            minLength: 0,
+            source: function (request, response) {
+                var responseArr = [];
+                var req = request.term.toLowerCase();
+
+                for (var r = 0; r < regions.length; r++) {
+                    if (regions[r].toLowerCase().indexOf(req) !== -1) {
+                        responseArr.push(regions[r]);
+                    }
+                }
+                response(responseArr);
+            }
+        });
+
+        onChange(false);
+    }
+
+    function save(callback) {
+        // example: select elements with class=value and build settings object
+        var settings = {};
+        $('.value').each(function () {
+            var $this = $(this);
+            var id = $this.attr('id');
+
+            if ($this.attr('type') === 'checkbox') {
+                settings[id] = $this.prop('checked');
+            } else {
+                settings[id] = $this.val();
+            }
+        });
+
+        callback(settings);
+    }
+
+</script>
+
+<div id="adapter-container">
+    <table><tr><td><img src="dwd.png" width="64" height="64"></td><td><h3 class="translate">Deutsche Wetter Dienst adapter settings</h3></td></tr></table>
+
+    <table>
+        <tr>
+            <td><label for="region" class="translate">Region:</label></td>
+            <td><input class="value" id="region"/></td>
+        </tr>
+        <tr>
+            <td><label for="warnings" class="translate">Number of warnings:</label></td>
+            <td><select class="value" id="warnings">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select></td>
+        </tr>
+    </table>
+</div>
+</html>

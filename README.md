@@ -92,7 +92,7 @@ Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON l
 
 The MIT License (MIT)
 
-Copyright (c) 2016 bluefox <dogafox@gmail.com>, hobbyquaker
+Copyright (c) 2016-2018 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

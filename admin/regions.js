@@ -1,3 +1,5 @@
+'use strict';
+
 var regions = [
 	"Östliches Münsterland",
 	"Östliches Ruhrgebiet",
