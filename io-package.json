@@ -5,10 +5,27 @@
         "desc":                     {
             "en": "Weather Warnings from German Weather Service (DWD)",
             "de": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
-            "ru": "Погодные предупреждения от немецкого сервиса German Weather Service (DWD)"
+            "ru": "Погодные предупреждения от немецкого сервиса German Weather Service (DWD)",
+            "pt": "Avisos Meteorológicos do Serviço Meteorológico Alemão (DWD)",
+            "nl": "Weerwaarschuwingen van Duitse Weer Service (DWD)",
+            "fr": "Avertissements météorologiques du service météorologique allemand (DWD)",
+            "it": "Avvertenze meteorologiche dal servizio meteo tedesco (DWD)",
+            "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
+            "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.3.0",
+        "version": "2.4.0",
         "news": {
+            "2.4.0": {
+                "en": "Updated package versions\nUpdated cities\nMap was added",
+                "de": "Aktualisierte Paketversionen\nAktualisierte Städte\nKarte wurde hinzugefügt",
+                "ru": "Обновленные версии пакетов\nОбновленные города\nКарта была добавлена",
+                "pt": "Versões atualizadas do pacote\nCidades atualizadas\nMapa foi adicionado",
+                "nl": "Bijgewerkte pakketversies\nBijgewerkte steden\nKaart is toegevoegd",
+                "fr": "Mise à jour des versions\nVilles mises à jour\nLa carte a été ajoutée",
+                "it": "Versioni del pacchetto aggiornate\nCittà aggiornate\nLa mappa è stata aggiunta",
+                "es": "Versiones de paquete actualizadas\nCiudades actualizadas\nMapa fue agregado",
+                "pl": "Zaktualizowane wersje pakietów\nZaktualizowane miasta\nDodano mapę"
+            },
             "2.2.2": {
                 "en": "Changed sort order",
                 "de": "Sortierreihenfolge geändert",
@@ -40,7 +57,7 @@
         "platform":                 "javascript/Node.js",
         "loglevel":                 "info",
         "keywords":                 ["weather", "Wetter", "warning", "Warnung", "forecast", "Vorhersage", "rain", "Regen", "wind"],
-        "main":                     "dwd.js",
+        "main":                     "main.js",
         "materialize":              true,
         "authors": [
             "bluefox <dogafox@gmail.com>"
@@ -55,7 +72,8 @@
     },
     "native": {
         "url":      "http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json",
-        "region":   "Kreis Harburg",
+        "region":   "",
+        "land": "",
         "warnings": 1
     },
     "objects": [
@@ -77,7 +95,8 @@
             "type": "state",
             "common": {
                 "name":  "Warning begin",
-                "type":  "datetime",
+                "type":  "string",
+                "role": "date.start",
                 "read":  true,
                 "write": false
             },
@@ -88,7 +107,8 @@
             "type": "state",
             "common": {
                 "name":  "Warning end",
-                "type":  "datetime",
+                "type":  "string",
+                "role":  "date.end",
                 "read":  true,
                 "write": false
             },
@@ -100,6 +120,7 @@
             "common": {
                 "name":  "Warning severity",
                 "type":  "number",
+                "role":  "value.severity",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -118,6 +139,7 @@
             "common": {
                 "name":  "Warning level",
                 "type":  "number",
+                "role":  "value.warning",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -136,6 +158,7 @@
             "common": {
                 "name":  "Warning type",
                 "type":  "number",
+                "role":  "weather.type",
                 "read":  true,
                 "write": false,
                 "states": {
@@ -159,6 +182,7 @@
             "common": {
                 "name":  "Warning text",
                 "type":  "string",
+                "role":  "weather.title.short",
                 "read":  true,
                 "write": false
             },
@@ -170,6 +194,7 @@
             "common": {
                 "name":  "Warning headline",
                 "type":  "string",
+                "role":  "weather.title",
                 "read":  true,
                 "write": false
             },
@@ -181,6 +206,7 @@
             "common": {
                 "name":  "Warning description",
                 "type":  "string",
+                "role":  "weather.state",
                 "read":  true,
                 "write": false
             },
@@ -192,6 +218,19 @@
             "common": {
                 "name":  "JSON object with warning",
                 "type":  "object",
+                "role":  "weather.json",
+                "read":  true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id":  "warning.map",
+            "type": "state",
+            "common": {
+                "name":  "Link to chart",
+                "type":  "string",
+                "role":  "weather.chart.url",
                 "read":  true,
                 "write": false
             },

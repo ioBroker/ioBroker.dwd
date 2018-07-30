@@ -37,6 +37,24 @@
             data[regions[r]] = null;
         }
 
+        if (!settings.region) {
+            socket.emit('getObject', 'system.config', function (err, config) {
+                if (config && config.common && config.common.country && config.common.city) {
+                    if (config.common.country.toLowerCase() === 'deutschland' ||
+                        config.common.country.toLowerCase() === 'germany' ||
+                        config.common.country.toLowerCase() === 'германия') {
+                        for (var r = 0; r < regions.length; r++) {
+                            if (regions[r].indexOf(config.common.city) !== -1) {
+                                $('#region').val(regions[r]).trigger('change');
+                                M.updateTextFields();
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         try {
             $('#region').mautocomplete({
                 minLength: 0,
@@ -67,11 +85,6 @@
     }
 
 </script>
-<style>
-    .m .select-wrapper+label {
-        top: 100%;
-    }
-</style>
 </head>
 <body>
 <div class="m adapter-container">
@@ -84,7 +97,27 @@
         <div class="row">
             <div class="input-field col s10 m4">
                 <input type="text" id="region" class="value autocomplete" />
-                <label  class="translate" for="region">Region:</label>
+                <label  class="translate" for="region">Region</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s10 m4">
+                <select id="land" class="value">
+                    <option value="" class="translate">no map</option>
+                    <option value="baw">Baden-Württemberg</option>
+                    <option value="bay">Bayern</option>
+                    <option value="bbb">Berlin, Brandenburg</option>
+                    <option value="hes">Hessen</option>
+                    <option value="mvp">Mecklenburg-Vorpommer</option>
+                    <option value="nib">Niedersachsen, Bremen</option>
+                    <option value="nrw">Nordrhein-Westfalen</option>
+                    <option value="rps">Rheinland-Pfalz, Saarland</option>
+                    <option value="sac">Sachsen</option>
+                    <option value="saa">Sachsen-Anhalt</option>
+                    <option value="shh">Schleswig-Holstein, Hamburg</option>
+                    <option value="thu">Thüringen</option>
+                </select>
+                <label  class="translate" for="land">Get map for warning</label>
             </div>
         </div>
         <div class="row">
@@ -101,7 +134,7 @@
                     <option value="9">9</option>
                     <option value="10">10</option>
                 </select>
-                <label for="warnings" class="translate">Number of warnings:</label>
+                <label for="warnings" class="translate">Number of warnings</label>
             </div>
         </div>
     </div>
