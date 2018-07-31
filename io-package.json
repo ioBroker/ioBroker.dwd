@@ -13,8 +13,19 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.4.0",
+        "version": "2.4.1",
         "news": {
+            "2.4.1": {
+                "en": "Updated cities",
+                "de": "Aktualisierte Städte",
+                "ru": "Обновленные города",
+                "pt": "Cidades atualizadas",
+                "nl": "Bijgewerkte steden",
+                "fr": "Villes mises à jour",
+                "it": "Città aggiornate",
+                "es": "Ciudades actualizadas",
+                "pl": "Zaktualizowane miasta"
+            },
             "2.4.0": {
                 "en": "Updated package versions\nUpdated cities\nMap was added",
                 "de": "Aktualisierte Paketversionen\nAktualisierte Städte\nKarte wurde hinzugefügt",
