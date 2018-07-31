@@ -39,7 +39,6 @@
 //10 = Küstenwarnungen ??
 //11 = Binnenseewarnungen ??
 
-
 'use strict';
 
 const utils   = require(__dirname + '/lib/utils'); // Get common adapter utils
