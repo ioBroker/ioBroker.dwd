@@ -13,8 +13,19 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.4.2",
+        "version": "2.4.3",
         "news": {
+            "2.4.3": {
+                "en": "Invalid certificate are accepted too ",
+                "de": "Ein ungültiges Zertifikat wird ebenfalls akzeptiert",
+                "ru": "Недействительный сертификат также принимается",
+                "pt": "Certificado inválido também é aceito",
+                "nl": "Ongeldig certificaat wordt ook geaccepteerd",
+                "fr": "Le certificat invalide est également accepté",
+                "it": "Sono accettati anche certificati non validi",
+                "es": "Certificado inválido son aceptados también",
+                "pl": "Nieprawidłowy certyfikat jest również akceptowany"
+            },
             "2.4.2": {
                 "en": "Updated cities",
                 "de": "Aktualisierte Städte",

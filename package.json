@@ -1,7 +1,7 @@
 {
   "name": "iobroker.dwd",
   "description": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "author": {
     "name": "bluefox",
     "email": "dogafox@gmail.com"
@@ -25,7 +25,7 @@
     "home automation"
   ],
   "dependencies": {
-    "request": "^2.87.0"
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
