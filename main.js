@@ -170,7 +170,7 @@ function ready() {
     tools.getFile(adapter.config.url, processFile);
 }
 
-const maps = ['gewitter', 'regen', 'schnee', 'sturm', 'nebel', 'frost', 'glatteis', 'tauwetter', 'hitze', 'uv'];
+const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glatteis', 'tauwetter', 'hitze', 'uv'];
 
 function placeWarning(channelName, warnObj) {
     warnObj = warnObj || {};
