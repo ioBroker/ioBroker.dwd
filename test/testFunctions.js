@@ -111,7 +111,7 @@ describe('Test DWD', function() {
     });
 
     it('Test DWD: Check if adapter started', function (done) {
-        this.timeout(5000);
+        this.timeout(10000);
         checkConnectionOfAdapter(done);
     });
 
