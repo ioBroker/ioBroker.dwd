@@ -2,7 +2,7 @@
 # ioBroker.dwd
 =================
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
+![Number of Installations](http://iobroker.live/badges/dwd-installed.svg) ![Number of Installations](http://iobroker.live/badges/dwd-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.dwd.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.dwd)
 
