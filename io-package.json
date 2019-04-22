@@ -109,7 +109,7 @@
         "region":   "",
         "land": "",
         "warnings": 1,
-        "RainRadar": false
+        "rainRadar": false
     },
     "objects": [
 
