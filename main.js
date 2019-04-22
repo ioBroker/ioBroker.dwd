@@ -107,7 +107,7 @@ adapter.on('ready', () => {
             checkNames(ready);
         }
     });
-    if (adapter.config.RainRadar === true) {
+    if (adapter.config.rainRadar === true) {
         doRainradar();
     }
 });
