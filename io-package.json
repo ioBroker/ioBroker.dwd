@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.4.3",
+        "version": "2.4.4",
         "news": {
+            "2.4.4": {
+                "en": "Added states to show rain radar map for your location.",
+                "de": "Zustände hinzugefügt, um die Regenradarkarte für Ihren Standort anzuzeigen.",
+                "ru": "Добавлены состояния, чтобы показать карту радарного дождя для вашего местоположения.",
+                "pt": "Adicionado estados para mostrar mapa de radar de chuva para a sua localização.",
+                "nl": "Toevoegingen toegevoegd om de kaart van de regenradar voor uw locatie te tonen.",
+                "fr": "Ajout des états pour afficher la carte radar de pluie pour votre position.",
+                "it": "Aggiunti stati per mostrare la mappa radar della pioggia per la tua posizione.",
+                "es": "Estados agregados para mostrar el mapa del radar de lluvia para su ubicación.",
+                "pl": "Dodano stany, aby pokazać deszczową mapę radarową dla Twojej lokalizacji.",
+                "zh-cn": "添加状态以显示您所在位置的雨雷达地图。"
+            },
             "2.4.3": {
                 "en": "Invalid certificate are accepted too ",
                 "de": "Ein ungültiges Zertifikat wird ebenfalls akzeptiert",
@@ -96,7 +108,8 @@
         "url":      "http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json",
         "region":   "",
         "land": "",
-        "warnings": 1
+        "warnings": 1,
+        "rainRadar": false
     },
     "objects": [
 
