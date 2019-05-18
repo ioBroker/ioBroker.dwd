@@ -1,6 +1,7 @@
 {
   "Region": "Region",
   "no map": "keine Karte",
-  "Get map for warning": "Holen Sie sich die Karte für die Warnung",
-  "Number of warnings": "Anzahl der Warnungen"
+  "Get map for warning": "Gewünschte Karte für die Wetterwarnung auswählen",
+  "Number of warnings": "Anzahl der Warnmeldungen"
+  "Create states for rainradar": "Objekte erstellen um Regen-Radar in die Visualisierung einzubinden"
 }
