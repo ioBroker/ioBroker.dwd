@@ -132,7 +132,7 @@ var regions = [
     "Kreis Leipzig",
     "Kreis Lichtenfels",
     "Kreis Limburg-Weilburg",
-    "Kreis Lindau",
+    "Kreis Lindau (Bodensee)",
     "Kreis Lippe",
     "Kreis Ludwigsburg",
     "Kreis Ludwigslust-Parchim - Ost",
