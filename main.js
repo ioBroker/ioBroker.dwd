@@ -177,9 +177,9 @@ const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glattei
 
 function placeWarning(channelName, warnObj) {
     warnObj = warnObj || {};
-    
-    adapter.setForeignState(channelName + '.begin',         tools.formatDate(adapter.formatDate, warnObj.start),  true);
-    adapter.setForeignState(channelName + '.end',           tools.formatDate(adapter.formatDate, warnObj.end),    true);
+    let td = new Date();
+    adapter.setForeignState(channelName + '.begin',         warnObj.start === undefined ? '' : new Date (warnObj.start - td.getTimezoneOffset() * 60000).toISOString(),  true);
+    adapter.setForeignState(channelName + '.end',           warnObj.end === undefined ? '' : new Date (warnObj.end - td.getTimezoneOffset() * 60000).toISOString(),    true);
     adapter.setForeignState(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,            true);
     adapter.setForeignState(channelName + '.level',         warnObj.level === undefined || warnObj.level === null ? null : warnObj.level,        true);
     adapter.setForeignState(channelName + '.type',          warnObj.type === undefined || warnObj.type === null ? null : warnObj.type,        true);
@@ -187,7 +187,7 @@ function placeWarning(channelName, warnObj) {
     adapter.setForeignState(channelName + '.headline',      warnObj.headline || '',     true);
     adapter.setForeignState(channelName + '.description',   warnObj.description || '',  true);
     adapter.setForeignState(channelName + '.object',        JSON.stringify(warnObj),    true);
-    adapter.log.debug('Add warning "' + channelName + '": ' + tools.formatDate(adapter.formatDate, warnObj.start));
+    adapter.log.debug('Add warning "' + channelName + '": ' + warnObj.start === undefined ? '' : new Date (warnObj.start - td.getTimezoneOffset() * 60000).toISOString());
     if (adapter.config.land && warnObj.type !== undefined && warnObj.type !== null) {
         adapter.setForeignState(channelName + '.map',        `https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_${adapter.config.land}_${maps[warnObj.type]}.png`, true);
     } else {

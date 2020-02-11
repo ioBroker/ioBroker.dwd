@@ -13,7 +13,7 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.4.4",
+        "version": "2.4.5",
         "news": {
             "2.4.4": {
                 "en": "Added states to show rain radar map for your location.",
@@ -131,7 +131,7 @@
             "common": {
                 "name":  "Warning begin",
                 "type":  "string",
-                "role": "date.start",
+                "role": "value.datetime",
                 "read":  true,
                 "write": false
             },
@@ -143,7 +143,7 @@
             "common": {
                 "name":  "Warning end",
                 "type":  "string",
-                "role":  "date.end",
+                "role":  "value.datetime",
                 "read":  true,
                 "write": false
             },
