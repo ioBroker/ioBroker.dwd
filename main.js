@@ -187,7 +187,7 @@ function placeWarning(channelName, warnObj) {
     adapter.setForeignState(channelName + '.headline',      warnObj.headline || '',     true);
     adapter.setForeignState(channelName + '.description',   warnObj.description || '',  true);
     adapter.setForeignState(channelName + '.object',        JSON.stringify(warnObj),    true);
-    adapter.log.debug('Add warning "' + channelName + '": ' + warnObj.start === undefined ? '' : new Date (warnObj.start - td.getTimezoneOffset() * 60000).toISOString());
+    adapter.log.debug('Add warning "' + channelName + '": ' + (warnObj.start === undefined ? '' : new Date (warnObj.start - td.getTimezoneOffset() * 60000).toISOString()));
     if (adapter.config.land && warnObj.type !== undefined && warnObj.type !== null) {
         adapter.setForeignState(channelName + '.map',        `https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_${adapter.config.land}_${maps[warnObj.type]}.png`, true);
     } else {
