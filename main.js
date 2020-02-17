@@ -1,5 +1,6 @@
-/* jshint -W097 */// jshint strict:false
-/*jslint node: true */
+/* jshint -W097 */
+/* jshint strict: false */
+/* jslint node: true */
 
 // Message format
 //{
@@ -41,14 +42,15 @@
 
 'use strict';
 
-const utils = require('@iobroker/adapter-core'); // Get common adapter utils
-const tools   = require(__dirname + '/lib/tools');
+const utils       = require('@iobroker/adapter-core'); // Get common adapter utils
+const tools       = require('./lib/tools');
+const adapterName = require('./package.json').name.split('.').pop();
 
 let channels = [];
 let iopkg;
 
 let adapter = new utils.Adapter({
-    name: 'dwd',
+    name: adapterName,
     useFormatDate: true
 });
 
@@ -107,6 +109,7 @@ adapter.on('ready', () => {
             checkNames(ready);
         }
     });
+    
     if (adapter.config.rainRadar === true) {
         doRainradar();
     }
@@ -117,16 +120,18 @@ function deleteObjects(objs) {
         return;
     }
     const id = objs.pop();
+    
     adapter.delForeignObject(id, err => {
-        if (err) return;
-        adapter.delForeignState(id, err => {
-            setTimeout(deleteObjects, 0, objs);
-        });
+        if (err) {
+            return;
+        }
+        adapter.delForeignState(id, err =>
+            setTimeout(deleteObjects, 0, objs));
     });
 }
 
 function addObjects(objs, cb) {
-    iopkg = iopkg || require(__dirname + '/io-package.json');
+    iopkg = iopkg || require('./io-package.json');
 
     if (!objs || !objs.length) {
         cb && cb();
@@ -140,9 +145,8 @@ function addObjects(objs, cb) {
             adapter.setForeignObject(id, obj, err => {
                 if (err) adapter.log.error(err);
                 if (obj.type === 'state') {
-                    adapter.setForeignState(id, '', true, err => {
-                        setTimeout(addObjects, 0, objs, cb);
-                    });
+                    adapter.setForeignState(id, '', true, err =>
+                        setTimeout(addObjects, 0, objs, cb));
                 } else {
                     setTimeout(addObjects, 0, objs, cb);
                 }
@@ -159,9 +163,8 @@ function checkNames(cb) {
         adapter.getForeignObject(channels[j], (err, obj) => {
             if (obj && obj.common.name !== 'DWD Warnung für ' + adapter.config.region) {
                 obj.common.name = 'DWD Warnung für ' + adapter.config.region;
-                adapter.setForeignObject(obj._id, obj, err => {
-                    if (err) adapter.log.error(err);
-                });
+                adapter.setForeignObject(obj._id, obj, err =>
+                    err && adapter.log.error(err));
             }
         });
     }
@@ -177,17 +180,18 @@ const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glattei
 
 function placeWarning(channelName, warnObj) {
     warnObj = warnObj || {};
-    
-    adapter.setForeignState(channelName + '.begin',         tools.formatDate(adapter.formatDate, warnObj.start),  true);
-    adapter.setForeignState(channelName + '.end',           tools.formatDate(adapter.formatDate, warnObj.end),    true);
+    let td = new Date();
+    adapter.setForeignState(channelName + '.begin',         warnObj.start === undefined ? '' : new Date (warnObj.start - td.getTimezoneOffset() * 60000).toISOString(),  true);
+    adapter.setForeignState(channelName + '.end',           warnObj.end   === undefined ? '' : new Date (warnObj.end   - td.getTimezoneOffset() * 60000).toISOString(),    true);
     adapter.setForeignState(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,            true);
     adapter.setForeignState(channelName + '.level',         warnObj.level === undefined || warnObj.level === null ? null : warnObj.level,        true);
-    adapter.setForeignState(channelName + '.type',          warnObj.type === undefined || warnObj.type === null ? null : warnObj.type,        true);
+    adapter.setForeignState(channelName + '.type',          warnObj.type  === undefined || warnObj.type  === null ? null : warnObj.type,        true);
     adapter.setForeignState(channelName + '.text',          warnObj.event || '',        true);
     adapter.setForeignState(channelName + '.headline',      warnObj.headline || '',     true);
     adapter.setForeignState(channelName + '.description',   warnObj.description || '',  true);
     adapter.setForeignState(channelName + '.object',        JSON.stringify(warnObj),    true);
-    adapter.log.debug('Add warning "' + channelName + '": ' + tools.formatDate(adapter.formatDate, warnObj.start));
+    adapter.log.debug('Add warning "' + channelName + '": ' + (warnObj.start === undefined ? '' : new Date (warnObj.start - td.getTimezoneOffset() * 60000).toISOString()));
+    
     if (adapter.config.land && warnObj.type !== undefined && warnObj.type !== null) {
         adapter.setForeignState(channelName + '.map',        `https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_${adapter.config.land}_${maps[warnObj.type]}.png`, true);
     } else {
