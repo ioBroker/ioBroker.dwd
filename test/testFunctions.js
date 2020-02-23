@@ -67,6 +67,7 @@ var warnings = [];
 describe('Test DWD', function() {
     before('Test DWD: Start js-controller', function (_done) {
         this.timeout(600000); // because of first install from npm
+
         getFile(function (url, data) {
             // find first object with warning
             for (var w in data.warnings) {
@@ -94,10 +95,10 @@ describe('Test DWD', function() {
                 setup.setAdapterConfig(config.common, config.native);
 
                 setup.startController(true, function (id, obj) {
-                        if (onObjectChanged) onObjectChanged(id, obj);
+                        onObjectChanged && onObjectChanged(id, obj);
                     }, function (id, state) {
-                        console.log(id + ': ' + state.val);
-                        if (onStateChanged) onStateChanged(id, state);
+                        console.log(id + ': ' + (state ? state.val : 'null'));
+                        onStateChanged && onStateChanged(id, state);
                     },
                     function (_objects, _states) {
                         objects = _objects;
