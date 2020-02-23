@@ -15,6 +15,18 @@
         },
         "version": "2.4.5",
         "news": {
+            "2.4.5": {
+                "en": "Datetime corrected",
+                "de": "Datetime korrigiert",
+                "ru": "Дата и время исправлены",
+                "pt": "Data e hora corrigida",
+                "nl": "Datetime gecorrigeerd",
+                "fr": "Datetime corrigé",
+                "it": "Datetime corretto",
+                "es": "Fecha y hora corregida",
+                "pl": "Poprawiono datę i godzinę",
+                "zh-cn": "日期时间已更正"
+            },
             "2.4.4": {
                 "en": "Added states to show rain radar map for your location.",
                 "de": "Zustände hinzugefügt, um die Regenradarkarte für Ihren Standort anzuzeigen.",
