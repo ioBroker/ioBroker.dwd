@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.4.5",
+        "version": "2.4.6",
         "news": {
+            "2.4.6": {
+                "en": "Time format added to widget",
+                "de": "Zeitformat zum Widget hinzugefügt",
+                "ru": "Формат времени добавлен в виджет",
+                "pt": "Formato de hora adicionado ao widget",
+                "nl": "Tijdnotatie toegevoegd aan widget",
+                "fr": "Format d'heure ajouté au widget",
+                "it": "Formato ora aggiunto al widget",
+                "es": "Formato de hora agregado al widget",
+                "pl": "Dodano format czasu do widżetu",
+                "zh-cn": "时间格式已添加到小部件"
+            },
             "2.4.5": {
                 "en": "Datetime corrected",
                 "de": "Datetime korrigiert",
@@ -71,31 +83,6 @@
                 "it": "Versioni del pacchetto aggiornate\nCittà aggiornate\nLa mappa è stata aggiunta",
                 "es": "Versiones de paquete actualizadas\nCiudades actualizadas\nMapa fue agregado",
                 "pl": "Zaktualizowane wersje pakietów\nZaktualizowane miasta\nDodano mapę"
-            },
-            "2.2.2": {
-                "en": "Changed sort order",
-                "de": "Sortierreihenfolge geändert",
-                "ru": "Changed sort order"
-            },
-            "2.2.1": {
-                "en": "Updated region names and deleted duplicates\nUpdate names",
-                "de": "Die Regionennamen sind korrigiert und Wiederholungen sind gelöscht\nUpdate Namen",
-                "ru": "Обновлены regionNames и удалены повторения\nОбновлены имена"
-            },
-            "2.2.0": {
-                "en": "fixed missing warning type and level from DWD JSON data and warning display using widget",
-                "de": "fixed missing warning type and level from DWD JSON data and warning display using widget",
-                "ru": "fixed missing warning type and level from DWD JSON data and warning display using widget"
-            },
-			"2.1.1": {
-                "en": "fixed bug where cb() needs to be called with a null parameter",
-                "de": "fixed bug where cb() needs to be called with a null parameter",
-                "ru": "fixed bug where cb() needs to be called with a null parameter"
-            },
-            "2.1.0": {
-                "en": "add widgets to adapter",
-                "de": "add widgets to adapter",
-                "ru": "add widgets to adapter"
             }
         },
         "mode":                     "schedule",
@@ -123,10 +110,7 @@
         "warnings": 1,
         "rainRadar": false
     },
-    "objects": [
-
-
-    ],
+    "objects": [],
     "instanceObjects": [
         {
             "_id":  "warning",
@@ -143,7 +127,7 @@
             "common": {
                 "name":  "Warning begin",
                 "type":  "string",
-                "role": "value.datetime",
+                "role": "value.time",
                 "read":  true,
                 "write": false
             },
@@ -155,7 +139,7 @@
             "common": {
                 "name":  "Warning end",
                 "type":  "string",
-                "role":  "value.datetime",
+                "role":  "value.time",
                 "read":  true,
                 "write": false
             },

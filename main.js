@@ -76,7 +76,7 @@ adapter.on('ready', () => {
                 toDelete.push(channels[i] + '.end');
                 toDelete.push(channels[i] + '.severity');
                 toDelete.push(channels[i] + '.level');
-                toDelete.push(channels[i] + '.type');                
+                toDelete.push(channels[i] + '.type');
                 toDelete.push(channels[i] + '.text');
                 toDelete.push(channels[i] + '.headline');
                 toDelete.push(channels[i] + '.description');
@@ -109,7 +109,7 @@ adapter.on('ready', () => {
             checkNames(ready);
         }
     });
-    
+
     if (adapter.config.rainRadar === true) {
         doRainradar();
     }
@@ -120,7 +120,7 @@ function deleteObjects(objs) {
         return;
     }
     const id = objs.pop();
-    
+
     adapter.delForeignObject(id, err => {
         if (err) {
             return;
@@ -180,9 +180,9 @@ const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glattei
 
 function placeWarning(channelName, warnObj) {
     warnObj = warnObj || {};
-    let td = new Date();
-    adapter.setForeignState(channelName + '.begin',         warnObj.start === undefined ? '' : new Date (warnObj.start - td.getTimezoneOffset() * 60000).toISOString(),  true);
-    adapter.setForeignState(channelName + '.end',           warnObj.end   === undefined ? '' : new Date (warnObj.end   - td.getTimezoneOffset() * 60000).toISOString(),    true);
+    // warnObj.start/end are Milliseconds since epoch and have type number
+    adapter.setForeignState(channelName + '.begin',         warnObj.start || null,  true);
+    adapter.setForeignState(channelName + '.end',           warnObj.end   || null,    true);
     adapter.setForeignState(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,            true);
     adapter.setForeignState(channelName + '.level',         warnObj.level === undefined || warnObj.level === null ? null : warnObj.level,        true);
     adapter.setForeignState(channelName + '.type',          warnObj.type  === undefined || warnObj.type  === null ? null : warnObj.type,        true);
@@ -190,14 +190,13 @@ function placeWarning(channelName, warnObj) {
     adapter.setForeignState(channelName + '.headline',      warnObj.headline || '',     true);
     adapter.setForeignState(channelName + '.description',   warnObj.description || '',  true);
     adapter.setForeignState(channelName + '.object',        JSON.stringify(warnObj),    true);
-    adapter.log.debug('Add warning "' + channelName + '": ' + (warnObj.start === undefined ? '' : new Date (warnObj.start - td.getTimezoneOffset() * 60000).toISOString()));
-    
+    adapter.log.debug('Add warning "' + channelName + '": ' + (warnObj.start ? new Date(warnObj.start).toISOString() : ''));
+
     if (adapter.config.land && warnObj.type !== undefined && warnObj.type !== null) {
         adapter.setForeignState(channelName + '.map',        `https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_${adapter.config.land}_${maps[warnObj.type]}.png`, true);
     } else {
         adapter.setForeignState(channelName + '.map',        '',    true);
     }
-
 }
 
 function processFile(err, data) {
@@ -209,26 +208,25 @@ function processFile(err, data) {
 
     if (data.warnings) {
         let warnings = [];
-        for (const w in data.warnings) {
-            if (data.warnings.hasOwnProperty(w)) {
-                const arr = data.warnings[w];
-                for (let a = 0; a < arr.length; a++) {
-                    if (arr[a].regionName === adapter.config.region) {
-                        // filter out similar entries
-                        if (!warnings.find(r => JSON.stringify(r) === JSON.stringify(arr[a]))) {
-                            warnings.push(arr[a]);
-                        }
+        Object.keys(data.warnings).forEach(w => {
+            const arr = data.warnings[w];
+            for (let a = 0; a < arr.length; a++) {
+                if (arr[a].regionName === adapter.config.region) {
+                    // filter out similar entries
+                    if (!warnings.find(r => JSON.stringify(r) === JSON.stringify(arr[a]))) {
+                        warnings.push(arr[a]);
                     }
                 }
             }
-        }
+        });
+
         warnings.sort(tools.sort);
 
         for (let c = 0; c < channels.length; c++) {
             placeWarning(channels[c], warnings[c]);
         }
     }
-    setTimeout(() => adapter.stop());
+    setTimeout(() => adapter.stop(), 0);
 }
 
 setTimeout(() => {
@@ -237,7 +235,7 @@ setTimeout(() => {
 }, 240000);
 
 // Function to handle state creation
-function doRainStates(device, value, name){	
+function doRainStates(device, value, name){
     // Create objects
     adapter.setObjectNotExistsAsync(device, {
         type: 'state',

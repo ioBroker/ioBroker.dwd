@@ -1,9 +1,9 @@
 <!--
     ioBroker.vis dwd Widget-Set
 
-    version: "2.1.0"
+    version: "2.4.5"
 
-    Copyright 2013-2016 bluefox<dogafox@gmail.com>
+    Copyright 2013-2020 bluefox<dogafox@gmail.com>
 -->
 
 <script type="text/javascript">
@@ -13,9 +13,20 @@
             "oid-begin":    {"en": "oid-begin",    "de": "oid-begin",    "ru": "oid-begin"},
             "oid-end":      {"en": "oid-end",      "de": "oid-end",      "ru": "oid-end"},
             "oid-headline": {"en": "oid-headline", "de": "oid-headline", "ru": "oid-headline"},
-            "oid-severity": {"en": "oid-severity", "de": "oid-severity", "ru": "oid-severity"}
+            "oid-severity": {"en": "oid-severity", "de": "oid-severity", "ru": "oid-severity"},
+            "dwd-format": {
+                "en": "Time format",
+                "de": "Zeitformat",
+                "ru": "Формат времени",
+                "pt": "Formato da hora",
+                "nl": "Tijd formaat",
+                "fr": "Format de l'heure",
+                "it": "Formato orario",
+                "es": "Formato de tiempo",
+                "pl": "Format czasu",
+                "zh-cn": "时间格式"
+            }
         });
-
     }
 </script>
 
@@ -66,7 +77,7 @@
         data-vis-prev='<img src="widgets/dwd/img/Prev_DwdAdapter.png"></img>'
         data-vis-set="dwd"
         data-vis-name="DWD Wetterwarnungen"
-        data-vis-attrs="oid-begin[dwd.0.warning.begin];oid-end[dwd.0.warning.end];oid-headline[dwd.0.warning.headline];oid[dwd.0.warning.description];oid-severity[dwd.0.warning.severity]">
+        data-vis-attrs="oid-begin[dwd.0.warning.begin];oid-end[dwd.0.warning.end];oid-headline[dwd.0.warning.headline];oid[dwd.0.warning.description];oid-severity[dwd.0.warning.severity];dwd-format[DD.MM hh:mm]">
     <div class="vis-widget <%== this.data.attr('class') %>" style="width: 585px; height: 85px; font-family: Arial" id="<%= this.data.attr('wid') %>">
         <%
 		var dwdBackground = [
@@ -98,7 +109,7 @@
                 <%== vis.states.attr(this.data['oid-headline'] + '.val') %>
             </div>
             <p><%== vis.states.attr(this.data['oid'] + '.val') %><br/>
-            <%== vis.states.attr(this.data['oid-begin'] + '.val') %> <%== vis.states.attr(this.data['oid-begin'] + '.val') ? ' - ' : '' %><%== vis.states.attr(this.data['oid-end'] + '.val') %></p>
+            <%== vis.states.attr(this.data['oid-begin'] + '.val') ? vis.binds.basic.formatDate(vis.states.attr(this.data['oid-begin'] + '.val'), this.data['dwd-format']) + ' - ' : '' %><%== vis.states.attr(this.data['oid-end'] + '.val') ? vis.binds.basic.formatDate(vis.states.attr(this.data['oid-end'] + '.val'), this.data['dwd-format']) : '' %></p>
         </div>
     </div>
 </script>
