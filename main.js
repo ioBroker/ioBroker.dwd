@@ -257,6 +257,9 @@ function doRainradar() {
     return adapter.getForeignObjectAsync('system.config')
         .then(sys_conf => {
             if (!sys_conf) return;
+            const lat = sys_conf.common.latitude;
+            const long = sys_conf.common.longitude;
+            if (!lat || !long) return;
             doRainStates("rainradar.Current.City_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=2&voor=0", "256x256px");
             doRainStates("rainradar.Current.City_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=2b&voor=0", "330x330px");
             doRainStates("rainradar.Current.City_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=3&voor=0", "550x512px");
