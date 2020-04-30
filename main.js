@@ -202,7 +202,10 @@ function placeWarning(channelName, warnObj) {
 function processFile(err, data) {
     if (!data) {
         adapter.log.error('Empty or invalid JSON: ' + err);
-        setTimeout(() => adapter.stop());
+        setImmediate(() => {
+            killSwitchTimeout && clearTimeout(killSwitchTimeout);
+            adapter.stop();
+        });
         return;
     }
 
@@ -226,10 +229,14 @@ function processFile(err, data) {
             placeWarning(channels[c], warnings[c]);
         }
     }
-    setTimeout(() => adapter.stop(), 0);
+    setImmediate(() => {
+        killSwitchTimeout && clearTimeout(killSwitchTimeout);
+        adapter.stop();
+    });
 }
 
-setTimeout(() => {
+let killSwitchTimeout = setTimeout(() => {
+    killSwitchTimeout = null;
     adapter.log.info('force terminating after 4 minutes');
     adapter.stop();
 }, 240000);

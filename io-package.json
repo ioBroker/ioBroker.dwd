@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.4.7",
+        "version": "2.4.8",
         "news": {
+            "2.4.8": {
+                "en": "handle errors better on adapter finish",
+                "de": "Behandeln Sie Fehler besser, wenn der Adapter fertig ist",
+                "ru": "лучше обрабатывать ошибки при отделке адаптера",
+                "pt": "lida melhor com os erros no acabamento do adaptador",
+                "nl": "omgaan met fouten beter op adapterafwerking",
+                "fr": "mieux gérer les erreurs sur la finition de l'adaptateur",
+                "it": "gestire meglio gli errori sulla finitura dell'adattatore",
+                "es": "manejar mejor los errores en el acabado del adaptador",
+                "pl": "lepiej radzić sobie z błędami na wykończeniu adaptera",
+                "zh-cn": "在适配器完成时更好地处理错误"
+            },
             "2.4.7": {
                 "en": "fix crash with js-controller 3.0, added sentry for error reporting",
                 "de": "Absturz mit js-controller 3.0 behoben, Wachposten für Fehlerberichterstattung hinzugefügt",
