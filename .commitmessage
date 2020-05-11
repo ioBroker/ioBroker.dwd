@@ -1,0 +1,3 @@
+chore: release v2.4.9
+
+Better handle errors when adapter ends (Sentry IOBROKER-DWD-1)

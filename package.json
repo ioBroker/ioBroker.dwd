@@ -1,50 +1,50 @@
 {
-    "name": "iobroker.dwd",
-    "description": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
-    "version": "2.4.8",
-    "author": {
-        "name": "bluefox",
-        "email": "dogafox@gmail.com"
-    },
-    "contributors": [
-        {
-            "name": "bluefox",
-            "email": "dogafox@gmail.com"
-        }
-    ],
-    "homepage": "https://github.com/ioBroker/ioBroker.dwd",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.dwd"
-    },
-    "license": "MIT",
-    "keywords": [
-        "ioBroker",
-        "wetter",
-        "weather",
-        "home automation"
-    ],
-    "dependencies": {
-        "request": "^2.88.2",
-        "@iobroker/adapter-core": "^2.3.1"
-    },
-    "devDependencies": {
-        "chai": "^4.2.0",
-        "gulp": "^4.0.2",
-        "mocha": "^7.1.1"
-    },
-    "bugs": {
-        "url": "https://github.com/ioBroker/ioBroker.dwd/issues"
-    },
-    "main": "main.js",
-    "scripts": {
-        "test": "node node_modules/mocha/bin/mocha --exit"
-    },
-    "maintainers": [
-        {
-            "name": "bluefox",
-            "email": "dogafox@gmail.com"
-        }
-    ],
-    "readmeFilename": "README.md"
+  "name": "iobroker.dwd",
+  "description": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
+  "version": "2.4.9",
+  "author": {
+    "name": "bluefox",
+    "email": "dogafox@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "bluefox",
+      "email": "dogafox@gmail.com"
+    }
+  ],
+  "homepage": "https://github.com/ioBroker/ioBroker.dwd",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.dwd"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "wetter",
+    "weather",
+    "home automation"
+  ],
+  "dependencies": {
+    "request": "^2.88.2",
+    "@iobroker/adapter-core": "^2.3.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "gulp": "^4.0.2",
+    "mocha": "^7.1.1"
+  },
+  "bugs": {
+    "url": "https://github.com/ioBroker/ioBroker.dwd/issues"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha --exit"
+  },
+  "maintainers": [
+    {
+      "name": "bluefox",
+      "email": "dogafox@gmail.com"
+    }
+  ],
+  "readmeFilename": "README.md"
 }

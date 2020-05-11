@@ -237,8 +237,8 @@ function processFile(err, data) {
 
 let killSwitchTimeout = setTimeout(() => {
     killSwitchTimeout = null;
-    adapter.log.info('force terminating after 4 minutes');
-    adapter.stop();
+    adapter && adapter.log && adapter.log.info('force terminating after 4 minutes');
+    adapter && adapter.stop();
 }, 240000);
 
 // Function to handle state creation
