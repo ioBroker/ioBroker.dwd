@@ -48,6 +48,7 @@ const adapterName = require('./package.json').name.split('.').pop();
 
 let channels = [];
 let iopkg;
+let isStopped = false;
 
 let adapter = new utils.Adapter({
     name: adapterName,
@@ -205,6 +206,7 @@ function processFile(err, data) {
         setImmediate(() => {
             killSwitchTimeout && clearTimeout(killSwitchTimeout);
             adapter.stop();
+            isStopped = true;
         });
         return;
     }
@@ -232,11 +234,13 @@ function processFile(err, data) {
     setImmediate(() => {
         killSwitchTimeout && clearTimeout(killSwitchTimeout);
         adapter.stop();
+        isStopped = true;
     });
 }
 
 let killSwitchTimeout = setTimeout(() => {
     killSwitchTimeout = null;
+    if (isStopped) return;
     adapter && adapter.log && adapter.log.info('force terminating after 4 minutes');
     adapter && adapter.stop();
 }, 240000);

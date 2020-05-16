@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.4.9",
+        "version": "2.4.10",
         "news": {
+            "2.4.10": {
+                "en": "Better handle errors when adapter ends (again Sentry)",
+                "de": "Behandeln Sie Fehler besser, wenn der Adapter endet (wieder Sentry)",
+                "ru": "Лучше обрабатывать ошибки, когда адаптер заканчивается (снова Sentry)",
+                "pt": "Melhor manipulação de erros quando o adaptador termina (novamente Sentry)",
+                "nl": "Betere afhandeling van fouten wanneer adapter eindigt (opnieuw Sentry)",
+                "fr": "Mieux gérer les erreurs lorsque l'adaptateur se termine (à nouveau Sentry)",
+                "it": "Gestire meglio gli errori al termine dell'adattatore (di nuovo Sentry)",
+                "es": "Mejor manejo de errores cuando el adaptador termina (nuevamente Sentry)",
+                "pl": "Lepsza obsługa błędów po zakończeniu adaptera (ponownie Sentry)",
+                "zh-cn": "适配器结束时更好地处理错误（再次使用Sentry）"
+            },
             "2.4.9": {
                 "en": "Better handle errors when adapter ends (Sentry IOBROKER-DWD-1)",
                 "de": "Fehler besser behandeln, wenn der Adapter endet (Sentry IOBROKER-DWD-1)",
