@@ -49,72 +49,84 @@ const adapterName = require('./package.json').name.split('.').pop();
 let channels = [];
 let iopkg;
 let isStopped = false;
+let adapter;
 
-let adapter = new utils.Adapter({
-    name: adapterName,
-    useFormatDate: true
-});
-
-adapter.on('ready', () => {
-    adapter.config.warnings = parseInt(adapter.config.warnings, 10) || 1;
-
-    adapter.config.url = adapter.config.url || 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
-
-    adapter.getForeignObjects(adapter.namespace + '.*', 'state', (err, states) => {
-        for (const s in states) {
-            if (states.hasOwnProperty(s)) {
-                let chName = s.split('.');
-                chName.pop();
-                chName = chName.join('.');
-                if (channels.indexOf(chName) === -1) channels.push(chName);
-            }
+function startAdapter(options) {
+    options = options || {};
+    Object.assign(options, {
+        name: adapterName,
+        useFormatDate: true,
+        unload: cb => {
+            killSwitchTimeout && clearTimeout(killSwitchTimeout);
+            killSwitchTimeout = null;
+            cb && cb();
         }
-        if (channels.length > adapter.config.warnings) {
-            // delete warnings
-            let toDelete = [];
-            for (let i = adapter.config.warnings; i < channels.length; i++) {
-                toDelete.push(channels[i] + '.begin');
-                toDelete.push(channels[i] + '.end');
-                toDelete.push(channels[i] + '.severity');
-                toDelete.push(channels[i] + '.level');
-                toDelete.push(channels[i] + '.type');
-                toDelete.push(channels[i] + '.text');
-                toDelete.push(channels[i] + '.headline');
-                toDelete.push(channels[i] + '.description');
-                toDelete.push(channels[i] + '.object');
-                toDelete.push(channels[i] + '.map');
-                toDelete.push(channels[i]);
+    });
+    adapter = new utils.Adapter(options);
+
+    adapter.on('ready', () => {
+        adapter.config.warnings = parseInt(adapter.config.warnings, 10) || 1;
+
+        adapter.config.url = adapter.config.url || 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
+
+        adapter.getForeignObjects(adapter.namespace + '.*', 'state', (err, states) => {
+            for (const s in states) {
+                if (states.hasOwnProperty(s)) {
+                    let chName = s.split('.');
+                    chName.pop();
+                    chName = chName.join('.');
+                    if (channels.indexOf(chName) === -1) channels.push(chName);
+                }
             }
-            deleteObjects(toDelete);
-            channels.splice(adapter.config.warnings, channels.length);
-            checkNames(ready);
-        } else if (channels.length < adapter.config.warnings){
-            let toAdd = [];
-            // add warnings
-            for (let j = channels.length; j < adapter.config.warnings; j++) {
-                toAdd.push(adapter.namespace + '.warning' + j);
-                toAdd.push(adapter.namespace + '.warning' + j + '.begin');
-                toAdd.push(adapter.namespace + '.warning' + j + '.end');
-                toAdd.push(adapter.namespace + '.warning' + j + '.severity');
-                toAdd.push(adapter.namespace + '.warning' + j + '.level');
-                toAdd.push(adapter.namespace + '.warning' + j + '.type');
-                toAdd.push(adapter.namespace + '.warning' + j + '.text');
-                toAdd.push(adapter.namespace + '.warning' + j + '.headline');
-                toAdd.push(adapter.namespace + '.warning' + j + '.description');
-                toAdd.push(adapter.namespace + '.warning' + j + '.object');
-                toAdd.push(adapter.namespace + '.warning' + j + '.map');
-                channels.push(adapter.namespace + '.warning' + j);
+            if (channels.length > adapter.config.warnings) {
+                // delete warnings
+                let toDelete = [];
+                for (let i = adapter.config.warnings; i < channels.length; i++) {
+                    toDelete.push(channels[i] + '.begin');
+                    toDelete.push(channels[i] + '.end');
+                    toDelete.push(channels[i] + '.severity');
+                    toDelete.push(channels[i] + '.level');
+                    toDelete.push(channels[i] + '.type');
+                    toDelete.push(channels[i] + '.text');
+                    toDelete.push(channels[i] + '.headline');
+                    toDelete.push(channels[i] + '.description');
+                    toDelete.push(channels[i] + '.object');
+                    toDelete.push(channels[i] + '.map');
+                    toDelete.push(channels[i]);
+                }
+                deleteObjects(toDelete);
+                channels.splice(adapter.config.warnings, channels.length);
+                checkNames(ready);
+            } else if (channels.length < adapter.config.warnings) {
+                let toAdd = [];
+                // add warnings
+                for (let j = channels.length; j < adapter.config.warnings; j++) {
+                    toAdd.push(adapter.namespace + '.warning' + j);
+                    toAdd.push(adapter.namespace + '.warning' + j + '.begin');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.end');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.severity');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.level');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.type');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.text');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.headline');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.description');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.object');
+                    toAdd.push(adapter.namespace + '.warning' + j + '.map');
+                    channels.push(adapter.namespace + '.warning' + j);
+                }
+                addObjects(toAdd, () => checkNames(ready));
+            } else {
+                checkNames(ready);
             }
-            addObjects(toAdd, () => checkNames(ready));
-        } else {
-            checkNames(ready);
+        });
+
+        if (adapter.config.rainRadar === true) {
+            doRainRadar();
         }
     });
 
-    if (adapter.config.rainRadar === true) {
-        doRainradar();
-    }
-});
+    return adapter;
+}
 
 function deleteObjects(objs) {
     if (!objs && !objs.length) {
@@ -122,41 +134,35 @@ function deleteObjects(objs) {
     }
     const id = objs.pop();
 
-    adapter.delForeignObject(id, err => {
-        if (err) {
-            return;
-        }
-        adapter.delForeignState(id, err =>
-            setTimeout(deleteObjects, 0, objs));
-    });
+    adapter.delForeignObject(id, err =>
+        !err && adapter.delForeignState(id, err =>
+            setImmediate(deleteObjects, objs)));
 }
 
 function addObjects(objs, cb) {
     iopkg = iopkg || require('./io-package.json');
 
     if (!objs || !objs.length) {
-        cb && cb();
-        return;
+        return cb && cb();
     }
     const id = objs.pop();
     const _id = id.replace(/warning\d+/, 'warning');
     for (let i = 0; i < iopkg.instanceObjects.length; i++) {
         if (adapter.namespace + '.' + iopkg.instanceObjects[i]._id === _id) {
             const obj = iopkg.instanceObjects[i];
-            adapter.setForeignObject(id, obj, err => {
+            return adapter.setForeignObject(id, obj, err => {
                 if (err) adapter.log.error(err);
                 if (obj.type === 'state') {
                     adapter.setForeignState(id, '', true, err =>
-                        setTimeout(addObjects, 0, objs, cb));
+                        setImmediate(addObjects, objs, cb));
                 } else {
-                    setTimeout(addObjects, 0, objs, cb);
+                    setImmediate(addObjects, objs, cb);
                 }
             });
-            return;
         }
     }
     adapter.log.warn('Object ' + id + ' not found');
-    setTimeout(addObjects, 0, objs, cb);
+    setImmediate(addObjects, objs, cb);
 }
 
 function checkNames(cb) {
@@ -203,12 +209,11 @@ function placeWarning(channelName, warnObj) {
 function processFile(err, data) {
     if (!data) {
         adapter.log.error('Empty or invalid JSON: ' + err);
-        setImmediate(() => {
+        return setImmediate(() => {
             killSwitchTimeout && clearTimeout(killSwitchTimeout);
-            adapter.stop();
             isStopped = true;
+            adapter.terminate();
         });
-        return;
     }
 
     if (data.warnings) {
@@ -233,16 +238,17 @@ function processFile(err, data) {
     }
     setImmediate(() => {
         killSwitchTimeout && clearTimeout(killSwitchTimeout);
-        adapter.stop();
         isStopped = true;
+        adapter.stop ? adapter.stop() : adapter.terminate();
     });
 }
 
 let killSwitchTimeout = setTimeout(() => {
     killSwitchTimeout = null;
-    if (isStopped) return;
-    adapter && adapter.log && adapter.log.info('force terminating after 4 minutes');
-    adapter && adapter.stop();
+    if (!isStopped) {
+        adapter && adapter.log && adapter.log.info('force terminating after 4 minutes');
+        adapter && adapter.stop && adapter.stop();
+    }
 }, 240000);
 
 // Function to handle state creation
@@ -258,13 +264,13 @@ function doRainStates(device, value, name){
             write: false,
         },
         native: {}
-    }).then(() => {
-        // Store links
-        adapter.setState(device, value, true);
-    });
+    })
+        .then(() =>
+            // Store links
+            adapter.setState(device, value, true));
 }
 
-function doRainradar() {
+function doRainRadar() {
     return adapter.getForeignObjectAsync('system.config')
         .then(sys_conf => {
             if (!sys_conf) return;
@@ -303,4 +309,12 @@ function doRainradar() {
             doRainStates("rainradar.Forecast_3h.Country_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=2b&voor=1", "330x330px");
             doRainStates("rainradar.Forecast_3h.Country_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=3&voor=1", "550x512px");
         });
+}
+
+// If started as allInOne/compact mode => return function to create instance
+if (module && module.parent) {
+    module.exports = startAdapter;
+} else {
+    // or start the instance directly
+    startAdapter();
 }

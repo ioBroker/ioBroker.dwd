@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.4.10",
+        "version": "2.5.0",
         "news": {
+            "2.5.0": {
+                "en": "Compact mode is supported",
+                "de": "Der Kompaktmodus wird unterstützt",
+                "ru": "Компактный режим поддерживается",
+                "pt": "O modo compacto é suportado",
+                "nl": "Compacte modus wordt ondersteund",
+                "fr": "Le mode compact est pris en charge",
+                "it": "La modalità compatta è supportata",
+                "es": "El modo compacto es compatible",
+                "pl": "Obsługiwany jest tryb kompaktowy",
+                "zh-cn": "支持紧凑模式"
+            },
             "2.4.10": {
                 "en": "Better handle errors when adapter ends (again Sentry)",
                 "de": "Behandeln Sie Fehler besser, wenn der Adapter endet (wieder Sentry)",
@@ -98,39 +110,6 @@
                 "es": "Estados agregados para mostrar el mapa del radar de lluvia para su ubicación.",
                 "pl": "Dodano stany, aby pokazać deszczową mapę radarową dla Twojej lokalizacji.",
                 "zh-cn": "添加状态以显示您所在位置的雨雷达地图。"
-            },
-            "2.4.3": {
-                "en": "Invalid certificate are accepted too ",
-                "de": "Ein ungültiges Zertifikat wird ebenfalls akzeptiert",
-                "ru": "Недействительный сертификат также принимается",
-                "pt": "Certificado inválido também é aceito",
-                "nl": "Ongeldig certificaat wordt ook geaccepteerd",
-                "fr": "Le certificat invalide est également accepté",
-                "it": "Sono accettati anche certificati non validi",
-                "es": "Certificado inválido son aceptados también",
-                "pl": "Nieprawidłowy certyfikat jest również akceptowany"
-            },
-            "2.4.2": {
-                "en": "Updated cities",
-                "de": "Aktualisierte Städte",
-                "ru": "Обновленные города",
-                "pt": "Cidades atualizadas",
-                "nl": "Bijgewerkte steden",
-                "fr": "Villes mises à jour",
-                "it": "Città aggiornate",
-                "es": "Ciudades actualizadas",
-                "pl": "Zaktualizowane miasta"
-            },
-            "2.4.0": {
-                "en": "Updated package versions\nUpdated cities\nMap was added",
-                "de": "Aktualisierte Paketversionen\nAktualisierte Städte\nKarte wurde hinzugefügt",
-                "ru": "Обновленные версии пакетов\nОбновленные города\nКарта была добавлена",
-                "pt": "Versões atualizadas do pacote\nCidades atualizadas\nMapa foi adicionado",
-                "nl": "Bijgewerkte pakketversies\nBijgewerkte steden\nKaart is toegevoegd",
-                "fr": "Mise à jour des versions\nVilles mises à jour\nLa carte a été ajoutée",
-                "it": "Versioni del pacchetto aggiornate\nCittà aggiornate\nLa mappa è stata aggiunta",
-                "es": "Versiones de paquete actualizadas\nCiudades actualizadas\nMapa fue agregado",
-                "pl": "Zaktualizowane wersje pakietów\nZaktualizowane miasta\nDodano mapę"
             }
         },
         "mode": "schedule",
@@ -154,6 +133,7 @@
             "bluefox <dogafox@gmail.com>"
         ],
         "license": "MIT",
+        "compact": true,
         "readme": "https://github.com/ioBroker/ioBroker.dwd/blob/master/README.md",
         "icon": "dwd.png",
         "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png",
