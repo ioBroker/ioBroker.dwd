@@ -59,7 +59,39 @@
         "",        // 17 -
         "",        // 18 -
         "#fe68fe", // 19 - UV-Warnung
-        "",        // 6 -
+        "",        // 20 -
+		"",        // 21 -
+		"",        // 22 -
+		"",        // 23 -
+		"",        // 24 -
+		"",        // 25 -
+		"",        // 26 -
+		"",        // 27 -
+		"",        // 28 -
+		"",        // 29 -
+		"",        // 30 -
+		"",        // 31 -
+		"",        // 32 -
+		"",        // 33 -
+		"",        // 34 -
+		"",        // 35 -
+		"",        // 36 -
+		"",        // 37 -
+		"",        // 38 -
+		"",        // 39 -
+		"",        // 40 -
+		"",        // 41 -
+		"",        // 42 -
+		"",        // 43 -
+		"",        // 44 -
+		"",        // 45 -
+		"",        // 46 -
+		"",        // 47 -
+		"",        // 48 -
+		"",        // 49 -
+		"#e966fe", // 50 - starke Hitze
+		"#f933fe", // 51 - extreme Hitze
+		"",        //
     ];
     %>
     <div class="vis-widget <%== this.data.attr('class') %>" style="width: 160px; height: 21px; font-family: Arial" id="<%= this.data.attr('wid') %>">
@@ -81,28 +113,60 @@
     <div class="vis-widget <%== this.data.attr('class') %>" style="width: 585px; height: 85px; font-family: Arial" id="<%= this.data.attr('wid') %>">
         <%
 		var dwdBackground = [
-			"",        // 0
-			"#ffeb3b", // 1 - Wetterwarnungen (Stufe 1)
-			"#fb8c00", // 2 - Warnungen vor markantem Wetter (Stufe 2)
-			"#e53935", // 3 - Unwetterwarnungen (Stufe 3)
-			"#880e4f", // 4 - Warnungen vor extremem Unwetter (Stufe 4)
-			"",        // 5 -
-			"",        // 6 -
-			"",        // 7 -
-			"",        // 8 -
-			"#c99afe", // 9 - Hitzewarnung
-			"",        // 10
-			"#c9f",    // 11 - Keine Warnungen
-			"",        // 12 -
-			"",        // 13 -
-			"",        // 14 -
-			"",        // 15 -
-			"",        // 16 -
-			"",        // 17 -
-			"",        // 18 -
-			"#fe68fe", // 19 - UV-Warnung
-			"",        // 6 -
-		];
+        	"",        // 0
+        	"#ffeb3b", // 1 - Wetterwarnungen (Stufe 1)
+        	"#fb8c00", // 2 - Warnungen vor markantem Wetter (Stufe 2)
+        	"#e53935", // 3 - Unwetterwarnungen (Stufe 3)
+        	"#880e4f", // 4 - Warnungen vor extremem Unwetter (Stufe 4)
+        	"",        // 5 -
+        	"",        // 6 -
+        	"",        // 7 -
+        	"",        // 8 -
+        	"#c99afe", // 9 - Hitzewarnung
+        	"",        // 10
+        	"#c9f",    // 11 - Keine Warnungen
+        	"",        // 12 -
+        	"",        // 13 -
+        	"",        // 14 -
+        	"",        // 15 -
+        	"",        // 16 -
+        	"",        // 17 -
+        	"",        // 18 -
+        	"#fe68fe", // 19 - UV-Warnung
+        	"",        // 20 -
+		"",        // 21 -
+		"",        // 22 -
+		"",        // 23 -
+		"",        // 24 -
+		"",        // 25 -
+		"",        // 26 -
+		"",        // 27 -
+		"",        // 28 -
+		"",        // 29 -
+		"",        // 30 -
+		"",        // 31 -
+		"",        // 32 -
+		"",        // 33 -
+		"",        // 34 -
+		"",        // 35 -
+		"",        // 36 -
+		"",        // 37 -
+		"",        // 38 -
+		"",        // 39 -
+		"",        // 40 -
+		"",        // 41 -
+		"",        // 42 -
+		"",        // 43 -
+		"",        // 44 -
+		"",        // 45 -
+		"",        // 46 -
+		"",        // 47 -
+		"",        // 48 -
+		"",        // 49 -
+		"#e966fe", // 50 - starke Hitze
+		"#f933fe", // 51 - extreme Hitze
+		"",        //
+    ];
         %>
         <div class="vis-widget-body" style="padding: 3px; background-color: <%= dwdBackground[parseInt(vis.states.attr(this.data['oid-severity'] + '.val'), 10)] %>;">
             <div style="font-size: 1.5em; font-weight: bold;" data-oid="<%= this.data.attr('oid-headline') %>">
