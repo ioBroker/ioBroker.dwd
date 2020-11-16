@@ -239,7 +239,7 @@ function processFile(err, data) {
     setImmediate(() => {
         killSwitchTimeout && clearTimeout(killSwitchTimeout);
         isStopped = true;
-        adapter.stop ? adapter.stop() : adapter.terminate();
+        adapter && adapter.terminate ? adapter.terminate() : process.exit(0);
     });
 }
 
@@ -247,7 +247,7 @@ let killSwitchTimeout = setTimeout(() => {
     killSwitchTimeout = null;
     if (!isStopped) {
         adapter && adapter.log && adapter.log.info('force terminating after 4 minutes');
-        adapter && adapter.stop && adapter.stop();
+        adapter && adapter.terminate ? adapter.terminate() : process.exit(0);
     }
 }, 240000);
 
