@@ -19,7 +19,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.5.1 (2020-11-17)
 * (Apollon77) Crash prevented (Sentry IOBROKER-DWD-F)
 * (Homoran) Add background colors for new conditions
 

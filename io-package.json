@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.5.0",
+        "version": "2.5.1",
         "news": {
+            "2.5.1": {
+                "en": "Crash prevented (Sentry IOBROKER-DWD-F)\nAdd background colors for new conditions",
+                "de": "Absturz verhindert (Sentry IOBROKER-DWD-F)\nFügen Sie Hintergrundfarben für neue Bedingungen hinzu",
+                "ru": "Сбой предотвращен (Sentry IOBROKER-DWD-F)\nДобавьте цвета фона для новых условий",
+                "pt": "Falha evitada (Sentinela IOBROKER-DWD-F)\nAdicione cores de fundo para novas condições",
+                "nl": "Crash voorkomen (Sentry IOBROKER-DWD-F)\nVoeg achtergrondkleuren toe voor nieuwe omstandigheden",
+                "fr": "Crash évité (Sentry IOBROKER-DWD-F)\nAjouter des couleurs d'arrière-plan pour de nouvelles conditions",
+                "it": "Crash prevenuto (Sentry IOBROKER-DWD-F)\nAggiungi colori di sfondo per nuove condizioni",
+                "es": "Choque prevenido (Sentry IOBROKER-DWD-F)\nAgregue colores de fondo para nuevas condiciones",
+                "pl": "Zapobieganie awariom (Sentry IOBROKER-DWD-F)\nDodaj kolory tła dla nowych warunków",
+                "zh-cn": "防止崩溃（Sentry IOBROKER-DWD-F）\n添加新条件的背景色"
+            },
             "2.5.0": {
                 "en": "Compact mode is supported",
                 "de": "Der Kompaktmodus wird unterstützt",
