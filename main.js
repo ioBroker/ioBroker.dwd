@@ -216,6 +216,7 @@ function processFile(err, data) {
         });
     }
 
+    adapter.log.debug('Data: ' + data);
     if (data.warnings) {
         let warnings = [];
         Object.keys(data.warnings).forEach(w => {
