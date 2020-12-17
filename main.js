@@ -78,10 +78,13 @@ function startAdapter(options) {
                     if (channels.indexOf(chName) === -1) channels.push(chName);
                 }
             }
+            adapter.log.debug('Warnings configured: ' + adapter.config.warnings);
+            adapter.log.debug('Existing Channels: ' + JSON.stringify(channels));
             if (channels.length > adapter.config.warnings) {
                 // delete warnings
                 let toDelete = [];
                 for (let i = adapter.config.warnings; i < channels.length; i++) {
+                    adapter.log.debug('Delete channel ' + i + ': ' + channels[i]);
                     toDelete.push(channels[i] + '.begin');
                     toDelete.push(channels[i] + '.end');
                     toDelete.push(channels[i] + '.severity');
@@ -96,11 +99,13 @@ function startAdapter(options) {
                 }
                 deleteObjects(toDelete);
                 channels.splice(adapter.config.warnings, channels.length);
+                adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
                 checkNames(ready);
             } else if (channels.length < adapter.config.warnings) {
                 let toAdd = [];
                 // add warnings
                 for (let j = channels.length; j < adapter.config.warnings; j++) {
+                    adapter.log.debug('Add channel ' + j + ': ' + channels[j]);
                     toAdd.push(adapter.namespace + '.warning' + j);
                     toAdd.push(adapter.namespace + '.warning' + j + '.begin');
                     toAdd.push(adapter.namespace + '.warning' + j + '.end');
@@ -114,8 +119,12 @@ function startAdapter(options) {
                     toAdd.push(adapter.namespace + '.warning' + j + '.map');
                     channels.push(adapter.namespace + '.warning' + j);
                 }
-                addObjects(toAdd, () => checkNames(ready));
+                addObjects(toAdd, () => {
+                    adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
+                    checkNames(ready)
+                });
             } else {
+                adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
                 checkNames(ready);
             }
         });
@@ -176,6 +185,7 @@ function checkNames(cb) {
         });
     }
     channels.sort();
+    adapter.log.debug('Sorted Channels: ' + JSON.stringify(channels));
     cb && cb();
 }
 
@@ -232,8 +242,10 @@ function processFile(err, data) {
         });
 
         warnings.sort(tools.sort);
+        adapter.log.debug('Sorted Warnings: ' + JSON.stringify(warnings));
 
         for (let c = 0; c < channels.length; c++) {
+            adapter.log.debug('Write warnings for ' + c + ': ' + channels[c] + ' = ' + JSON.stringify(warnings[c]));
             placeWarning(channels[c], warnings[c]);
         }
     }
