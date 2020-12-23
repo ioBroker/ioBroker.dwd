@@ -72,6 +72,7 @@ function startAdapter(options) {
         adapter.getForeignObjects(adapter.namespace + '.*', 'state', (err, states) => {
             for (const s in states) {
                 if (states.hasOwnProperty(s)) {
+                    if (!s.startsWith(adapter.namespace + '.warning')) continue;
                     let chName = s.split('.');
                     chName.pop();
                     chName = chName.join('.');
@@ -226,7 +227,7 @@ function processFile(err, data) {
         });
     }
 
-    adapter.log.debug('Data: ' + data);
+    adapter.log.debug('Data: ' + JSON.stringify(data));
     if (data.warnings) {
         let warnings = [];
         Object.keys(data.warnings).forEach(w => {
