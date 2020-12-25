@@ -158,7 +158,12 @@
             "sentry": {
                 "dsn": "https://4ddc70db4b554069a5595f0382c27e3f@sentry.iobroker.net/50"
             }
-        }
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=1.5.8"
+            }
+        ]
     },
     "native": {
         "url": "http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json",
