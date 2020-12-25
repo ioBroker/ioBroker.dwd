@@ -19,7 +19,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.5.2 (2020-12-25)
 * (Apollon77) fix state cleanup for warnings to prevent invalid ones to be deleted
 
 ### 2.5.1 (2020-11-17)

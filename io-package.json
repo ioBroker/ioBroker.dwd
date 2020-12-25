@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.5.1",
+        "version": "2.5.2",
         "news": {
+            "2.5.2": {
+                "en": "fix state cleanup for warnings to prevent invalid ones to be deleted",
+                "de": "Korrektur der Statusbereinigung für Warnungen, um zu verhindern, dass ungültige gelöscht werden",
+                "ru": "исправить состояние очистки предупреждений, чтобы предотвратить удаление недействительных",
+                "pt": "consertar a limpeza do estado de avisos para evitar que os inválidos sejam excluídos",
+                "nl": "repareer statusopruiming voor waarschuwingen om te voorkomen dat ongeldige worden verwijderd",
+                "fr": "corriger le nettoyage de l'état des avertissements pour empêcher la suppression des messages non valides",
+                "it": "correggere la pulizia dello stato per gli avvisi per impedire l'eliminazione di quelli non validi",
+                "es": "corregir la limpieza del estado de las advertencias para evitar que se eliminen las no válidas",
+                "pl": "naprawiono czyszczenie stanu ostrzeżeń, aby zapobiec usuwaniu nieprawidłowych",
+                "zh-cn": "修复警告的状态清除，以防止删除无效的警告"
+            },
             "2.5.1": {
                 "en": "Crash prevented (Sentry IOBROKER-DWD-F)\nAdd background colors for new conditions",
                 "de": "Absturz verhindert (Sentry IOBROKER-DWD-F)\nFügen Sie Hintergrundfarben für neue Bedingungen hinzu",
