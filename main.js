@@ -120,6 +120,7 @@ function startAdapter(options) {
                     toAdd.push(adapter.namespace + '.warning' + j + '.map');
                     channels.push(adapter.namespace + '.warning' + j);
                 }
+                toAdd.push(adapter.namespace + '.numberofwarnings');
                 addObjects(toAdd, () => {
                     adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
                     checkNames(ready)
@@ -244,6 +245,7 @@ function processFile(err, data) {
 
         warnings.sort(tools.sort);
         adapter.log.debug('Sorted Warnings: ' + JSON.stringify(warnings));
+        adapter.setForeignState(adapter.namespace + '.numberofwarnings', warnings.length, true);
 
         for (let c = 0; c < channels.length; c++) {
             adapter.log.debug('Write warnings for ' + c + ': ' + channels[c] + ' = ' + JSON.stringify(warnings[c]));
