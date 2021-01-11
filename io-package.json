@@ -187,6 +187,18 @@
     "objects": [],
     "instanceObjects": [
         {
+            "_id": "numberofwarnings",
+            "type": "state",
+            "common": {
+                "name": "Number of warnings",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },          
+        {
             "_id": "warning",
             "type": "channel",
             "common": {
