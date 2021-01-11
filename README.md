@@ -19,7 +19,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.6.0 (2021-01-11)
 * (maeb3) Add datapoint for number of warnings
 
 ### 2.5.2 (2020-12-25)

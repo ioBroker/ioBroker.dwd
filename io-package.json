@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.5.2",
+        "version": "2.6.0",
         "news": {
+            "2.6.0": {
+                "en": "Add datapoint for number of warnings",
+                "de": "Fügen Sie einen Datenpunkt für die Anzahl der Warnungen hinzu",
+                "ru": "Добавить точку данных для количества предупреждений",
+                "pt": "Adicionar ponto de dados para número de avisos",
+                "nl": "Voeg datapunt toe voor het aantal waarschuwingen",
+                "fr": "Ajouter un point de données pour le nombre d'avertissements",
+                "it": "Aggiungi datapoint per il numero di avvisi",
+                "es": "Agregar punto de datos para el número de advertencias",
+                "pl": "Dodaj punkt danych dla liczby ostrzeżeń",
+                "zh-cn": "添加数据点以获取警告数量"
+            },
             "2.5.2": {
                 "en": "fix state cleanup for warnings to prevent invalid ones to be deleted",
                 "de": "Korrektur der Statusbereinigung für Warnungen, um zu verhindern, dass ungültige gelöscht werden",
@@ -197,7 +209,7 @@
                 "write": false
             },
             "native": {}
-        },          
+        },
         {
             "_id": "warning",
             "type": "channel",
