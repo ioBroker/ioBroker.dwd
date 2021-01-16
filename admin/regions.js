@@ -128,7 +128,7 @@ var regions = [
     "Kreis Kulmbach",
     "Kreis Kusel",
     "Kreis Landsberg am Lech",
-    "Kreis Leer",
+    "Kreis Leer (ohne Borkum)",
     "Kreis Leipzig",
     "Kreis Lichtenfels",
     "Kreis Limburg-Weilburg",
