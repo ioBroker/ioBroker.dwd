@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.6.0",
+        "version": "2.6.1",
         "news": {
+            "2.6.1": {
+                "en": "correct Region \"Leer\"",
+                "de": "richtige Region \"Leer\"",
+                "ru": "правильный регион \"Леер\"",
+                "pt": "Região correta \"Leer\"",
+                "nl": "juiste regio \"Leer\"",
+                "fr": "Corriger la région \"Leer\"",
+                "it": "Regione corretta \"Leer\"",
+                "es": "correcta Región \"Leer\"",
+                "pl": "prawidłowy region „Leer”",
+                "zh-cn": "正确的地区“ Leer”"
+            },
             "2.6.0": {
                 "en": "Add datapoint for number of warnings",
                 "de": "Fügen Sie einen Datenpunkt für die Anzahl der Warnungen hinzu",
