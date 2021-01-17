@@ -19,6 +19,9 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) restructure code to not exit before really done with setting all states
+
 ### 2.6.1 (2021-01-16)
 * (wendy2702) correct Region "Leer"
 
