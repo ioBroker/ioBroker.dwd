@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.6.1",
+        "version": "2.7.0",
         "news": {
+            "2.7.0": {
+                "en": "restructure code to not exit before really done with setting all states\njs-controller 2.0 is now required at minimum",
+                "de": "Umstrukturieren Sie den Code so, dass er nicht beendet wird, bevor Sie wirklich alle Zustände festgelegt haben\njs-controller 2.0 ist jetzt mindestens erforderlich",
+                "ru": "реструктурировать код, чтобы он не выходил до того, как действительно будет выполнено с установкой всех состояний\njs-controller 2.0 теперь требуется как минимум",
+                "pt": "reestruturar o código para não sair antes de realmente concluir a configuração de todos os estados\njs-controller 2.0 agora é necessário no mínimo",
+                "nl": "herstructureer code om niet af te sluiten voordat echt klaar is met het instellen van alle staten\njs-controller 2.0 is nu minimaal vereist",
+                "fr": "restructurer le code pour ne pas quitter avant d'avoir vraiment terminé avec la définition de tous les états\njs-controller 2.0 est maintenant requis au minimum",
+                "it": "ristrutturare il codice per non uscire prima di aver veramente finito di impostare tutti gli stati\njs-controller 2.0 è ora richiesto come minimo",
+                "es": "reestructurar el código para no salir antes de terminar realmente con la configuración de todos los estados\njs-controller 2.0 ahora se requiere como mínimo",
+                "pl": "zrestrukturyzuj kod, aby nie kończył pracy, zanim naprawdę nie wykonasz ustawiania wszystkich stanów\njs-controller 2.0 jest teraz wymagany jako minimum",
+                "zh-cn": "重构代码以在真正完成所有状态设置之前不退出\n现在至少需要js-controller 2.0"
+            },
             "2.6.1": {
                 "en": "correct Region \"Leer\"",
                 "de": "richtige Region \"Leer\"",
