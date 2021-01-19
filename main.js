@@ -226,6 +226,7 @@ async function processFile(err, data) {
         adapter.log.error('Kill Switch timeout triggered before response received');
         killSwitchTimeout && clearTimeout(killSwitchTimeout);
         adapter && adapter.terminate ? adapter.terminate() : process.exit(0);
+        return;
     }
 
     if (!data) {
@@ -233,6 +234,7 @@ async function processFile(err, data) {
         killSwitchTimeout && clearTimeout(killSwitchTimeout);
         isStopped = true;
         adapter && adapter.terminate ? adapter.terminate() : process.exit(0);
+        return;
     }
 
     adapter.log.debug('Data: ' + JSON.stringify(data));
