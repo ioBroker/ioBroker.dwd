@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.7.0",
+        "version": "2.7.1",
         "news": {
+            "2.7.1": {
+                "en": "Make sure to end process when no data could be received",
+                "de": "Stellen Sie sicher, dass Sie den Vorgang beenden, wenn keine Daten empfangen werden konnten",
+                "ru": "Обязательно завершите процесс, если данные не могут быть получены",
+                "pt": "Certifique-se de encerrar o processo quando nenhum dado puder ser recebido",
+                "nl": "Zorg ervoor dat u het proces beëindigt als er geen gegevens kunnen worden ontvangen",
+                "fr": "Assurez-vous de terminer le processus lorsqu'aucune donnée n'a pu être reçue",
+                "it": "Assicurati di terminare il processo quando non è stato possibile ricevere dati",
+                "es": "Asegúrese de finalizar el proceso cuando no se puedan recibir datos",
+                "pl": "Zakończ proces, gdy nie można odebrać żadnych danych",
+                "zh-cn": "确保在无法接收数据时结束处理"
+            },
             "2.7.0": {
                 "en": "restructure code to not exit before really done with setting all states\njs-controller 2.0 is now required at minimum",
                 "de": "Umstrukturieren Sie den Code so, dass er nicht beendet wird, bevor Sie wirklich alle Zustände festgelegt haben\njs-controller 2.0 ist jetzt mindestens erforderlich",
