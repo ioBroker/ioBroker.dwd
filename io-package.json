@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.7.1",
+        "version": "2.7.2",
         "news": {
+            "2.7.2": {
+                "en": "Fix issue on deleting old objects",
+                "de": "Problem beim Löschen alter Objekte behoben",
+                "ru": "Исправить проблему с удалением старых объектов",
+                "pt": "Corrija o problema de exclusão de objetos antigos",
+                "nl": "Probleem opgelost met het verwijderen van oude objecten",
+                "fr": "Correction d'un problème de suppression d'anciens objets",
+                "it": "Risolto il problema con l'eliminazione dei vecchi oggetti",
+                "es": "Solucionar problema al eliminar objetos antiguos",
+                "pl": "Napraw problem z usuwaniem starych obiektów",
+                "zh-cn": "修复删除旧对象的问题"
+            },
             "2.7.1": {
                 "en": "Make sure to end process when no data could be received",
                 "de": "Stellen Sie sicher, dass Sie den Vorgang beenden, wenn keine Daten empfangen werden konnten",
