@@ -143,7 +143,7 @@ async function deleteObjects(objs) {
     if (!objs && !objs.length) {
         return;
     }
-    for (id of objs) {
+    for (let id of objs) {
         try {
             await adapter.delForeignObjectAsync(id);
             await adapter.delForeignState(id);
