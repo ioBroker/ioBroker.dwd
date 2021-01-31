@@ -162,7 +162,7 @@ var regions = [
     "Kreis Neuburg-Schrobenhausen",
     "Kreis Neumarkt i.d. OPf.",
     "Kreis Neunkirchen",
-    "Kreis Neustadt a.d. Aisch - Bad Windsheim",
+    "Kreis Neustadt a.d. Aisch-Bad Windsheim",
     "Kreis Neustadt a.d. Waldnaab",
     "Kreis Neuwied",
     "Kreis Nienburg",
