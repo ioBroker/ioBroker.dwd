@@ -293,11 +293,23 @@ async function doRainStates(device, value, name){
 }
 
 async function doRainRadar() {
-    const sys_conf = await adapter.getForeignObjectAsync('system.config')
-    if (!sys_conf) return;
+
+    let sys_conf;
+    try {
+        sys_conf = await adapter.getForeignObjectAsync('system.config')
+    } catch (err) {
+        // ognore
+    }
+    if (!sys_conf) {
+        adapter.log.warning('Can not read iobroker system configuration. Disable Rain Radar.');
+        return;
+    }
     const lat = sys_conf.common.latitude;
     const long = sys_conf.common.longitude;
-    if (!lat || !long) return;
+    if (!lat || !long) {
+        adapter.log.warning('No geo coordinates found in iobroker system configuration. Disable Rain Radar.');
+        return;
+    }
     await doRainStates("rainradar.Current.City_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=2&voor=0", "256x256px");
     await doRainStates("rainradar.Current.City_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=2b&voor=0", "330x330px");
     await doRainStates("rainradar.Current.City_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=3&voor=0", "550x512px");
