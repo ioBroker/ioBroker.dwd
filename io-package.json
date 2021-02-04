@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.7.3",
+        "version": "2.7.4",
         "news": {
+            "2.7.4": {
+                "en": "Fix region list entry",
+                "de": "Regionslisteneintrag korrigieren",
+                "ru": "Исправить запись в списке регионов",
+                "pt": "Corrigir entrada da lista de regiões",
+                "nl": "Item in regiolijst repareren",
+                "fr": "Corriger l'entrée de la liste de régions",
+                "it": "Correggi la voce dell'elenco delle regioni",
+                "es": "Corregir la entrada de la lista de regiones",
+                "pl": "Napraw wpis na liście regionów",
+                "zh-cn": "修复区域列表条目"
+            },
             "2.7.2": {
                 "en": "Fix issue on deleting old objects",
                 "de": "Problem beim Löschen alter Objekte behoben",
