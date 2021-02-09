@@ -13,8 +13,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.7.4",
+        "version": "2.7.5",
         "news": {
+            "2.7.5": {
+                "en": "Update region list to the official one completely",
+                "de": "Aktualisieren Sie die Regionsliste vollständig auf die offizielle Liste",
+                "ru": "Обновить список регионов до официального полностью",
+                "pt": "Atualize a lista de regiões para a oficial completamente",
+                "nl": "Werk de regiolijst volledig bij naar de officiële lijst",
+                "fr": "Mettre à jour complètement la liste des régions avec la liste officielle",
+                "it": "Aggiorna completamente l'elenco delle regioni a quello ufficiale",
+                "es": "Actualizar la lista de regiones a la oficial por completo",
+                "pl": "Zaktualizuj całkowicie listę regionów do oficjalnej",
+                "zh-cn": "将区域列表完全更新为官方列表"
+            },
             "2.7.4": {
                 "en": "Fix region list entry",
                 "de": "Regionslisteneintrag korrigieren",
