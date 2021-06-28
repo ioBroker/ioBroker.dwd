@@ -11,7 +11,7 @@ const ioPackage = require('./io-package.json');
 const version = (pkg && pkg.version) ? pkg.version : ioPackage.common.version;
 const fileName = 'words.js';
 const EMPTY = '';
-const translate = require('./lib/tools.js').translateText;
+const translate = require('./lib/gulptools.js').translateText;
 const languages = {
     en: {},
     de: {},
