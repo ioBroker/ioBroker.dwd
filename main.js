@@ -76,11 +76,13 @@ function startAdapter(options) {
         adapter.getForeignObjects(adapter.namespace + '.*', 'state', async (err, states) => {
             for (const s in states) {
                 if (states.hasOwnProperty(s)) {
-                    if (!s.startsWith(adapter.namespace + '.warning')) continue;
+                    if (!s.startsWith(adapter.namespace + '.warning')) {
+                        continue;
+                    }
                     let chName = s.split('.');
                     chName.pop();
                     chName = chName.join('.');
-                    if (channels.indexOf(chName) === -1) channels.push(chName);
+                    !channels.includes(chName) && channels.push(chName);
                 }
             }
             adapter.log.debug('Warnings configured: ' + adapter.config.warnings);
@@ -89,7 +91,7 @@ function startAdapter(options) {
                 // delete warnings
                 let toDelete = [];
                 for (let i = adapter.config.warnings; i < channels.length; i++) {
-                    adapter.log.debug('Delete channel ' + i + ': ' + channels[i]);
+                    adapter.log.debug(`Delete channel ${i}: ${channels[i]}`);
                     toDelete.push(channels[i] + '.begin');
                     toDelete.push(channels[i] + '.end');
                     toDelete.push(channels[i] + '.severity');
@@ -105,33 +107,36 @@ function startAdapter(options) {
                 await deleteObjects(toDelete);
                 channels.splice(adapter.config.warnings, channels.length);
                 adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
-                checkNames(ready);
+                await checkNames();
+                ready();
             } else if (channels.length < adapter.config.warnings) {
                 let toAdd = [];
                 // add warnings
                 for (let j = channels.length; j < adapter.config.warnings; j++) {
                     adapter.log.debug('Add channel ' + j + ': ' + channels[j]);
-                    toAdd.push(adapter.namespace + '.warning' + j);
-                    toAdd.push(adapter.namespace + '.warning' + j + '.begin');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.end');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.severity');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.level');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.type');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.text');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.headline');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.description');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.object');
-                    toAdd.push(adapter.namespace + '.warning' + j + '.map');
-                    channels.push(adapter.namespace + '.warning' + j);
+                    toAdd.push(`${adapter.namespace}.warning${j}`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.begin`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.end`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.severity`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.level`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.type`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.text`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.headline`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.description`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.object`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.map`);
+                    channels.push(`${adapter.namespace}.warning${j}`);
                 }
-                toAdd.push(adapter.namespace + '.numberofwarnings');
-                addObjects(toAdd, () => {
+                toAdd.push(adapter.namespace + '.numberOfWarnings');
+                addObjects(toAdd, async () => {
                     adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
-                    checkNames(ready)
+                    await checkNames();
+                    ready();
                 });
             } else {
                 adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
-                checkNames(ready);
+                await checkNames();
+                ready();
             }
         });
     });
@@ -165,9 +170,9 @@ function addObjects(objs, cb) {
         if (adapter.namespace + '.' + iopkg.instanceObjects[i]._id === _id) {
             const obj = iopkg.instanceObjects[i];
             return adapter.setForeignObject(id, obj, err => {
-                if (err) adapter.log.error(err);
-                if (obj.type === 'state') {
-                    adapter.setForeignState(id, '', true, err =>
+                err && adapter.log.error(err);
+                if (obj.type === 'state' && (obj.def !== undefined || obj.common.type === 'string')) {
+                    adapter.setForeignState(id, obj.def !== undefined ? obj.def : '', true, err =>
                         setImmediate(addObjects, objs, cb));
                 } else {
                     setImmediate(addObjects, objs, cb);
@@ -175,23 +180,24 @@ function addObjects(objs, cb) {
             });
         }
     }
-    adapter.log.warn('Object ' + id + ' not found');
+    adapter.log.warn(`Object ${id} not found`);
     setImmediate(addObjects, objs, cb);
 }
 
-function checkNames(cb) {
+async function checkNames() {
     for (let j = 0; j < channels.length; j++) {
-        adapter.getForeignObject(channels[j], (err, obj) => {
+        try {
+            const obj = await adapter.getForeignObjectAsync(channels[j]);
             if (obj && obj.common.name !== 'DWD Warnung für ' + adapter.config.region) {
                 obj.common.name = 'DWD Warnung für ' + adapter.config.region;
-                adapter.setForeignObject(obj._id, obj, err =>
-                    err && adapter.log.error(err));
+                await adapter.setForeignObject(obj._id, obj);
             }
-        });
+        } catch (error) {
+            adapter.log.error(error);
+        }
     }
     channels.sort();
-    adapter.log.debug('Sorted Channels: ' + JSON.stringify(channels));
-    cb && cb();
+    adapter.log.debug(`Sorted Channels: ${JSON.stringify(channels)}`);
 }
 
 function ready() {
@@ -203,21 +209,21 @@ const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glattei
 async function placeWarning(channelName, warnObj) {
     warnObj = warnObj || {};
     // warnObj.start/end are Milliseconds since epoch and have type number
-    await adapter.setForeignStateAsync(channelName + '.begin',         warnObj.start || null,  true);
-    await adapter.setForeignStateAsync(channelName + '.end',           warnObj.end   || null,    true);
-    await adapter.setForeignStateAsync(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,            true);
-    await adapter.setForeignStateAsync(channelName + '.level',         warnObj.level === undefined || warnObj.level === null ? null : warnObj.level,        true);
-    await adapter.setForeignStateAsync(channelName + '.type',          warnObj.type  === undefined || warnObj.type  === null ? null : warnObj.type,        true);
+    await adapter.setForeignStateAsync(channelName + '.begin',         warnObj.start ? warnObj.start * 1000 : null,  true);
+    await adapter.setForeignStateAsync(channelName + '.end',           warnObj.end ?   warnObj.end   * 1000 : null,  true);
+    await adapter.setForeignStateAsync(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,    true);
+    await adapter.setForeignStateAsync(channelName + '.level',         warnObj.level === undefined || warnObj.level === null ? null : parseInt(warnObj.level, 10), true);
+    await adapter.setForeignStateAsync(channelName + '.type',          warnObj.type  === undefined || warnObj.type  === null ? null : parseInt(warnObj.type, 10), true);
     await adapter.setForeignStateAsync(channelName + '.text',          warnObj.event || '',        true);
     await adapter.setForeignStateAsync(channelName + '.headline',      warnObj.headline || '',     true);
     await adapter.setForeignStateAsync(channelName + '.description',   warnObj.description || '',  true);
     await adapter.setForeignStateAsync(channelName + '.object',        JSON.stringify(warnObj),    true);
-    adapter.log.debug('Add warning "' + channelName + '": ' + (warnObj.start ? new Date(warnObj.start).toISOString() : ''));
+    adapter.log.debug(`Add warning "${channelName}": ${warnObj.start ? new Date(warnObj.start).toISOString() : ''}`);
 
     if (adapter.config.land && warnObj.type !== undefined && warnObj.type !== null) {
-        await adapter.setForeignStateAsync(channelName + '.map',        `https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_${adapter.config.land}_${maps[warnObj.type]}.png`, true);
+        await adapter.setForeignStateAsync(channelName + '.map', `https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_${adapter.config.land}_${maps[warnObj.type]}.png`, true);
     } else {
-        await adapter.setForeignStateAsync(channelName + '.map',        '',    true);
+        await adapter.setForeignStateAsync(channelName + '.map', '', true);
     }
 }
 
@@ -254,10 +260,10 @@ async function processFile(err, data) {
 
         warnings.sort(tools.sort);
         adapter.log.debug('Sorted Warnings: ' + JSON.stringify(warnings));
-        await adapter.setForeignStateAsync(adapter.namespace + '.numberofwarnings', warnings.length, true);
+        await adapter.setForeignStateAsync(adapter.namespace + '.numberOfWarnings', warnings.length, true);
 
         for (let c = 0; c < channels.length; c++) {
-            adapter.log.debug('Write warnings for ' + c + ': ' + channels[c] + ' = ' + JSON.stringify(warnings[c]));
+            adapter.log.debug(`Write warnings for ${c}: ${channels[c]} = ${JSON.stringify(warnings[c])}`);
             await placeWarning(channels[c], warnings[c]);
         }
     }
@@ -293,12 +299,11 @@ async function doRainStates(device, value, name){
 }
 
 async function doRainRadar() {
-
     let sys_conf;
     try {
-        sys_conf = await adapter.getForeignObjectAsync('system.config')
+        sys_conf = await adapter.getForeignObjectAsync('system.config');
     } catch (err) {
-        // ognore
+        // ignore
     }
     if (!sys_conf) {
         adapter.log.warn('Can not read iobroker system configuration. Disable Rain Radar.');
@@ -310,37 +315,37 @@ async function doRainRadar() {
         adapter.log.warn('No geo coordinates found in iobroker system configuration. Disable Rain Radar.');
         return;
     }
-    await doRainStates("rainradar.Current.City_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=2&voor=0", "256x256px");
-    await doRainStates("rainradar.Current.City_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=2b&voor=0", "330x330px");
-    await doRainStates("rainradar.Current.City_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=3&voor=0", "550x512px");
-    await doRainStates("rainradar.Current.Region_small", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=11&size=1&voor=0", "120x220px");
-    await doRainStates("rainradar.Current.Region_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=11&size=2&voor=0", "256x256px");
-    await doRainStates("rainradar.Current.Region_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=11&size=2b&voor=0", "330x330px");
-    await doRainStates("rainradar.Current.Region_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=11&size=3&voor=0", "550x512px");
-    await doRainStates("rainradar.Current.Province_small", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=8&size=1&voor=0", "120x220px");
-    await doRainStates("rainradar.Current.Province_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=8&size=2&voor=0", "256x256px");
-    await doRainStates("rainradar.Current.Province_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=8&size=2b&voor=0", "330x330px");
-    await doRainStates("rainradar.Current.Province_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=8&size=3&voor=0", "550x512px");
-    await doRainStates("rainradar.Current.Country_small", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=1&voor=0", "120x220px");
-    await doRainStates("rainradar.Current.Country_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=2&voor=0", "256x256px");
-    await doRainStates("rainradar.Current.Country_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=2b&voor=0", "330x330px");
-    await doRainStates("rainradar.Current.Country_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=3&voor=0", "550x512px");
-    await doRainStates("rainradar.Forecast_3h.City_small", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=1&voor=1", "120x220px");
-    await doRainStates("rainradar.Forecast_3h.City_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=2&voor=1", "256x256px");
-    await doRainStates("rainradar.Forecast_3h.City_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=2b&voor=1", "330x330px");
-    await doRainStates("rainradar.Forecast_3h.City_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=13&size=3&voor=1", "550x512px");
-    await doRainStates("rainradar.Forecast_3h.Region_small", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=11&size=1&voor=1", "120x220px");
-    await doRainStates("rainradar.Forecast_3h.Region_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=11&size=2&voor=1", "256x256px");
-    await doRainStates("rainradar.Forecast_3h.Region_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=11&size=2b&voor=1", "330x330px");
-    await doRainStates("rainradar.Forecast_3h.Region_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=11&size=3&voor=1", "550x512px");
-    await doRainStates("rainradar.Forecast_3h.Province_small", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=8&size=1&voor=1", "120x220px");
-    await doRainStates("rainradar.Forecast_3h.Province_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=8&size=2&voor=1", "256x256px");
-    await doRainStates("rainradar.Forecast_3h.Province_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=8&size=2b&voor=1", "330x330px");
-    await doRainStates("rainradar.Forecast_3h.Province_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=8&size=3&voor=1", "550x512px");
-    await doRainStates("rainradar.Forecast_3h.Country_small", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=1&voor=1", "120x220px");
-    await doRainStates("rainradar.Forecast_3h.Country_medium", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=2&voor=1", "256x256px");
-    await doRainStates("rainradar.Forecast_3h.Country_tall", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=2b&voor=1", "330x330px");
-    await doRainStates("rainradar.Forecast_3h.Country_huge", "https://gadgets.buienradar.nl/gadget/zoommap/?lat=" + lat + "&lng=" + long + "&overname=2&zoom=6&size=3&voor=1", "550x512px");
+    await doRainStates('rainradar.Current.City_medium', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=13&size=2&voor=0`, '256x256px');
+    await doRainStates('rainradar.Current.City_tall', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=13&size=2b&voor=0`, '330x330px');
+    await doRainStates('rainradar.Current.City_huge', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=13&size=3&voor=0`, '550x512px');
+    await doRainStates('rainradar.Current.Region_small', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=11&size=1&voor=0`, '120x220px');
+    await doRainStates('rainradar.Current.Region_medium', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=11&size=2&voor=0`, '256x256px');
+    await doRainStates('rainradar.Current.Region_tall', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=11&size=2b&voor=0`, '330x330px');
+    await doRainStates('rainradar.Current.Region_huge', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=11&size=3&voor=0`, '550x512px');
+    await doRainStates('rainradar.Current.Province_small', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=8&size=1&voor=0`, '120x220px');
+    await doRainStates('rainradar.Current.Province_medium', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=8&size=2&voor=0`, '256x256px');
+    await doRainStates('rainradar.Current.Province_tall', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=8&size=2b&voor=0`, '330x330px');
+    await doRainStates('rainradar.Current.Province_huge', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=8&size=3&voor=0`, '550x512px');
+    await doRainStates('rainradar.Current.Country_small', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=6&size=1&voor=0`, '120x220px');
+    await doRainStates('rainradar.Current.Country_medium', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=6&size=2&voor=0`, '256x256px');
+    await doRainStates('rainradar.Current.Country_tall', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=6&size=2b&voor=0`, '330x330px');
+    await doRainStates('rainradar.Current.Country_huge', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=6&size=3&voor=0`, '550x512px');
+    await doRainStates('rainradar.Forecast_3h.City_small', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=13&size=1&voor=1`, '120x220px');
+    await doRainStates('rainradar.Forecast_3h.City_medium', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=13&size=2&voor=1`, '256x256px');
+    await doRainStates('rainradar.Forecast_3h.City_tall', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=13&size=2b&voor=1`, '330x330px');
+    await doRainStates('rainradar.Forecast_3h.City_huge', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=13&size=3&voor=1`, '550x512px');
+    await doRainStates('rainradar.Forecast_3h.Region_small', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=11&size=1&voor=1`, '120x220px');
+    await doRainStates('rainradar.Forecast_3h.Region_medium', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=11&size=2&voor=1`, '256x256px');
+    await doRainStates('rainradar.Forecast_3h.Region_tall', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=11&size=2b&voor=1`, '330x330px');
+    await doRainStates('rainradar.Forecast_3h.Region_huge', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=11&size=3&voor=1`, '550x512px');
+    await doRainStates('rainradar.Forecast_3h.Province_small', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=8&size=1&voor=1`, '120x220px');
+    await doRainStates('rainradar.Forecast_3h.Province_medium', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=8&size=2&voor=1`, '256x256px');
+    await doRainStates('rainradar.Forecast_3h.Province_tall', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=8&size=2b&voor=1`, '330x330px');
+    await doRainStates('rainradar.Forecast_3h.Province_huge', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=8&size=3&voor=1`, '550x512px');
+    await doRainStates('rainradar.Forecast_3h.Country_small', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=6&size=1&voor=1`, '120x220px');
+    await doRainStates('rainradar.Forecast_3h.Country_medium', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=6&size=2&voor=1`, '256x256px');
+    await doRainStates('rainradar.Forecast_3h.Country_tall', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=6&size=2b&voor=1`, '330x330px');
+    await doRainStates('rainradar.Forecast_3h.Country_huge', `https://gadgets.buienradar.nl/gadget/zoommap/?lat=${lat}&lng=${long}&overname=2&zoom=6&size=3&voor=1`, '550x512px');
 }
 
 // If started as allInOne/compact mode => return function to create instance

@@ -2,6 +2,9 @@
     "common": {
         "name": "dwd",
         "title": "DWD",
+        "titleLang": {
+            "en": "DWD"
+        },
         "desc": {
             "en": "Weather Warnings from German Weather Service (DWD)",
             "de": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
@@ -222,7 +225,7 @@
         },
         "mode": "schedule",
         "schedule": "*/5 * * * *",
-        "platform": "javascript/Node.js",
+        "platform": "Javascript/Node.js",
         "loglevel": "info",
         "keywords": [
             "weather",
@@ -235,7 +238,6 @@
             "Regen",
             "wind"
         ],
-        "main": "main.js",
         "materialize": true,
         "authors": [
             "bluefox <dogafox@gmail.com>"
@@ -250,6 +252,9 @@
         "type": "weather",
         "connectionType": "cloud",
         "dataSource": "poll",
+        "adminUI": {
+            "config": "json"
+        },
         "plugins": {
             "sentry": {
                 "dsn": "https://4ddc70db4b554069a5595f0382c27e3f@sentry.iobroker.net/50"
@@ -271,14 +276,15 @@
     "objects": [],
     "instanceObjects": [
         {
-            "_id": "numberofwarnings",
+            "_id": "numberOfWarnings",
             "type": "state",
             "common": {
                 "name": "Number of warnings",
                 "type": "number",
                 "role": "value",
                 "read": true,
-                "write": false
+                "write": false,
+                "def": 0
             },
             "native": {}
         },
@@ -296,7 +302,7 @@
             "type": "state",
             "common": {
                 "name": "Warning begin",
-                "type": "string",
+                "type": "number",
                 "role": "value.time",
                 "read": true,
                 "write": false
@@ -308,7 +314,7 @@
             "type": "state",
             "common": {
                 "name": "Warning end",
-                "type": "string",
+                "type": "number",
                 "role": "value.time",
                 "read": true,
                 "write": false
