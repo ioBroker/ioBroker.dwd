@@ -1,13 +1,13 @@
 ![Logo](admin/dwd.png)
 # ioBroker.dwd
 
-![Number of Installations](http://iobroker.live/badges/dwd-installed.svg) 
-![Number of Installations](http://iobroker.live/badges/dwd-stable.svg) 
+![Number of Installations](http://iobroker.live/badges/dwd-installed.svg)
+![Number of Installations](http://iobroker.live/badges/dwd-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
-[![Tests](https://travis-ci.org/ioBroker/ioBroker.dwd.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.dwd)
 
-[![NPM](https://nodei.co/npm/iobroker.dwd.png?downloads=true)](https://nodei.co/npm/iobroker.dwd/)
+![Test and Release](https://github.com/ioBroker/iobroker.dwd/workflows/Test%20and%20Release/badge.svg)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/dwd/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
 
 Copyright Deutscher Wetterdienst
 
