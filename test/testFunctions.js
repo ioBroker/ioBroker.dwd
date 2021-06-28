@@ -1,12 +1,11 @@
-var expect  = require('chai').expect;
-var setup   = require(__dirname + '/lib/setup');
-var request = require('request');
-var tools   = require(__dirname + '/../lib/tools');
+const expect  = require('chai').expect;
+const setup   = require('./lib/setup');
+const tools   = require('../lib/tools');
 
-var objects = null;
-var states  = null;
-var onStateChanged = null;
-var onObjectChanged = null;
+let objects = null;
+let states  = null;
+let onStateChanged = null;
+let onObjectChanged = null;
 
 function checkConnectionOfAdapter(cb, counter) {
     counter = counter || 0;
@@ -15,14 +14,12 @@ function checkConnectionOfAdapter(cb, counter) {
         return;
     }
 
-    states.getState('system.adapter.dwd.0.alive', function (err, state) {
-        if (err) console.error(err);
+    states.getState('system.adapter.dwd.0.alive', (err, state) => {
+        err && console.error(err);
         if (state && state.val) {
             cb && cb();
         } else {
-            setTimeout(function () {
-                checkConnectionOfAdapter(cb, counter + 1);
-            }, 1000);
+            setTimeout(() => checkConnectionOfAdapter(cb, counter + 1), 1000);
         }
     });
 }
@@ -30,8 +27,7 @@ function checkConnectionOfAdapter(cb, counter) {
 function checkValueOfState(id, value, cb, counter) {
     counter = counter || 0;
     if (counter > 20) {
-        cb && cb('Cannot check value Of State ' + id);
-        return;
+        return cb && cb('Cannot check value Of State ' + id);
     }
 
     states.getState(id, function (err, state) {
@@ -42,37 +38,35 @@ function checkValueOfState(id, value, cb, counter) {
         if (state && (value === undefined || state.val === value)) {
             cb && cb();
         } else {
-            setTimeout(function () {
-                checkValueOfState(id, value, cb, counter + 1);
-            }, 500);
+            setTimeout(() =>
+                checkValueOfState(id, value, cb, counter + 1), 500);
         }
     });
 }
 
 function getFile(cb) {
-    var url = 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
-    tools.getFile(url, function (err, data) {
+    let url = 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
+    tools.getFile(url, (err, data) => {
         if (err || !data || !data.warnings || !data.warnings.length) {
             url = __dirname + '/lib/warnings.json';
-            tools.getFile(url, function (err, data) {
-                cb && cb(url, data);
-            });
+            tools.getFile(url, (err, data) =>
+                cb && cb(url, data));
         } else {
             cb && cb(url, data);
         }
     })
 }
-var warnings = [];
+const warnings = [];
 
 describe('Test DWD', function() {
     before('Test DWD: Start js-controller', function (_done) {
         this.timeout(600000); // because of first install from npm
 
-        getFile(function (url, data) {
+        getFile((url, data) => {
             // find first object with warning
-            for (var w in data.warnings) {
-                var arr = data.warnings[w];
-                for (var a = 0; a < arr.length; a++) {
+            for (const w in data.warnings) {
+                const arr = data.warnings[w];
+                for (let a = 0; a < arr.length; a++) {
                     warnings.push(arr[a]);
                 }
             }
@@ -83,24 +77,24 @@ describe('Test DWD', function() {
             console.log('Use: ' + warnings[0].regionName);
 
             setup.setupController(function () {
-                var config = setup.getAdapterConfig();
+                const config = setup.getAdapterConfig();
                 // enable adapter
                 config.common.enabled  = true;
                 config.common.loglevel = 'debug';
 
                 config.native.url      = url;
-                config.native.warnings = "3";
+                config.native.warnings = '3';
                 config.native.region   = warnings[0].regionName;
 
                 setup.setAdapterConfig(config.common, config.native);
 
-                setup.startController(true, function (id, obj) {
+                setup.startController(true, (id, obj) => {
                         onObjectChanged && onObjectChanged(id, obj);
-                    }, function (id, state) {
-                        console.log(id + ': ' + (state ? state.val : 'null'));
+                    }, (id, state) => {
+                        console.log(`${id}: ${state ? state.val : 'null'}`);
                         onStateChanged && onStateChanged(id, state);
                     },
-                    function (_objects, _states) {
+                    (_objects, _states) => {
                         objects = _objects;
                         states  = _states;
                         states.subscribe('*');
@@ -118,8 +112,8 @@ describe('Test DWD', function() {
 
     it('Test DWD: check created objects', function (done) {
         this.timeout(2000);
-        setTimeout(function () {
-            objects.getObject('dwd.0.warning2.begin', function (err, obj) {
+        setTimeout(() => {
+            objects.getObject('dwd.0.warning2.begin', (err, obj) => {
                 expect(err).to.be.not.ok;
                 expect(obj).to.be.ok;
                 expect(obj._id).to.be.equal('dwd.0.warning2.begin');
@@ -132,18 +126,18 @@ describe('Test DWD', function() {
         this.timeout(10000);
 
         setTimeout(function () {
-            states.getState('dwd.0.warning.begin', function (err, state) {
+            states.getState('dwd.0.warning.begin', (err, state) => {
                 expect(err).to.be.not.ok;
                 expect(state).to.be.ok;
                 expect(state.val).to.be.ok;
-                states.getState('dwd.0.warning.end', function (err, state) {
+                states.getState('dwd.0.warning.end', (err, state) => {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
 
                     // some warnings does not have end
                     //expect(state.val).to.be.ok;
 
-                    states.getState('dwd.0.warning.severity', function (err, state) {
+                    states.getState('dwd.0.warning.severity', (err, state) => {
                         expect(err).to.be.not.ok;
                         expect(state).to.be.ok;
                         console.log('Level: ' + state.val);
@@ -158,7 +152,7 @@ describe('Test DWD', function() {
     after('Test DWD: Stop js-controller', function (done) {
         this.timeout(6000);
 
-        setup.stopController(function (normalTerminated) {
+        setup.stopController(normalTerminated => {
             console.log('Adapter normal terminated: ' + normalTerminated);
             done();
         });
