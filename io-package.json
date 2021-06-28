@@ -329,7 +329,12 @@
                     "1": "Minor",
                     "2": "Moderate",
                     "3": "Severe",
-                    "4": "Extreme"
+                    "4": "Extreme",
+                    "9": "Heat Warning",
+                    "11": "No Warning",
+                    "19": "UV Warning",
+                    "49": "Strong Heat",
+                    "50": "Extreme Heat"
                 }
             },
             "native": {}
