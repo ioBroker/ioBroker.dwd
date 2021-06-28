@@ -16,8 +16,20 @@
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
         },
-        "version": "2.7.5",
+        "version": "2.7.6",
         "news": {
+            "2.7.6": {
+                "en": "Added new states to `warning.severity`\nRemoved warnings\nReplaces `request` packet with `axios`\nBreaking change: Rename state `numberofwarnings` to `numberOfWarnings`",
+                "de": "Neue Zustände zu `warning.severity` . hinzugefügt\nWarnungen entfernt\nErsetzt `request`-Paket durch `axios`\nBreaking Change: Benennen Sie den Zustand `numberofwarnings` um in `numberOfWarnings`",
+                "ru": "Добавлены новые состояния в `warning.severity`\nУдалены предупреждения\nЗаменяет пакет request на axios\nКритическое изменение: переименуйте состояние `numberofwarnings` в` numberOfWarnings`",
+                "pt": "Adicionados novos estados a `warning.severity`\nAvisos removidos\nSubstitui o pacote `request` por` axios`\nQuebrando a alteração: renomeie o estado `numberofwarnings` para` numberOfWarnings`",
+                "nl": "Nieuwe statussen toegevoegd aan `warning.severity`\nWaarschuwingen verwijderd\nVervangt `request`-pakket door `axios`\nBrekende wijziging: hernoem status `numberofwarnings` naar `numberOfWarnings`",
+                "fr": "Ajout de nouveaux états à `warning.severity`\nAvertissements supprimés\nRemplace le paquet « request » par « axios »\nChangement décisif : renommer l'état « numberofwarnings » en « numberOfWarnings »",
+                "it": "Aggiunti nuovi stati a `warning.severity`\nAvvisi rimossi\nSostituisce il pacchetto `request` con `axios`\nModifica importante: rinominare lo stato `numberofwarnings` in `numberOfWarnings`",
+                "es": "Se agregaron nuevos estados a `warning.severity`\nAdvertencias eliminadas\nReemplaza el paquete `request` con` axios`\nCambio rotundo: cambie el nombre del estado `numberofwarnings` a` numberOfWarnings`",
+                "pl": "Dodano nowe stany do `warning.severity`\nUsunięto ostrzeżenia\nZamienia pakiet `request` na `axios`\nWażna zmiana: Zmień nazwę stanu `numberofwarnings` na `numberOfWarnings`",
+                "zh-cn": "向 `warning.severity` 添加了新状态\n删除警告\n用 `axios` 替换 `request` 数据包\n重大变化：将状态“numberofwarnings”重命名为“numberOfWarnings”"
+            },
             "2.7.5": {
                 "en": "Update region list to the official one completely",
                 "de": "Aktualisieren Sie die Regionsliste vollständig auf die offizielle Liste",

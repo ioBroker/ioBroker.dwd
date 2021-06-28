@@ -23,7 +23,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 -->
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 2.7.6 (2021-06-28)
 * (sbormann) Added new states to `warning.severity`
 * (bluefox) Removed warnings
 * (bluefox) Replaces `request` packet with `axios`
