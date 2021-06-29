@@ -1,6 +1,7 @@
 {
-  "Region": "Region",
-  "no map": "bez mapy",
-  "Get map for warning": "Pobierz mapę z ostrzeżeniem",
-  "Number of warnings": "Liczba ostrzeżeń"
+    "Create states for rainradar": "Twórz obiekty, aby uwzględnić w wizualizacji radar deszczu.",
+    "Get map for warning": "Pobierz mapę z ostrzeżeniem",
+    "Number of warnings": "Liczba ostrzeżeń",
+    "Region": "Region",
+    "no map": "bez mapy"
 }

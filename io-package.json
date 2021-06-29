@@ -3,7 +3,16 @@
         "name": "dwd",
         "title": "DWD",
         "titleLang": {
-            "en": "DWD"
+            "en": "DWD",
+            "de": "DWD",
+            "ru": "DWD",
+            "pt": "DWD",
+            "nl": "DWD",
+            "fr": "DWD",
+            "it": "DWD",
+            "es": "DWD",
+            "pl": "DWD",
+            "zh-cn": "DWD"
         },
         "desc": {
             "en": "Weather Warnings from German Weather Service (DWD)",
@@ -14,7 +23,8 @@
             "fr": "Avertissements météorologiques du service météorologique allemand (DWD)",
             "it": "Avvertenze meteorologiche dal servizio meteo tedesco (DWD)",
             "es": "Advertencias meteorológicas del Servicio meteorológico alemán (DWD)",
-            "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)"
+            "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)",
+            "zh-cn": "德国气象局 (DWD) 的天气警告"
         },
         "version": "2.7.6",
         "news": {

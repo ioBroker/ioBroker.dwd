@@ -1,6 +1,7 @@
 {
-  "Region": "Regione",
-  "no map": "nessuna mappa",
-  "Get map for warning": "Ottieni la mappa per avvertire",
-  "Number of warnings": "Numero di avvertimenti"
+    "Create states for rainradar": "Crea oggetti per includere il radar della pioggia nella tua visualizzazione.",
+    "Get map for warning": "Ottieni la mappa per avvertire",
+    "Number of warnings": "Numero di avvertimenti",
+    "Region": "Regione",
+    "no map": "nessuna mappa"
 }
