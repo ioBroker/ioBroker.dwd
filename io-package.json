@@ -26,8 +26,20 @@
             "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)",
             "zh-cn": "德国气象局 (DWD) 的天气警告"
         },
-        "version": "2.7.6",
+        "version": "2.7.7",
         "news": {
+            "2.7.7": {
+                "en": "Fix start/end dates",
+                "de": "Start-/Enddatum festlegen",
+                "ru": "Исправьте даты начала / окончания",
+                "pt": "Fixar datas de início / término",
+                "nl": "Begin-/einddatums corrigeren",
+                "fr": "Fixer les dates de début/fin",
+                "it": "Fissa le date di inizio/fine",
+                "es": "Corregir fechas de inicio / finalización",
+                "pl": "Popraw daty rozpoczęcia/zakończenia",
+                "zh-cn": "修复开始/结束日期"
+            },
             "2.7.6": {
                 "en": "Added new states to `warning.severity`\nRemoved warnings\nReplaces `request` packet with `axios`\nBreaking change: Rename state `numberofwarnings` to `numberOfWarnings`",
                 "de": "Neue Zustände zu `warning.severity` . hinzugefügt\nWarnungen entfernt\nErsetzt `request`-Paket durch `axios`\nBreaking Change: Benennen Sie den Zustand `numberofwarnings` um in `numberOfWarnings`",
