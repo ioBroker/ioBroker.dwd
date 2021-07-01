@@ -244,6 +244,7 @@ async function processFile(err, data) {
     }
 
     adapter.log.debug('Data: ' + JSON.stringify(data));
+    adapter.log.debug('Find Warnings for Region: ' + adapter.config.region);
     if (data.warnings) {
         let warnings = [];
         Object.keys(data.warnings).forEach(w => {
