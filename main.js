@@ -209,8 +209,8 @@ const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glattei
 async function placeWarning(channelName, warnObj) {
     warnObj = warnObj || {};
     // warnObj.start/end are Milliseconds since epoch and have type number
-    await adapter.setForeignStateAsync(channelName + '.begin',         warnObj.start ? warnObj.start * 1000 : null,  true);
-    await adapter.setForeignStateAsync(channelName + '.end',           warnObj.end ?   warnObj.end   * 1000 : null,  true);
+    await adapter.setForeignStateAsync(channelName + '.begin',         warnObj.start || null,  true);
+    await adapter.setForeignStateAsync(channelName + '.end',           warnObj.end || null,  true);
     await adapter.setForeignStateAsync(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0,    true);
     await adapter.setForeignStateAsync(channelName + '.level',         warnObj.level === undefined || warnObj.level === null ? null : parseInt(warnObj.level, 10), true);
     await adapter.setForeignStateAsync(channelName + '.type',          warnObj.type  === undefined || warnObj.type  === null ? null : parseInt(warnObj.type, 10), true);
