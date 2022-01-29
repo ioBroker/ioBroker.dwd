@@ -76,8 +76,8 @@ describe('Test DWD', function() {
             console.log('Warnings: ' + JSON.stringify(warnings));
             console.log('Use: ' + warnings[0].regionName);
 
-            setup.setupController(function () {
-                const config = setup.getAdapterConfig();
+            setup.setupController(async function () {
+                const config = await setup.getAdapterConfig();
                 // enable adapter
                 config.common.enabled  = true;
                 config.common.loglevel = 'debug';
@@ -86,7 +86,7 @@ describe('Test DWD', function() {
                 config.native.warnings = '3';
                 config.native.region   = warnings[0].regionName;
 
-                setup.setAdapterConfig(config.common, config.native);
+                await setup.setAdapterConfig(config.common, config.native);
 
                 setup.startController(true, (id, obj) => {
                         onObjectChanged && onObjectChanged(id, obj);
