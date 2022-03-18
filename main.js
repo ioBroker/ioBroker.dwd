@@ -100,6 +100,7 @@ function startAdapter(options) {
                     toDelete.push(channels[i] + '.text');
                     toDelete.push(channels[i] + '.headline');
                     toDelete.push(channels[i] + '.description');
+                    toDelete.push(channels[i] + '.instruction');
                     toDelete.push(channels[i] + '.object');
                     toDelete.push(channels[i] + '.map');
                     toDelete.push(channels[i]);
@@ -123,6 +124,7 @@ function startAdapter(options) {
                     toAdd.push(`${adapter.namespace}.warning${j}.text`);
                     toAdd.push(`${adapter.namespace}.warning${j}.headline`);
                     toAdd.push(`${adapter.namespace}.warning${j}.description`);
+                    toAdd.push(`${adapter.namespace}.warning${j}.instruction`);
                     toAdd.push(`${adapter.namespace}.warning${j}.object`);
                     toAdd.push(`${adapter.namespace}.warning${j}.map`);
                     channels.push(`${adapter.namespace}.warning${j}`);
@@ -217,6 +219,7 @@ async function placeWarning(channelName, warnObj) {
     await adapter.setForeignStateAsync(channelName + '.text',          warnObj.event || '',        true);
     await adapter.setForeignStateAsync(channelName + '.headline',      warnObj.headline || '',     true);
     await adapter.setForeignStateAsync(channelName + '.description',   warnObj.description || '',  true);
+    await adapter.setForeignStateAsync(channelName + '.instruction',   warnObj.instruction || '',  true);
     await adapter.setForeignStateAsync(channelName + '.object',        JSON.stringify(warnObj),    true);
     adapter.log.debug(`Add warning "${channelName}": ${warnObj.start ? new Date(warnObj.start).toISOString() : ''}`);
 
