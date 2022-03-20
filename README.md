@@ -19,7 +19,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 <!--
 	Placeholder for the next version (at the beginning of the line):
-	### __WORK IN PROGRESS__
+	### **WORK IN PROGRESS**
 -->
 
 ## Changelog
