@@ -28,18 +28,6 @@
     },
     "version": "2.8.0",
     "news": {
-      "2.8.0": {
-        "en": "Add instruction text to warning data",
-        "de": "Anweisungstext zu Warndaten hinzufügen",
-        "ru": "Добавить текст инструкции к данным предупреждения",
-        "pt": "Adicionar texto de instrução aos dados de aviso",
-        "nl": "Instructietekst toevoegen aan waarschuwingsgegevens",
-        "fr": "Ajouter un texte d'instruction aux données d'avertissement",
-        "it": "Aggiungi il testo dell'istruzione ai dati di avviso",
-        "es": "Agregar texto de instrucción a los datos de advertencia",
-        "pl": "Dodaj tekst instrukcji do danych ostrzegawczych",
-        "zh-cn": "将说明文本添加到警告数据"
-      },
       "2.7.7": {
         "en": "Fix start/end dates",
         "de": "Start-/Enddatum festlegen",
