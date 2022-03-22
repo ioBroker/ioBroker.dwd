@@ -87,9 +87,10 @@ function startAdapter(options) {
             }
             adapter.log.debug(`Warnings configured: ${adapter.config.warnings}`);
             adapter.log.debug(`Existing Channels: ${JSON.stringify(channels)}`);
+            let toDelete = [];
+            let toAdd = [];
             if (channels.length > adapter.config.warnings) {
                 // delete warnings
-                let toDelete = [];
                 for (let i = adapter.config.warnings; i < channels.length; i++) {
                     adapter.log.debug(`Delete channel ${i}: ${channels[i]}`);
                     toDelete.push(`${channels[i]}.begin`);
@@ -107,11 +108,8 @@ function startAdapter(options) {
                 }
                 await deleteObjects(toDelete);
                 channels.splice(adapter.config.warnings, channels.length);
-                adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
-                await checkNames();
-                ready();
-            } else if (channels.length < adapter.config.warnings) {
-                let toAdd = [];
+            }
+            if (channels.length < adapter.config.warnings) {
                 // add warnings
                 for (let j = channels.length; j < adapter.config.warnings; j++) {
                     adapter.log.debug(`Add channel ${j}: ${channels[j]}`);
@@ -130,60 +128,53 @@ function startAdapter(options) {
                     channels.push(`${adapter.namespace}.warning${j}`);
                 }
                 toAdd.push(`${adapter.namespace}.numberOfWarnings`);
+            }
+            for (let j = 0; j < channels.length; j++) {
+                if (!states[`${adapter.namespace}.warning${j}.begin`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.begin`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.end`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.end`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.severity`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.severity`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.level`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.level`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.type`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.type`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.text`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.text`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.headline`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.headline`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.description`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.description`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.instruction`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.instruction`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.object`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.object`);
+                }
+                if (!states[`${adapter.namespace}.warning${j}.map`]) {
+                    toAdd.push(`${adapter.namespace}.warning${j}.map`);
+                }
+            }
+            if (toAdd.length) {
+                adapter.log.debug(`Add ${toAdd.length} missing states: ${JSON.stringify(toAdd)}`);
                 addObjects(toAdd, async () => {
                     adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
                     await checkNames();
                     ready();
                 });
             } else {
-                let toAdd = [];
-                for (let j = 0; j < channels.length; j++) {
-                    if (!states[`${adapter.namespace}.warning${j}.begin`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.begin`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.end`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.end`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.severity`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.severity`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.level`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.level`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.type`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.type`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.text`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.text`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.headline`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.headline`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.description`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.description`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.instruction`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.instruction`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.object`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.object`);
-                    }
-                    if (!states[`${adapter.namespace}.warning${j}.map`]) {
-                        toAdd.push(`${adapter.namespace}.warning${j}.map`);
-                    }
-                }
-                if (toAdd.length) {
-                    adapter.log.debug(`Add ${toAdd.length} missing states: ${JSON.stringify(toAdd)}`);
-                    addObjects(toAdd, async () => {
-                        adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
-                        await checkNames();
-                        ready();
-                    });
-                } else {
-                    adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
-                    await checkNames();
-                    ready();
-                }
+                adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
+                await checkNames();
+                ready();
             }
         });
     });
