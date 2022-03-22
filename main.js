@@ -173,7 +173,7 @@ function startAdapter(options) {
                     }
                 }
                 if (toAdd.length) {
-                    adapter.log.debug(`Add ${toAdd.length} missing states`);
+                    adapter.log.debug(`Add ${toAdd.length} missing states: ${JSON.stringify(toAdd)}`);
                     addObjects(toAdd, async () => {
                         adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
                         await checkNames();
