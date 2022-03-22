@@ -316,6 +316,18 @@
       "native": {}
     },
     {
+      "_id": "warning.instruction",
+      "type": "state",
+      "common": {
+        "name": "Instructions",
+        "type": "string",
+        "role": "weather.state",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
       "_id": "warning.object",
       "type": "state",
       "common": {
