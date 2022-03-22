@@ -73,10 +73,10 @@ function startAdapter(options) {
             await doRainRadar();
         }
 
-        adapter.getForeignObjects(adapter.namespace + '.*', 'state', async (err, states) => {
+        adapter.getForeignObjects(`${adapter.namespace}.*`, 'state', async (err, states) => {
             for (const s in states) {
                 if (states.hasOwnProperty(s)) {
-                    if (!s.startsWith(adapter.namespace + '.warning')) {
+                    if (!s.startsWith(`${adapter.namespace}.warning`)) {
                         continue;
                     }
                     let chName = s.split('.');
@@ -85,36 +85,36 @@ function startAdapter(options) {
                     !channels.includes(chName) && channels.push(chName);
                 }
             }
-            adapter.log.debug('Warnings configured: ' + adapter.config.warnings);
-            adapter.log.debug('Existing Channels: ' + JSON.stringify(channels));
+            adapter.log.debug(`Warnings configured: ${adapter.config.warnings}`);
+            adapter.log.debug(`Existing Channels: ${JSON.stringify(channels)}`);
             if (channels.length > adapter.config.warnings) {
                 // delete warnings
                 let toDelete = [];
                 for (let i = adapter.config.warnings; i < channels.length; i++) {
                     adapter.log.debug(`Delete channel ${i}: ${channels[i]}`);
-                    toDelete.push(channels[i] + '.begin');
-                    toDelete.push(channels[i] + '.end');
-                    toDelete.push(channels[i] + '.severity');
-                    toDelete.push(channels[i] + '.level');
-                    toDelete.push(channels[i] + '.type');
-                    toDelete.push(channels[i] + '.text');
-                    toDelete.push(channels[i] + '.headline');
-                    toDelete.push(channels[i] + '.description');
-                    toDelete.push(channels[i] + '.instruction');
-                    toDelete.push(channels[i] + '.object');
-                    toDelete.push(channels[i] + '.map');
+                    toDelete.push(`${channels[i]}.begin`);
+                    toDelete.push(`${channels[i]}.end`);
+                    toDelete.push(`${channels[i]}.severity`);
+                    toDelete.push(`${channels[i]}.level`);
+                    toDelete.push(`${channels[i]}.type`);
+                    toDelete.push(`${channels[i]}.text`);
+                    toDelete.push(`${channels[i]}.headline`);
+                    toDelete.push(`${channels[i]}.description`);
+                    toDelete.push(`${channels[i]}.instruction`);
+                    toDelete.push(`${channels[i]}.object`);
+                    toDelete.push(`${channels[i]}.map`);
                     toDelete.push(channels[i]);
                 }
                 await deleteObjects(toDelete);
                 channels.splice(adapter.config.warnings, channels.length);
-                adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
+                adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
                 await checkNames();
                 ready();
             } else if (channels.length < adapter.config.warnings) {
                 let toAdd = [];
                 // add warnings
                 for (let j = channels.length; j < adapter.config.warnings; j++) {
-                    adapter.log.debug('Add channel ' + j + ': ' + channels[j]);
+                    adapter.log.debug(`Add channel ${j}: ${channels[j]}`);
                     toAdd.push(`${adapter.namespace}.warning${j}`);
                     toAdd.push(`${adapter.namespace}.warning${j}.begin`);
                     toAdd.push(`${adapter.namespace}.warning${j}.end`);
@@ -129,16 +129,61 @@ function startAdapter(options) {
                     toAdd.push(`${adapter.namespace}.warning${j}.map`);
                     channels.push(`${adapter.namespace}.warning${j}`);
                 }
-                toAdd.push(adapter.namespace + '.numberOfWarnings');
+                toAdd.push(`${adapter.namespace}.numberOfWarnings`);
                 addObjects(toAdd, async () => {
-                    adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
+                    adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
                     await checkNames();
                     ready();
                 });
             } else {
-                adapter.log.debug('Final Channels: ' + JSON.stringify(channels));
-                await checkNames();
-                ready();
+                let toAdd = [];
+                for (let j = 0; j < channels.length; j++) {
+                    if (!states[`${adapter.namespace}.warning${j}.begin`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.begin`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.end`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.end`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.severity`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.severity`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.level`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.level`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.type`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.type`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.text`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.text`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.headline`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.headline`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.description`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.description`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.instruction`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.instruction`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.object`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.object`);
+                    }
+                    if (!states[`${adapter.namespace}.warning${j}.map`]) {
+                        toAdd.push(`${adapter.namespace}.warning${j}.map`);
+                    }
+                }
+                if (toAdd.length) {
+                    adapter.log.debug(`Add ${toAdd.length} missing states`);
+                    addObjects(toAdd, async () => {
+                        adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
+                        await checkNames();
+                        ready();
+                    });
+                } else {
+                    adapter.log.debug(`Final Channels: ${JSON.stringify(channels)}`);
+                    await checkNames();
+                    ready();
+                }
             }
         });
     });
@@ -169,7 +214,7 @@ function addObjects(objs, cb) {
     const id = objs.pop();
     const _id = id.replace(/warning\d+/, 'warning');
     for (let i = 0; i < iopkg.instanceObjects.length; i++) {
-        if (adapter.namespace + '.' + iopkg.instanceObjects[i]._id === _id) {
+        if (`${adapter.namespace}.${iopkg.instanceObjects[i]._id}` === _id) {
             const obj = iopkg.instanceObjects[i];
             return adapter.setForeignObject(id, obj, err => {
                 err && adapter.log.error(err);
@@ -190,8 +235,8 @@ async function checkNames() {
     for (let j = 0; j < channels.length; j++) {
         try {
             const obj = await adapter.getForeignObjectAsync(channels[j]);
-            if (obj && obj.common.name !== 'DWD Warnung für ' + adapter.config.region) {
-                obj.common.name = 'DWD Warnung für ' + adapter.config.region;
+            if (obj && obj.common.name !== `DWD Warnung für ${adapter.config.region}`) {
+                obj.common.name = `DWD Warnung für ${adapter.config.region}`;
                 await adapter.setForeignObject(obj._id, obj);
             }
         } catch (error) {
@@ -211,22 +256,22 @@ const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glattei
 async function placeWarning(channelName, warnObj) {
     warnObj = warnObj || {};
     // warnObj.start/end are Milliseconds since epoch and have type number
-    await adapter.setForeignStateAsync(channelName + '.begin',         warnObj.start || null, true);
-    await adapter.setForeignStateAsync(channelName + '.end',           warnObj.end || null, true);
-    await adapter.setForeignStateAsync(channelName + '.severity',      warnObj.level > 1 ? warnObj.level - 1 : 0, true);
-    await adapter.setForeignStateAsync(channelName + '.level',         warnObj.level === undefined || warnObj.level === null ? null : parseInt(warnObj.level, 10), true);
-    await adapter.setForeignStateAsync(channelName + '.type',          warnObj.type  === undefined || warnObj.type  === null ? null : parseInt(warnObj.type, 10), true);
-    await adapter.setForeignStateAsync(channelName + '.text',          warnObj.event || '',        true);
-    await adapter.setForeignStateAsync(channelName + '.headline',      warnObj.headline || '',     true);
-    await adapter.setForeignStateAsync(channelName + '.description',   warnObj.description || '',  true);
-    await adapter.setForeignStateAsync(channelName + '.instruction',   warnObj.instruction || '',  true);
-    await adapter.setForeignStateAsync(channelName + '.object',        JSON.stringify(warnObj),    true);
+    await adapter.setForeignStateAsync(`${channelName}.begin`,         warnObj.start || null, true);
+    await adapter.setForeignStateAsync(`${channelName}.end`,           warnObj.end || null, true);
+    await adapter.setForeignStateAsync(`${channelName}.severity`,      warnObj.level > 1 ? warnObj.level - 1 : 0, true);
+    await adapter.setForeignStateAsync(`${channelName}.level`,         warnObj.level === undefined || warnObj.level === null ? null : parseInt(warnObj.level, 10), true);
+    await adapter.setForeignStateAsync(`${channelName}.type`,          warnObj.type  === undefined || warnObj.type  === null ? null : parseInt(warnObj.type, 10), true);
+    await adapter.setForeignStateAsync(`${channelName}.text`,          warnObj.event || '',        true);
+    await adapter.setForeignStateAsync(`${channelName}.headline`,      warnObj.headline || '',     true);
+    await adapter.setForeignStateAsync(`${channelName}.description`,   warnObj.description || '',  true);
+    await adapter.setForeignStateAsync(`${channelName}.instruction`,   warnObj.instruction || '',  true);
+    await adapter.setForeignStateAsync(`${channelName}.object`,        JSON.stringify(warnObj),    true);
     adapter.log.debug(`Add warning "${channelName}": ${warnObj.start ? new Date(warnObj.start).toISOString() : ''}`);
 
     if (adapter.config.land && warnObj.type !== undefined && warnObj.type !== null) {
-        await adapter.setForeignStateAsync(channelName + '.map', `https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_${adapter.config.land}_${maps[warnObj.type]}.png`, true);
+        await adapter.setForeignStateAsync(`${channelName}.map`, `https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_${adapter.config.land}_${maps[warnObj.type]}.png`, true);
     } else {
-        await adapter.setForeignStateAsync(channelName + '.map', '', true);
+        await adapter.setForeignStateAsync(`${channelName}.map`, '', true);
     }
 }
 
@@ -239,15 +284,15 @@ async function processFile(err, data) {
     }
 
     if (!data) {
-        adapter.log.error('Empty or invalid JSON: ' + err);
+        adapter.log.error(`Empty or invalid JSON: ${err}`);
         killSwitchTimeout && clearTimeout(killSwitchTimeout);
         isStopped = true;
         adapter && adapter.terminate ? adapter.terminate() : process.exit(0);
         return;
     }
 
-    adapter.log.debug('Data: ' + JSON.stringify(data));
-    adapter.log.debug('Find Warnings for Region: ' + adapter.config.region);
+    adapter.log.debug(`Data: ${JSON.stringify(data)}`);
+    adapter.log.debug(`Find Warnings for Region: ${adapter.config.region}`);
     if (data.warnings) {
         let warnings = [];
         Object.keys(data.warnings).forEach(w => {
@@ -263,8 +308,8 @@ async function processFile(err, data) {
         });
 
         warnings.sort(tools.sort);
-        adapter.log.debug('Sorted Warnings: ' + JSON.stringify(warnings));
-        await adapter.setForeignStateAsync(adapter.namespace + '.numberOfWarnings', warnings.length, true);
+        adapter.log.debug(`Sorted Warnings: ${JSON.stringify(warnings)}`);
+        await adapter.setForeignStateAsync(`${adapter.namespace}.numberOfWarnings`, warnings.length, true);
 
         for (let c = 0; c < channels.length; c++) {
             adapter.log.debug(`Write warnings for ${c}: ${channels[c]} = ${JSON.stringify(warnings[c])}`);
