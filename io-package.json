@@ -26,8 +26,20 @@
       "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)",
       "zh-cn": "德国气象局 (DWD) 的天气警告"
     },
-    "version": "2.8.1",
+    "version": "2.8.2",
     "news": {
+      "2.8.2": {
+        "en": "Add instruction text to warning data\nCheck missing objects and add them",
+        "de": "Anweisungstext zu Warndaten hinzufügen\nÜberprüfen Sie fehlende Objekte und fügen Sie sie hinzu",
+        "ru": "Добавить текст инструкции к данным предупреждения\nПроверьте недостающие объекты и добавьте их",
+        "pt": "Adicionar texto de instrução aos dados de aviso\nVerifique os objetos ausentes e adicione-os",
+        "nl": "Instructietekst toevoegen aan waarschuwingsgegevens\nControleer ontbrekende objecten en voeg ze toe",
+        "fr": "Ajouter un texte d'instruction aux données d'avertissement\nVérifiez les objets manquants et ajoutez-les",
+        "it": "Aggiungi il testo dell'istruzione ai dati di avviso\nControlla gli oggetti mancanti e aggiungili",
+        "es": "Agregar texto de instrucción a los datos de advertencia\nCompruebe los objetos que faltan y agréguelos",
+        "pl": "Dodaj tekst instrukcji do danych ostrzegawczych\nSprawdź brakujące obiekty i dodaj je",
+        "zh-cn": "将说明文本添加到警告数据\n检查丢失的对象并添加它们"
+      },
       "2.7.7": {
         "en": "Fix start/end dates",
         "de": "Start-/Enddatum festlegen",
