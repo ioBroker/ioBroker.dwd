@@ -26,8 +26,20 @@
       "pl": "Ostrzeżenia pogodowe od niemieckiego serwisu pogodowego (DWD)",
       "zh-cn": "德国气象局 (DWD) 的天气警告"
     },
-    "version": "2.8.2",
+    "version": "2.8.3",
     "news": {
+      "2.8.3": {
+        "en": "Do not add unused warning0",
+        "de": "Fügen Sie keine unbenutzte Warnung0 hinzu",
+        "ru": "Не добавлять неиспользуемое предупреждение0",
+        "pt": "Não adicione aviso não utilizado0",
+        "nl": "Voeg geen ongebruikte waarschuwing toe0",
+        "fr": "Ne pas ajouter d'avertissement inutilisé0",
+        "it": "Non aggiungere warning0 non utilizzato",
+        "es": "No agregue advertencia no utilizada 0",
+        "pl": "Nie dodawaj niewykorzystanego ostrzeżenia0",
+        "zh-cn": "不要添加未使用的警告0"
+      },
       "2.8.2": {
         "en": "Add instruction text to warning data\nCheck missing objects and add them",
         "de": "Anweisungstext zu Warndaten hinzufügen\nÜberprüfen Sie fehlende Objekte und fügen Sie sie hinzu",
@@ -99,18 +111,6 @@
         "es": "Solucionar problema al eliminar objetos antiguos",
         "pl": "Napraw problem z usuwaniem starych obiektów",
         "zh-cn": "修复删除旧对象的问题"
-      },
-      "2.7.1": {
-        "en": "Make sure to end process when no data could be received",
-        "de": "Stellen Sie sicher, dass Sie den Vorgang beenden, wenn keine Daten empfangen werden konnten",
-        "ru": "Обязательно завершите процесс, если данные не могут быть получены",
-        "pt": "Certifique-se de encerrar o processo quando nenhum dado puder ser recebido",
-        "nl": "Zorg ervoor dat u het proces beëindigt als er geen gegevens kunnen worden ontvangen",
-        "fr": "Assurez-vous de terminer le processus lorsqu'aucune donnée n'a pu être reçue",
-        "it": "Assicurati di terminare il processo quando non è stato possibile ricevere dati",
-        "es": "Asegúrese de finalizar el proceso cuando no se puedan recibir datos",
-        "pl": "Zakończ proces, gdy nie można odebrać żadnych danych",
-        "zh-cn": "确保在无法接收数据时结束处理"
       }
     },
     "mode": "schedule",
