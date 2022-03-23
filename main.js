@@ -74,6 +74,14 @@ function startAdapter(options) {
         }
 
         adapter.getForeignObjects(`${adapter.namespace}.*`, 'state', async (err, states) => {
+            if (err || !states) {
+                adapter.log.error(`Could not read existing states: ${err.message}`);
+                isStopped = true;
+                killSwitchTimeout && clearTimeout(killSwitchTimeout);
+                adapter && adapter.terminate ? adapter.terminate() : process.exit(0);
+                return;
+            }
+
             for (const s in states) {
                 if (states.hasOwnProperty(s)) {
                     if (!s.startsWith(`${adapter.namespace}.warning`)) {
