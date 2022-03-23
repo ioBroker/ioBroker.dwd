@@ -129,7 +129,7 @@ function startAdapter(options) {
                 }
                 toAdd.push(`${adapter.namespace}.numberOfWarnings`);
             }
-            for (let j = 0; j < channels.length; j++) {
+            for (let j = 1; j < channels.length; j++) {
                 if (!states[`${adapter.namespace}.warning${j}.begin`]) {
                     toAdd.push(`${adapter.namespace}.warning${j}.begin`);
                 }
