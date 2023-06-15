@@ -173,7 +173,9 @@
             </div>
             <p><%== vis.states.attr(this.data['oid'] + '.val') %><br/>
             <%== vis.states.attr(this.data['oid-begin'] + '.val') ? vis.binds.basic.formatDate(vis.states.attr(this.data['oid-begin'] + '.val'), this.data['dwd-format']) + ' - ' : '' %><%== vis.states.attr(this.data['oid-end'] + '.val') ? vis.binds.basic.formatDate(vis.states.attr(this.data['oid-end'] + '.val'), this.data['dwd-format']) : '' %></p>
-            <p><%== vis.states.attr(this.data['oid-hint'] + '.val') %></p>
+            <% if(this.data['oid-hint']) { %>
+                <p><%== vis.states.attr(this.data['oid-hint'] + '.val') %></p>
+            <% } %>
         </div>
     </div>
 </script>
