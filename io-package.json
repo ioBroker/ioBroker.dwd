@@ -28,19 +28,6 @@
     },
     "version": "2.8.4",
     "news": {
-      "2.8.4": {
-        "en": "added the hint for warning instructions\n",
-        "de": "den hinweis auf warnhinweise hinzugefügt\n",
-        "ru": "добавили подсказку для предупреждающих инструкций\n",
-        "pt": "adicionou a dica para instruções de aviso\n",
-        "nl": "voegde de hint toe voor waarschuwingsinstructies\n",
-        "fr": "a ajouté le indice pour les instructions d'avertissement\n",
-        "it": "aggiunto il suggerimento per le istruzioni di avviso\n",
-        "es": "agregó la pista para instrucciones de advertencia\n",
-        "pl": "dodał także wskazówki dla instrukcji ostrzegawczych\n",
-        "uk": "додано підказку про попередження\n",
-        "zh-cn": "添加警告指示\n"
-      },
       "2.8.3": {
         "en": "Do not add unused warning0",
         "de": "Fügen Sie keine unbenutzte Warnung0 hinzu",
