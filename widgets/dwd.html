@@ -14,6 +14,7 @@
             "oid-end":      {"en": "oid-end",      "de": "oid-end",      "ru": "oid-end"},
             "oid-headline": {"en": "oid-headline", "de": "oid-headline", "ru": "oid-headline"},
             "oid-severity": {"en": "oid-severity", "de": "oid-severity", "ru": "oid-severity"},
+            "oid-hint":		{"en": "oid-hint", "de": "oid-hint", "ru": "oid-hint"},
             "dwd-format": {
                 "en": "Time format",
                 "de": "Zeitformat",
@@ -108,7 +109,7 @@
         data-vis-prev='<img src="widgets/dwd/img/Prev_DwdAdapter.png"></img>'
         data-vis-set="dwd"
         data-vis-name="DWD Wetterwarnungen"
-        data-vis-attrs="oid-begin[dwd.0.warning.begin];oid-end[dwd.0.warning.end];oid-headline[dwd.0.warning.headline];oid[dwd.0.warning.description];oid-severity[dwd.0.warning.severity];dwd-format[DD.MM hh:mm]">
+        data-vis-attrs="oid-begin[dwd.0.warning.begin];oid-end[dwd.0.warning.end];oid-headline[dwd.0.warning.headline];oid[dwd.0.warning.description];oid-severity[dwd.0.warning.severity];oid-hint[dwd.0.warning.hint];dwd-format[DD.MM hh:mm]">
     <div class="vis-widget <%== this.data.attr('class') %>" style="width: 585px; height: 85px; font-family: Arial" id="<%= this.data.attr('wid') %>">
         <%
 		var dwdBackground = [
@@ -172,6 +173,7 @@
             </div>
             <p><%== vis.states.attr(this.data['oid'] + '.val') %><br/>
             <%== vis.states.attr(this.data['oid-begin'] + '.val') ? vis.binds.basic.formatDate(vis.states.attr(this.data['oid-begin'] + '.val'), this.data['dwd-format']) + ' - ' : '' %><%== vis.states.attr(this.data['oid-end'] + '.val') ? vis.binds.basic.formatDate(vis.states.attr(this.data['oid-end'] + '.val'), this.data['dwd-format']) : '' %></p>
+            <p><%== vis.states.attr(this.data['oid-hint'] + '.val') %></p>
         </div>
     </div>
 </script>
