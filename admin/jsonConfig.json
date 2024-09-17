@@ -1,6 +1,16 @@
 {
     "type": "panel",
     "items": {
+        "dwdDesc": {
+			"type": "staticText",
+			"text": "Weather Warnings from German Weather Service (DWD)",
+			"newLine": true,
+			"style": {
+				"fontSize": 20
+			},
+			"xs": 10,
+			"sm": 10
+		},
         "region": {
             "type": "autocomplete",
             "label": "Region",
@@ -418,6 +428,7 @@
                 "Kreis Harz - Bergland (Oberharz)"
             ],
             "noTranslation": true,
+            "xs": 12,
             "sm": 12,
             "md": 4
         },
@@ -440,6 +451,7 @@
                 {"value": "shh", "label": "Schleswig-Holstein, Hamburg", "noTranslation":  true},
                 {"value": "thu", "label": "Thüringen", "noTranslation":  true}
             ],
+            "xs": 12,
             "sm": 12,
             "md": 4
         },
@@ -460,6 +472,7 @@
                 {"value": "9", "label": "9"},
                 {"value": "10", "label": "10"}
             ],
+            "xs": 12,
             "sm": 12,
             "md": 4
         },
@@ -467,6 +480,7 @@
             "newLine": true,
             "type": "checkbox",
             "label": "Create states for rainradar",
+            "xs": 12,
             "sm": 12,
             "md": 4
         }
