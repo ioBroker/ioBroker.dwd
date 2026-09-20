@@ -60,6 +60,7 @@
     "build:ts": "tsc -p tsconfig.build.json",
     "build:widgets": "node tasks.mts",
     "build:devices": "node tasks.mts --devices",
+    "docs:images": "node docs/severity-colors.mjs",
     "prepublishOnly": "npm run build",
     "watch": "tsc -p tsconfig.build.json --watch",
     "check": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tasks.json --noEmit",

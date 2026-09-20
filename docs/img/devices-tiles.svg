@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="330" viewBox="0 0 620 330" role="img" aria-label="The DWD warning tile of ioBroker.devices in its three sizes">
+<style>
+    .bg { fill: #ffffff; }
+    .frame { stroke: #d0d7de; }
+    .tile { fill: #f6f8fa; stroke: #d0d7de; }
+    .cap { fill: #57606a; font: 600 12px system-ui, sans-serif; letter-spacing: .04em; }
+    .note { fill: #57606a; font: 12px system-ui, sans-serif; }
+    .title { fill: #24292f; font: 600 11px system-ui, sans-serif; }
+    .body { fill: #24292f; font: 12px system-ui, sans-serif; }
+    .sub { fill: #57606a; font: 11px system-ui, sans-serif; }
+</style>
+<rect class="bg frame" x="0.5" y="0.5" width="619" height="329" rx="8"/>
+
+<!-- warning triangle, reused in every tile -->
+<defs>
+    <g id="warn">
+        <path d="M11 1 L21 19 L1 19 Z" fill="none" stroke="#fb8c00" stroke-width="2" stroke-linejoin="round"/>
+        <rect x="10" y="7" width="2" height="6" fill="#fb8c00"/>
+        <rect x="10" y="15" width="2" height="2" fill="#fb8c00"/>
+    </g>
+</defs>
+
+<text class="cap" x="16" y="26">1 × 1</text>
+<rect class="tile" x="16.5" y="36.5" width="110" height="110" rx="10"/>
+<g transform="translate(28,50) scale(1.5)"><use href="#warn"/></g>
+<text class="body" x="28" y="122" style="font: 600 12px system-ui, sans-serif">WINDBÖEN</text>
+
+<text class="cap" x="166" y="26">2 × 0.5</text>
+<rect class="tile" x="166.5" y="36.5" width="230" height="52" rx="10"/>
+<g transform="translate(178,53)"><use href="#warn"/></g>
+<rect x="206" y="50" width="98" height="24" rx="4" fill="#fb8c00"/>
+<text x="212" y="66" fill="#000000" style="font: 600 12px system-ui, sans-serif">WINDBÖEN</text>
+<text class="sub" x="312" y="66">20.09 14:00</text>
+
+<text class="cap" x="436" y="26">2 × 1</text>
+<rect class="tile" x="436.5" y="36.5" width="168" height="110" rx="10"/>
+<g transform="translate(446,44) scale(0.8)"><use href="#warn"/></g>
+<text class="title" x="468" y="58">DWD-Warnung</text>
+<text class="sub" x="548" y="58">20.09</text>
+<rect x="446" y="66" width="148" height="20" rx="4" fill="#fb8c00"/>
+<text x="452" y="80" fill="#000000" style="font: 700 11px system-ui, sans-serif">Amtliche WARNUNG</text>
+<text class="body" x="446" y="100" style="font: 10px system-ui, sans-serif">Es treten Windböen mit</text>
+<text class="body" x="446" y="112" style="font: 10px system-ui, sans-serif">Geschwindigkeiten um</text>
+<text class="body" x="446" y="124" style="font: 10px system-ui, sans-serif">60 km/h auf.</text>
+
+<line class="frame" x1="16" y1="172" x2="604" y2="172"/>
+
+<text class="note" x="16" y="198">1 × 1 — icon and the short warning text.</text>
+<text class="note" x="16" y="220">2 × 0.5 — one strip: icon, warning text in the severity colour, period.</text>
+<text class="note" x="16" y="242">2 × 1 and 2 × 2 — title bar with the period, then headline, description and,</text>
+<text class="note" x="16" y="260">if switched on, the instruction.</text>
+
+<text class="note" x="16" y="292">While a warning is present the tile counts as "active" and takes the severity</text>
+<text class="note" x="16" y="310">colour as its accent, so it stands out in the dashboard without reading the text.</text>
+</svg>

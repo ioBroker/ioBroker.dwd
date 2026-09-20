@@ -1,8 +1,17 @@
 {
+    "Begin": "Начало",
     "Create states for rainradar": "Создавайте объекты, чтобы включить дождевой радар в вашу визуализацию.",
+    "Current warnings": "Текущие предупреждения",
+    "Description": "Описание",
+    "End": "Конец",
     "Get map for warning": "Получить карту для предупреждения",
+    "Headline": "Заголовок",
+    "Instruction": "Рекомендации",
+    "No warnings for this region at the moment.": "Сейчас нет предупреждений для этого региона.",
     "Number of warnings": "Количество предупреждений",
     "Region": "Область",
+    "Severity": "Уровень",
+    "Type": "Тип",
     "Weather Warnings from German Weather Service (DWD)": "Погодные предупреждения от немецкого сервиса German Weather Service (DWD)",
     "no map": "без карты"
 }

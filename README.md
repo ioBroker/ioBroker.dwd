@@ -24,6 +24,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 ### **WORK IN PROGRESS**
+- (bluefox) The instance settings now show the warnings that are currently active
 - (bluefox) The vis widgets were ported to vis-2: the two templates became one widget with a layout setting ([documentation](docs/en/README.md))
 - (bluefox) New widget for the ioBroker.devices dashboard
 - (bluefox) Added the 24 missing inland lake regions (Bodensee, Chiemsee, Starnberger See, Müritz, Steinhuder Meer, ...)

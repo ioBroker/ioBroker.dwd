@@ -1,8 +1,17 @@
 {
+    "Begin": "Début",
     "Create states for rainradar": "Créez des objets pour inclure un radar de pluie dans votre visualisation.",
+    "Current warnings": "Alertes actuelles",
+    "Description": "Description",
+    "End": "Fin",
     "Get map for warning": "Obtenir la carte pour l'avertissement",
+    "Headline": "Titre",
+    "Instruction": "Consigne",
+    "No warnings for this region at the moment.": "Aucune alerte pour cette région pour l'instant.",
     "Number of warnings": "Nombre d'avertissements",
     "Region": "Région",
+    "Severity": "Gravité",
+    "Type": "Type",
     "Weather Warnings from German Weather Service (DWD)": "Avertissements météorologiques du service météorologique allemand (DWD)",
     "no map": "pas de carte"
 }

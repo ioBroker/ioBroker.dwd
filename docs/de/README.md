@@ -10,6 +10,9 @@ Der `dwd`-Adapter bringt neben dem Adapter selbst zwei Oberflächen mit:
 Beide zeigen dieselben Daten und werden gleich konfiguriert: Instanz auswählen und die Nummer der
 Warnung angeben. Alles andere ist optional.
 
+Die Instanzeinstellungen zeigen zusätzlich die gerade aktiven Warnungen, siehe
+[Die Instanzeinstellungen](#die-instanzeinstellungen).
+
 ---
 
 ## Die Warnungen des Adapters
@@ -53,6 +56,10 @@ vis-1-Widget-Set dieselbe:
 | 49 | starke Hitze | `#e966fe` |
 | 50 | extreme Hitze | `#f933fe` |
 
+![Schweregrad-Farben](../img/severity-colors.svg)
+
+*Gerendert, mit der Textfarbe, die jeder Hintergrund bekommt.*
+
 Diese Farben tragen die Bedeutung der Warnung und folgen deshalb **nicht** dem hellen/dunklen Theme
 — `#880e4f` bleibt in beiden `#880e4f`. Nur die Textfarbe darauf wird automatisch gewählt (schwarz
 oder weiß), damit der Text in jedem Theme lesbar bleibt.
@@ -62,6 +69,8 @@ oder weiß), damit der Text in jedem Theme lesbar bleibt.
 ## vis-2: das Widget `DWD-Warnungen`
 
 Widget-Set `dwd`, Widget `DWD-Warnungen`.
+
+![Das Widget in beiden Layouts](../img/vis2-widget.svg)
 
 ### Einstellungen
 
@@ -103,6 +112,8 @@ Das alte Widget-Set hatte zwei Templates, `tplDwdAdapter` (groß) und `tplDwdAda
 
 Im Dashboard von `ioBroker.devices` das Widget **DWD-Warnung** hinzufügen.
 
+![Die Kachel in ihren drei Größen](../img/devices-tiles.svg)
+
 ### Einstellungen
 
 | Einstellung | Bedeutung |
@@ -125,6 +136,24 @@ Die Kachel passt sich der Größe an, die sie im Dashboard bekommt:
 
 Solange eine Warnung anliegt, gilt die Kachel als „aktiv" und nimmt die Schweregrad-Farbe als
 Akzent an — eine aktive Warnung ist im Dashboard also zu sehen, ohne den Text zu lesen.
+
+---
+
+## Die Instanzeinstellungen
+
+Unter der Konfiguration listen die Instanzeinstellungen die Warnungen auf, die für die eingestellte
+Region gerade aktiv sind:
+
+![Die aktuellen Warnungen in den Instanzeinstellungen](../img/config-warnings.svg)
+
+Die Werte kommen direkt aus den Datenpunkten, **nicht** aus dem Adapterprozess — der Adapter läuft im
+Schedule-Modus und ist nur ein paar Sekunden alle fünf Minuten am Leben. Alles, was die laufende
+Instanz fragen müsste, liefe deshalb meistens ins Timeout.
+
+Eine Warnung mit leerer Überschrift wird ausgeblendet, ebenso die `warning<n>`-Kanäle, die es wegen
+einer kleineren „Anzahl der Warnmeldungen" gar nicht gibt. Gibt es überhaupt keine Warnung, steht
+dort eine einzelne Zeile. Die Liste aktualisiert sich von selbst, sobald der Adapter neue Werte
+schreibt — der Dialog muss nicht neu geöffnet werden.
 
 ---
 

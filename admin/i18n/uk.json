@@ -1,8 +1,17 @@
 {
+    "Begin": "Початок",
     "Create states for rainradar": "Створюйте об’єкти, щоб включити радар дощу у вашу візуалізацію.",
+    "Current warnings": "Поточні попередження",
+    "Description": "Опис",
+    "End": "Кінець",
     "Get map for warning": "Отримати карту для попередження",
+    "Headline": "Заголовок",
+    "Instruction": "Рекомендації",
+    "No warnings for this region at the moment.": "Наразі немає попереджень для цього регіону.",
     "Number of warnings": "Кількість попереджень",
     "Region": "Регіон",
+    "Severity": "Рівень",
+    "Type": "Тип",
     "Weather Warnings from German Weather Service (DWD)": "Попередження про погоду від Німецької служби погоди (DWD)",
     "no map": "немає карти"
 }

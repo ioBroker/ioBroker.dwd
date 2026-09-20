@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="356" viewBox="0 0 620 356" role="img" aria-label="The instance settings with the current warnings below the configuration">
+<style>
+    .bg { fill: #ffffff; }
+    .frame { stroke: #d0d7de; }
+    .label { fill: #8b949e; font: 11px system-ui, sans-serif; }
+    .value { fill: #24292f; font: 13px system-ui, sans-serif; }
+    .head { fill: #24292f; font: 600 14px system-ui, sans-serif; }
+    .strong { fill: #24292f; font: 600 13px system-ui, sans-serif; }
+    .note { fill: #57606a; font: 12px system-ui, sans-serif; }
+    .line { stroke: #d0d7de; }
+</style>
+<rect class="bg frame" x="0.5" y="0.5" width="619" height="355" rx="8"/>
+
+<!-- the existing settings -->
+<text class="label" x="20" y="28">Region</text>
+<text class="value" x="20" y="46">Kreis und Stadt Karlsruhe</text>
+<line class="line" x1="20" y1="54" x2="400" y2="54"/>
+
+<text class="label" x="20" y="76">Number of warnings</text>
+<text class="value" x="20" y="94">3</text>
+<line class="line" x1="20" y1="102" x2="400" y2="102"/>
+
+<line class="line" x1="20" y1="124" x2="600" y2="124"/>
+<text class="head" x="20" y="148">Current warnings</text>
+
+<!-- one warning block -->
+<text class="label" x="20" y="176">Headline:</text>
+<text class="strong" x="90" y="176">Amtliche WARNUNG vor WINDBÖEN</text>
+
+<text class="label" x="20" y="200">Severity:</text>
+<text class="value" x="90" y="200">Moderate</text>
+<text class="label" x="310" y="200">Type:</text>
+<text class="value" x="370" y="200">Wind/Storm</text>
+
+<text class="label" x="20" y="222">Begin:</text>
+<text class="value" x="90" y="222">20.09.2026 14:00</text>
+<text class="label" x="310" y="222">End:</text>
+<text class="value" x="370" y="222">20.09.2026 20:00</text>
+
+<text class="label" x="20" y="244">Description:</text>
+<text class="value" x="110" y="244">Es treten Windböen mit Geschwindigkeiten um 60 km/h auf.</text>
+
+<line class="line" x1="20" y1="264" x2="600" y2="264" stroke-dasharray="3 3"/>
+
+<text class="label" x="20" y="288">Headline:</text>
+<text class="strong" x="90" y="288">Amtliche WARNUNG vor GEWITTER</text>
+
+<text class="note" x="20" y="322">The values come straight from the states, so no running instance is needed - the</text>
+<text class="note" x="20" y="340">adapter only runs every five minutes. Empty warnings are hidden automatically.</text>
+</svg>

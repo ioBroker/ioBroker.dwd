@@ -113,7 +113,23 @@ The states are only created, never updated afterwards (the URLs are static).
 ### Admin configuration
 
 `admin/jsonConfig.json` (`common.adminUI.config = "json"`), translations are the flat
-`admin/i18n/<lang>.json` files selected by `"i18n": true`. The region list is a hard-coded
+`admin/i18n/<lang>.json` files selected by `"i18n": true`.
+
+Below the settings the dialog lists the **currently active warnings** (`_cur*` items). They are
+`"type": "state"` controls with `oid: "warning<n>.headline"` and friends - `oid` is relative to
+`dwd.<instance>`, so no instance has to be resolved. Two things make that work:
+
+- The values come from the **states**, not from the adapter process. The adapter runs in schedule
+  mode and is alive for a few seconds every five minutes, so `sendTo`-based controls
+  (`textSendTo`, `selectSendTo`, ...) would time out almost always. Never move this to `sendTo`.
+- `dependsOnStates` subscribes `.warning<n>.headline` and `.warning<n>.instruction`, and `hidden`
+  evaluates `!_states.head?.val`. An empty channel (the adapter clears the ones it does not need)
+  and a channel that does not exist at all are therefore both hidden, without the expression having
+  to know `data.warnings`.
+
+All ten blocks are always in the file; which ones are visible is decided at runtime. The items are
+generated, so if the shape has to change, change all ten. Requires admin >= 7.1.0 for `state` and a
+newer one for `dependsOnStates` - `common.globalDependencies` already asks for `admin >= 7.6.17`. The region list is a hard-coded
 `autocomplete` with `noTranslation: true` — the entries must match `regionName` in `warnings.json`
 character for character, otherwise no warning is ever found.
 
@@ -184,6 +200,19 @@ vis-1 widget and the `formatDate` replacement for `vis.binds.basic.formatDate`.
 The colours are the meaning of the warning, so they do not follow the theme. Only the text colour on
 top is derived from the background (`textColorOn`), because the view's text colour is unusable on
 both `#ffeb3b` and `#880e4f`.
+
+## Documentation
+
+`docs/en/README.md` and `docs/de/README.md` describe both widgets and the instance settings. The
+illustrations in `docs/img/` are hand-written SVG, not screenshots.
+
+They deliberately carry **no** `prefers-color-scheme` media query: inside an `<img>` that query
+follows the operating system, not the theme of the page the image sits in, so a dark card would end
+up on a light GitHub page. The cards are light in both themes, like a screenshot would be.
+
+`docs/img/severity-colors.svg` is generated - `npm run docs:images` re-renders it from the colour
+table in `src-widgets/src/severity.ts`, including the black/white text decision, so the
+documentation cannot drift away from the code. The other three are edited by hand.
 
 ## Release flow
 

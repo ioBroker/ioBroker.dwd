@@ -1,8 +1,17 @@
 {
+    "Begin": "开始",
     "Create states for rainradar": "创建对象以将气象雷达添加到您的可视化中。",
+    "Current warnings": "当前警告",
+    "Description": "描述",
+    "End": "结束",
     "Get map for warning": "获取地图警告",
+    "Headline": "标题",
+    "Instruction": "行动建议",
+    "No warnings for this region at the moment.": "该地区目前没有警告。",
     "Number of warnings": "警告次数",
     "Region": "地区",
+    "Severity": "严重程度",
+    "Type": "类型",
     "Weather Warnings from German Weather Service (DWD)": "德国气象局 (DWD) 的天气警告",
     "no map": "没有地图"
 }

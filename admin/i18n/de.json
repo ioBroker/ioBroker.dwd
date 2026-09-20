@@ -1,8 +1,17 @@
 {
+    "Begin": "Beginn",
     "Create states for rainradar": "Objekte erstellen, um Regenradar in die Visualisierung einzubinden",
+    "Current warnings": "Aktuelle Warnungen",
+    "Description": "Beschreibung",
+    "End": "Ende",
     "Get map for warning": "Gewünschte Karte für die Wetterwarnung auswählen",
+    "Headline": "Überschrift",
+    "Instruction": "Handlungsempfehlung",
+    "No warnings for this region at the moment.": "Zurzeit keine Warnungen für diese Region.",
     "Number of warnings": "Anzahl der Warnmeldungen",
     "Region": "Region",
+    "Severity": "Schweregrad",
+    "Type": "Art",
     "Weather Warnings from German Weather Service (DWD)": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
     "no map": "keine Karte"
 }

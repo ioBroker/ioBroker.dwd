@@ -1,8 +1,17 @@
 {
+    "Begin": "Begin",
     "Create states for rainradar": "Maak objecten om regenradar in uw visualisatie op te nemen.",
+    "Current warnings": "Actuele waarschuwingen",
+    "Description": "Beschrijving",
+    "End": "Einde",
     "Get map for warning": "Krijg kaart voor waarschuwing",
+    "Headline": "Kop",
+    "Instruction": "Instructie",
+    "No warnings for this region at the moment.": "Op dit moment geen waarschuwingen voor deze regio.",
     "Number of warnings": "Aantal waarschuwingen",
     "Region": "Regio",
+    "Severity": "Ernst",
+    "Type": "Type",
     "Weather Warnings from German Weather Service (DWD)": "Weerwaarschuwingen van Duitse Weer Service (DWD)",
     "no map": "geen kaart"
 }

@@ -2,13 +2,16 @@
 
 The `dwd` adapter ships two front-ends besides the adapter itself:
 
-| Where | What |
-| --- | --- |
-| **vis / vis-2** | the `DWD warnings` widget, in the widget set `dwd` |
-| **ioBroker.devices** | the `DWD warning` tile for the dashboard |
+| Where                | What                                               |
+|----------------------|----------------------------------------------------|
+| **vis / vis-2**      | the `DWD warnings` widget, in the widget set `dwd` |
+| **ioBroker.devices** | the `DWD warning` tile for the dashboard           |
 
 Both show the same data and are configured the same way: pick the adapter instance and the number of
 the warning. Everything else is optional.
+
+The instance settings show the warnings that are currently active as well, see
+[The instance settings](#the-instance-settings).
 
 ---
 
@@ -53,6 +56,10 @@ widget set:
 | 49 | strong heat | `#e966fe` |
 | 50 | extreme heat | `#f933fe` |
 
+![Severity colours](../img/severity-colors.svg)
+
+*Rendered, with the text colour each background gets.*
+
 These colours carry the meaning of the warning, so they do **not** follow the light/dark theme —
 `#880e4f` stays `#880e4f` in both. Only the text colour on top of them is chosen automatically
 (black or white), so the text stays readable in either theme.
@@ -62,6 +69,8 @@ These colours carry the meaning of the warning, so they do **not** follow the li
 ## vis-2: the `DWD warnings` widget
 
 Widget set `dwd`, widget `DWD warnings`.
+
+![The widget in both layouts](../img/vis2-widget.svg)
 
 ### Settings
 
@@ -103,6 +112,8 @@ The vis-2 widget is **one** widget and the two variants are the `Layout` setting
 
 In the dashboard of `ioBroker.devices`, add the widget **DWD warning**.
 
+![The tile in its three sizes](../img/devices-tiles.svg)
+
 ### Settings
 
 | Setting | Meaning |
@@ -125,6 +136,23 @@ The tile adapts to the size it gets in the dashboard:
 
 The tile is marked as "active" while a warning is present, and takes the severity colour as its
 accent — so an active warning is visible in the dashboard without reading the text.
+
+---
+
+## The instance settings
+
+Below the configuration, the instance settings list the warnings that are currently active for the
+configured region:
+
+![The current warnings in the instance settings](../img/config-warnings.svg)
+
+The values are read straight from the states, **not** from the adapter process — the adapter runs in
+schedule mode and is only alive for a few seconds every five minutes, so anything that had to ask the
+running instance would usually time out.
+
+A warning whose headline is empty is hidden, and so are the `warning<n>` channels that do not exist
+because "Number of warnings" is set lower. If there is no warning at all, a single line says so. The
+list updates by itself when the adapter writes new values — the dialog does not have to be reopened.
 
 ---
 

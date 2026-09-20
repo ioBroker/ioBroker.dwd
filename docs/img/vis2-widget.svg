@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="292" viewBox="0 0 620 292" role="img" aria-label="The DWD warnings widget in vis-2, full and compact layout">
+<style>
+    .bg { fill: #ffffff; }
+    .frame { stroke: #d0d7de; }
+    .cap { fill: #57606a; font: 600 12px system-ui, sans-serif; letter-spacing: .04em; }
+    .note { fill: #57606a; font: 12px system-ui, sans-serif; }
+    .dim { fill: #8b949e; font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
+</style>
+<rect class="bg frame" x="0.5" y="0.5" width="619" height="291" rx="8"/>
+
+<text class="cap" x="16" y="26">LAYOUT: FULL WARNING</text>
+<text class="dim" x="470" y="26">585 × 85 px</text>
+
+<!-- severity 2 - #fb8c00, luma 157 > 140, so the text on it is black -->
+<rect x="16" y="38" width="585" height="85" rx="3" fill="#fb8c00"/>
+<text x="24" y="60" fill="#000000" style="font: 700 20px Arial, sans-serif">Amtliche WARNUNG vor WINDBÖEN</text>
+<text x="24" y="86" fill="#000000" style="font: 13px Arial, sans-serif">Es treten Windböen mit Geschwindigkeiten um 60 km/h aus südwestlicher Richtung auf.</text>
+<text x="24" y="104" fill="#000000" style="font: 13px Arial, sans-serif">20.09 14:00 - 20.09 20:00</text>
+<text x="24" y="118" fill="#000000" opacity="0.75" style="font: italic 12px Arial, sans-serif">Sichern Sie Gegenstände im Freien.</text>
+
+<text class="note" x="16" y="146">headline · description · begin - end · instruction (optional)</text>
+
+<line class="frame" x1="16" y1="164" x2="604" y2="164"/>
+
+<text class="cap" x="16" y="192">LAYOUT: COMPACT</text>
+<text class="dim" x="470" y="192">160 × 21 px</text>
+
+<!-- severity 1 - #ffeb3b, luma 219 > 140, black text -->
+<rect x="16" y="204" width="160" height="21" rx="3" fill="#ffeb3b"/>
+<text x="22" y="219" fill="#000000" style="font: 13px Arial, sans-serif">WINDBÖEN</text>
+
+<text class="note" x="16" y="248">Only the short warning text. Replaces the vis-1 template tplDwdAdapterSmall.</text>
+
+<text class="note" x="16" y="274">The background comes from severity, the text colour is derived from it - see the colour table.</text>
+</svg>
