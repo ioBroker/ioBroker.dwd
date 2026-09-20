@@ -144,6 +144,7 @@
       "type": "free"
     },
     "compact": true,
+    "nogit": true,
     "readme": "https://github.com/ioBroker/ioBroker.dwd/blob/master/README.md",
     "icon": "dwd.png",
     "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png",

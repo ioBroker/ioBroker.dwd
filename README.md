@@ -24,6 +24,8 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 ### **WORK IN PROGRESS**
+- (bluefox) The adapter was refactored to TypeScript, the sources are now in `src/` and are compiled to `build/`
+- (bluefox) The configuration dialog was migrated to JsonConfig
 - (copilot) Adapter requires node.js >= 22 now
 
 ### 2.8.7 (2026-05-19)
@@ -46,7 +48,9 @@ This adapter loads the weather warnings from the German weather service via JSON
 ### 2.7.7 (2021-07-01)
 * (Apollon77) Fix start/end dates
 
-[Older changelogs can be found there](CHANGELOG_OLD.md)## License
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
+## License
 
 The MIT License (MIT)
 

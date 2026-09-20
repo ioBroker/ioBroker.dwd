@@ -1,22 +1,24 @@
 {
+    "i18n": true,
     "type": "panel",
     "items": {
-        "dwdDesc": {
-			"type": "staticText",
-			"text": "Weather Warnings from German Weather Service (DWD)",
-			"newLine": true,
-			"style": {
-				"fontSize": 20
-			},
-			"xs": 12,
-			"sm": 12,
-			"md": 12,
-			"lg": 12,
-			"xl": 12
-		},
+        "_dwdDesc": {
+            "type": "staticText",
+            "text": "Weather Warnings from German Weather Service (DWD)",
+            "newLine": true,
+            "style": {
+                "fontSize": 20
+            },
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
         "region": {
             "type": "autocomplete",
             "label": "Region",
+            "newLine": true,
             "options": [
                 "Stadt Flensburg",
                 "Stadt Kiel",
@@ -432,68 +434,149 @@
             ],
             "noTranslation": true,
             "xs": 12,
-  					"sm": 12,
-  					"md": 12,
-  					"lg": 12,
-  					"xl": 12
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         "land": {
-            "newLine": true,
             "type": "select",
             "label": "Get map for warning",
+            "newLine": true,
             "options": [
-                {"value": "", "label": "no map"},
-                {"value": "baw", "label": "Baden-Württemberg", "noTranslation":  true},
-                {"value": "bay", "label": "Bayern", "noTranslation":  true},
-                {"value": "bbb", "label": "Berlin, Brandenburg", "noTranslation":  true},
-                {"value": "hes", "label": "Hessen", "noTranslation":  true},
-                {"value": "mvp", "label": "Mecklenburg-Vorpommer", "noTranslation":  true},
-                {"value": "nib", "label": "Niedersachsen, Bremen", "noTranslation":  true},
-                {"value": "nrw", "label": "Nordrhein-Westfalen", "noTranslation":  true},
-                {"value": "rps", "label": "Rheinland-Pfalz, Saarland", "noTranslation":  true},
-                {"value": "sac", "label": "Sachsen", "noTranslation":  true},
-                {"value": "saa", "label": "Sachsen-Anhalt", "noTranslation":  true},
-                {"value": "shh", "label": "Schleswig-Holstein, Hamburg", "noTranslation":  true},
-                {"value": "thu", "label": "Thüringen", "noTranslation":  true}
+                {
+                    "value": "",
+                    "label": "no map"
+                },
+                {
+                    "value": "baw",
+                    "label": "Baden-Württemberg",
+                    "noTranslation": true
+                },
+                {
+                    "value": "bay",
+                    "label": "Bayern",
+                    "noTranslation": true
+                },
+                {
+                    "value": "bbb",
+                    "label": "Berlin, Brandenburg",
+                    "noTranslation": true
+                },
+                {
+                    "value": "hes",
+                    "label": "Hessen",
+                    "noTranslation": true
+                },
+                {
+                    "value": "mvp",
+                    "label": "Mecklenburg-Vorpommer",
+                    "noTranslation": true
+                },
+                {
+                    "value": "nib",
+                    "label": "Niedersachsen, Bremen",
+                    "noTranslation": true
+                },
+                {
+                    "value": "nrw",
+                    "label": "Nordrhein-Westfalen",
+                    "noTranslation": true
+                },
+                {
+                    "value": "rps",
+                    "label": "Rheinland-Pfalz, Saarland",
+                    "noTranslation": true
+                },
+                {
+                    "value": "sac",
+                    "label": "Sachsen",
+                    "noTranslation": true
+                },
+                {
+                    "value": "saa",
+                    "label": "Sachsen-Anhalt",
+                    "noTranslation": true
+                },
+                {
+                    "value": "shh",
+                    "label": "Schleswig-Holstein, Hamburg",
+                    "noTranslation": true
+                },
+                {
+                    "value": "thu",
+                    "label": "Thüringen",
+                    "noTranslation": true
+                }
             ],
             "xs": 12,
-  					"sm": 12,
-  					"md": 12,
-  					"lg": 12,
-  					"xl": 12
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         "warnings": {
-            "newLine": true,
             "type": "select",
             "label": "Number of warnings",
+            "newLine": true,
             "noTranslation": true,
             "options": [
-                {"value": "1", "label": "1"},
-                {"value": "2", "label": "2"},
-                {"value": "3", "label": "3"},
-                {"value": "4", "label": "4"},
-                {"value": "5", "label": "5"},
-                {"value": "6", "label": "6"},
-                {"value": "7", "label": "7"},
-                {"value": "8", "label": "8"},
-                {"value": "9", "label": "9"},
-                {"value": "10", "label": "10"}
+                {
+                    "value": "1",
+                    "label": "1"
+                },
+                {
+                    "value": "2",
+                    "label": "2"
+                },
+                {
+                    "value": "3",
+                    "label": "3"
+                },
+                {
+                    "value": "4",
+                    "label": "4"
+                },
+                {
+                    "value": "5",
+                    "label": "5"
+                },
+                {
+                    "value": "6",
+                    "label": "6"
+                },
+                {
+                    "value": "7",
+                    "label": "7"
+                },
+                {
+                    "value": "8",
+                    "label": "8"
+                },
+                {
+                    "value": "9",
+                    "label": "9"
+                },
+                {
+                    "value": "10",
+                    "label": "10"
+                }
             ],
             "xs": 12,
-  					"sm": 12,
-  					"md": 12,
-  					"lg": 12,
-  					"xl": 12
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         "rainRadar": {
-            "newLine": true,
             "type": "checkbox",
             "label": "Create states for rainradar",
+            "newLine": true,
             "xs": 12,
-  					"sm": 12,
-  					"md": 12,
-  					"lg": 12,
-  					"xl": 12
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         }
     }
 }
