@@ -24,6 +24,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 ### **WORK IN PROGRESS**
+- (bluefox) Added the 24 missing inland lake regions (Bodensee, Chiemsee, Starnberger See, Müritz, Steinhuder Meer, ...)
 - (bluefox) The adapter was refactored to TypeScript, the sources are now in `src/` and are compiled to `build/`
 - (bluefox) The configuration dialog was migrated to JsonConfig
 - (copilot) Adapter requires node.js >= 22 now
