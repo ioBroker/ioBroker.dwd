@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true,
+        "rootDir": ".",
+        "module": "node20",
+        "moduleResolution": "node16",
+        // `node tasks.mts` runs the file through node's type stripping, which only erases types -
+        // it never rewrites syntax. This flag rejects anything that would need a real compiler.
+        "erasableSyntaxOnly": true,
+        "types": ["node"]
+    },
+    "include": ["tasks.mts"],
+    "exclude": ["node_modules/**", "src/**", "src-widgets/**", "src-devices/**", "test/**", "build/**"]
+}

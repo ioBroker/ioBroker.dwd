@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "Alerte DWD",
+    "dwddm_icon": "Icône",
+    "dwddm_instance": "Instance",
+    "dwddm_name": "Nom",
+    "dwddm_no_warning": "Aucune alerte",
+    "dwddm_show_instruction": "Afficher la consigne",
+    "dwddm_show_period": "Afficher la période",
+    "dwddm_time_format": "Format de l'heure",
+    "dwddm_time_format_tooltip": "Jetons : YYYY, YY, MM, DD, hh, mm, ss",
+    "dwddm_title": "Alerte DWD",
+    "dwddm_warning": "Alerte",
+    "dwddm_warning_tooltip": "0 est l'alerte la plus grave actuellement active."
+}

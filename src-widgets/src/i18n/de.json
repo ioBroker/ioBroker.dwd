@@ -1,0 +1,23 @@
+{
+    "custom_oids": "Objekt-IDs",
+    "instance": "Instanz",
+    "layout": "Layout",
+    "layout_normal": "Vollständige Warnung",
+    "layout_small": "Kompakt",
+    "name": "Name",
+    "oid_begin": "Beginn",
+    "oid_end": "Ende",
+    "oid_headline": "Überschrift",
+    "oid_instruction": "Handlungsempfehlung",
+    "oid_main": "Text",
+    "oid_severity": "Schweregrad",
+    "show_instruction": "Handlungsempfehlung anzeigen",
+    "time_format": "Zeitformat",
+    "time_format_tooltip": "Platzhalter: YYYY, YY, MM, DD, hh, mm, ss",
+    "use_oids": "Objekt-IDs manuell setzen",
+    "use_oids_tooltip": "Normalerweise werden die Objekt-IDs aus Instanz und Warnungsnummer abgeleitet. Nur aktivieren, um das Widget auf andere Datenpunkte zu richten.",
+    "warning_index": "Warnung",
+    "warning_index_tooltip": "0 ist die schwerste Warnung. Der Adapter legt so viele Warnungen an, wie in seinen Einstellungen konfiguriert sind.",
+    "warnings": "DWD-Warnungen",
+    "without_card": "Ohne Karte"
+}

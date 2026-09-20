@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "Предупреждение DWD",
+    "dwddm_icon": "Значок",
+    "dwddm_instance": "Экземпляр",
+    "dwddm_name": "Имя",
+    "dwddm_no_warning": "Нет предупреждений",
+    "dwddm_show_instruction": "Показывать рекомендации",
+    "dwddm_show_period": "Показывать период",
+    "dwddm_time_format": "Формат времени",
+    "dwddm_time_format_tooltip": "Подстановки: YYYY, YY, MM, DD, hh, mm, ss",
+    "dwddm_title": "Предупреждение DWD",
+    "dwddm_warning": "Предупреждение",
+    "dwddm_warning_tooltip": "0 - самое серьёзное активное предупреждение."
+}

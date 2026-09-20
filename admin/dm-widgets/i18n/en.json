@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "DWD warning",
+    "dwddm_icon": "Icon",
+    "dwddm_instance": "Instance",
+    "dwddm_name": "Name",
+    "dwddm_no_warning": "No warning",
+    "dwddm_show_instruction": "Show instruction",
+    "dwddm_show_period": "Show period",
+    "dwddm_time_format": "Time format",
+    "dwddm_time_format_tooltip": "Placeholders: YYYY, YY, MM, DD, hh, mm, ss",
+    "dwddm_title": "DWD warning",
+    "dwddm_warning": "Warning",
+    "dwddm_warning_tooltip": "0 is the most severe warning currently active."
+}

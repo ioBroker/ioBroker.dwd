@@ -1,0 +1,23 @@
+{
+    "custom_oids": "Object IDs",
+    "instance": "Instance",
+    "layout": "Layout",
+    "layout_normal": "Full warning",
+    "layout_small": "Compact",
+    "name": "Name",
+    "oid_begin": "Begin",
+    "oid_end": "End",
+    "oid_headline": "Headline",
+    "oid_instruction": "Instruction",
+    "oid_main": "Text",
+    "oid_severity": "Severity",
+    "show_instruction": "Show instruction",
+    "time_format": "Time format",
+    "time_format_tooltip": "Placeholders: YYYY, YY, MM, DD, hh, mm, ss",
+    "use_oids": "Set object IDs manually",
+    "use_oids_tooltip": "Normally the object IDs are derived from instance and warning number. Enable this only to point the widget at other states.",
+    "warning_index": "Warning",
+    "warning_index_tooltip": "0 is the most severe warning. The adapter creates as many warnings as configured in its settings.",
+    "warnings": "DWD warnings",
+    "without_card": "Without card"
+}

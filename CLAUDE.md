@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 `warning<n>` channels. It optionally creates a set of states with buienradar rain radar image URLs, and it
 ships a vis widget set (`widgets/`).
 
-TypeScript (CommonJS output). Sources live in `src/`, the published and runnable code is the compiled
+TypeScript (CommonJS output). The adapter sources live in `src/`, the published and runnable code is the compiled
 `build/` (`package.json` `main` is `build/main.js`). `build/` is gitignored — always run the build before
 starting the adapter or the integration test.
 
@@ -20,7 +20,10 @@ after 4 minutes should anything hang.
 ## Commands
 
 ```bash
-npm run build                             # tsc -p tsconfig.build.json  -> build/
+npm run build                             # adapter + both front-ends
+npm run build:ts                          # tsc -p tsconfig.build.json  -> build/
+npm run build:widgets                     # vis-2 widget set            -> widgets/dwd/
+npm run build:devices                     # ioBroker.devices tile       -> admin/dm-widgets/
 npm run watch                             # same in watch mode
 npm run check                             # type check only (tsconfig.json, noEmit)
 npm run lint                              # eslint (@iobroker/eslint-config, flat config)
@@ -49,7 +52,10 @@ The integration test requires that **no** js-controller is running on the machin
 | `src/lib/types.ts` | shape of `warnings.json` and of `instanceObjects` in io-package.json |
 | `src/lib/adapter-config.d.ts` | augments `ioBroker.AdapterConfig` |
 | `admin/jsonConfig.json` | the configuration dialog, `admin/i18n/<lang>.json` the translations |
-| `widgets/dwd.html` | the vis widget set (plain JS, not part of the TS build) |
+| `src-widgets/` | the vis-2 widget set (React), built to `widgets/dwd/` |
+| `src-devices/` | the ioBroker.devices dashboard tile (React), built to `admin/dm-widgets/` |
+| `widgets/dwd.html` | the vis-1 widget set (plain JS, hand-maintained, still shipped) |
+| `tasks.mts` | builds the two front-ends, run straight from source by node's type stripping |
 
 `src/lib/adapter-config.d.ts` is hand-maintained and must be kept in sync with `native` in
 `io-package.json` **and** with `admin/jsonConfig.json` — nothing generates it.
@@ -124,6 +130,60 @@ the stored value of every existing instance.
   globals — this is why js-controller >= 6.0.11 is required.
 - `main.ts` exports a factory when required (compact mode) and self-starts when run directly.
 - `this.config` is typed through `src/lib/adapter-config.d.ts`; there is no `any` in `src/`.
+
+## The two front-ends
+
+Both are React + TypeScript, built with vite and `@module-federation/vite`, and follow
+`C:\pWork\ioBroker.sonos` - an adapter that hosts the same two bundles.
+
+| | `src-widgets/` | `src-devices/` |
+| --- | --- | --- |
+| loaded by | vis-2 | the ioBroker.devices dashboard |
+| federation name | `vis2DwdWidgets` | `DevicesWidgetDwdSet` |
+| remote entry | `customWidgets.js` | `customDevices.js` |
+| output | `widgets/dwd/` (gitignored, built on publish) | `admin/dm-widgets/` (**committed**) |
+| declared in io-package.json | `common.visWidgets` | `common.deviceWidgets` |
+| i18n prefix | `dwd_` | `dwddm_` |
+
+The exposed component names and the URL are repeated in `io-package.json` - adding a widget means
+touching `exposes` in the vite config **and** that block.
+
+`widgets/dwd/img/` is **not** generated: it holds the preview images of the vis-1 set, and the vis-2
+widget references `Prev_DwdAdapter.png` from there as its `visPrev`. `tasks.mts` therefore deletes
+only `widgets/dwd/assets`, never the whole folder.
+
+`admin/dm-widgets/` is committed although it is build output - the module federation build pulls in
+the whole shared GUI stack, so rebuilding it on every CI matrix cell is not worth it. Re-run
+`npm run build:devices` and commit the result whenever something under `src-devices/` changed.
+
+### vis-1 -> vis-2 migration
+
+vis-2 loads the vis-1 set as well, and **a React widget replaces the EJS widget of the same id**.
+`DwdWarnings.getWidgetInfo()` therefore returns `id: 'tplDwdAdapter'` and `visSet: 'dwd'` - change
+either and existing views silently fall back to the old EJS rendering.
+
+The old set had two templates; the vis-2 set has **one** widget with a `layout` setting
+(`normal` / `small`). `tplDwdAdapterSmall` keeps being rendered by the vis-1 template, on purpose -
+registering a second React widget for it would put two entries in the palette.
+
+Views migrated from vis-1 carry the old attribute names (`oid`, `oid-headline`, `oid-severity`,
+`oid-begin`, `oid-end`, `oid-hint`). `usesOids()` detects them and lets them win over the
+instance+index derivation, so a migrated widget keeps showing what it showed before. Those names
+must not be renamed - widget data is stored per attribute name.
+
+The vis-1 default for the instruction field was `dwd.0.warning.hint`, a state that does not exist
+(the adapter writes `warning.instruction`). That default is left as it is in the vis-1 template and
+documented in `docs/`; the vis-2 widget uses `instruction` when it derives the ids itself.
+
+### The severity colours
+
+`src-widgets/src/severity.ts` and `src-devices/src/severity.ts` are **the same file**, kept in sync
+by hand (the two bundles have no shared package). It holds the colour table taken over from the
+vis-1 widget and the `formatDate` replacement for `vis.binds.basic.formatDate`.
+
+The colours are the meaning of the warning, so they do not follow the theme. Only the text colour on
+top is derived from the background (`textColorOn`), because the view's text colour is unusable on
+both `#ffeb3b` and `#880e4f`.
 
 ## Release flow
 

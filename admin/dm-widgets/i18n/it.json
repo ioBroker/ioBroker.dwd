@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "Avviso DWD",
+    "dwddm_icon": "Icona",
+    "dwddm_instance": "Istanza",
+    "dwddm_name": "Nome",
+    "dwddm_no_warning": "Nessun avviso",
+    "dwddm_show_instruction": "Mostra istruzioni",
+    "dwddm_show_period": "Mostra periodo",
+    "dwddm_time_format": "Formato ora",
+    "dwddm_time_format_tooltip": "Segnaposto: YYYY, YY, MM, DD, hh, mm, ss",
+    "dwddm_title": "Avviso DWD",
+    "dwddm_warning": "Avviso",
+    "dwddm_warning_tooltip": "0 è l'avviso più grave attualmente attivo."
+}

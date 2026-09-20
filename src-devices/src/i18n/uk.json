@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "Попередження DWD",
+    "dwddm_icon": "Значок",
+    "dwddm_instance": "Екземпляр",
+    "dwddm_name": "Ім'я",
+    "dwddm_no_warning": "Немає попереджень",
+    "dwddm_show_instruction": "Показувати рекомендації",
+    "dwddm_show_period": "Показувати період",
+    "dwddm_time_format": "Формат часу",
+    "dwddm_time_format_tooltip": "Підстановки: YYYY, YY, MM, DD, hh, mm, ss",
+    "dwddm_title": "Попередження DWD",
+    "dwddm_warning": "Попередження",
+    "dwddm_warning_tooltip": "0 - найсерйозніше наразі активне попередження."
+}

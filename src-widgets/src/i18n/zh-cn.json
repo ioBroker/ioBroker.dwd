@@ -1,0 +1,23 @@
+{
+    "custom_oids": "对象 ID",
+    "instance": "实例",
+    "layout": "布局",
+    "layout_normal": "完整警告",
+    "layout_small": "紧凑",
+    "name": "名称",
+    "oid_begin": "开始",
+    "oid_end": "结束",
+    "oid_headline": "标题",
+    "oid_instruction": "行动建议",
+    "oid_main": "文本",
+    "oid_severity": "严重程度",
+    "show_instruction": "显示行动建议",
+    "time_format": "时间格式",
+    "time_format_tooltip": "占位符：YYYY、YY、MM、DD、hh、mm、ss",
+    "use_oids": "手动设置对象 ID",
+    "use_oids_tooltip": "通常对象 ID 由实例和警告编号推导得出。仅在需要指向其他状态时启用。",
+    "warning_index": "警告",
+    "warning_index_tooltip": "0 是最严重的警告。适配器按其设置中配置的数量创建警告。",
+    "warnings": "DWD 天气警告",
+    "without_card": "不使用卡片"
+}

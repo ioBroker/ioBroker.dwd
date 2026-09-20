@@ -1,0 +1,23 @@
+{
+    "custom_oids": "ID oggetto",
+    "instance": "Istanza",
+    "layout": "Layout",
+    "layout_normal": "Avviso completo",
+    "layout_small": "Compatto",
+    "name": "Nome",
+    "oid_begin": "Inizio",
+    "oid_end": "Fine",
+    "oid_headline": "Titolo",
+    "oid_instruction": "Istruzioni",
+    "oid_main": "Testo",
+    "oid_severity": "Gravità",
+    "show_instruction": "Mostra istruzioni",
+    "time_format": "Formato ora",
+    "time_format_tooltip": "Segnaposto: YYYY, YY, MM, DD, hh, mm, ss",
+    "use_oids": "Imposta gli ID oggetto manualmente",
+    "use_oids_tooltip": "Di norma gli ID derivano da istanza e numero di avviso. Attivare solo per puntare ad altri stati.",
+    "warning_index": "Avviso",
+    "warning_index_tooltip": "0 è l'avviso più grave. L'adapter crea tanti avvisi quanti configurati nelle sue impostazioni.",
+    "warnings": "Avvisi DWD",
+    "without_card": "Senza scheda"
+}

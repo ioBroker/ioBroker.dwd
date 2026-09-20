@@ -1,0 +1,23 @@
+{
+    "custom_oids": "Identyfikatory obiektów",
+    "instance": "Instancja",
+    "layout": "Układ",
+    "layout_normal": "Pełne ostrzeżenie",
+    "layout_small": "Kompaktowy",
+    "name": "Nazwa",
+    "oid_begin": "Początek",
+    "oid_end": "Koniec",
+    "oid_headline": "Nagłówek",
+    "oid_instruction": "Zalecenia",
+    "oid_main": "Tekst",
+    "oid_severity": "Stopień",
+    "show_instruction": "Pokaż zalecenia",
+    "time_format": "Format czasu",
+    "time_format_tooltip": "Symbole: YYYY, YY, MM, DD, hh, mm, ss",
+    "use_oids": "Ustaw identyfikatory obiektów ręcznie",
+    "use_oids_tooltip": "Zwykle identyfikatory wynikają z instancji i numeru ostrzeżenia. Włącz tylko, aby wskazać inne stany.",
+    "warning_index": "Ostrzeżenie",
+    "warning_index_tooltip": "0 to najpoważniejsze ostrzeżenie. Adapter tworzy tyle ostrzeżeń, ile ustawiono w jego konfiguracji.",
+    "warnings": "Ostrzeżenia DWD",
+    "without_card": "Bez karty"
+}

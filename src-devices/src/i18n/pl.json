@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "Ostrzeżenie DWD",
+    "dwddm_icon": "Ikona",
+    "dwddm_instance": "Instancja",
+    "dwddm_name": "Nazwa",
+    "dwddm_no_warning": "Brak ostrzeżeń",
+    "dwddm_show_instruction": "Pokaż zalecenia",
+    "dwddm_show_period": "Pokaż okres",
+    "dwddm_time_format": "Format czasu",
+    "dwddm_time_format_tooltip": "Symbole: YYYY, YY, MM, DD, hh, mm, ss",
+    "dwddm_title": "Ostrzeżenie DWD",
+    "dwddm_warning": "Ostrzeżenie",
+    "dwddm_warning_tooltip": "0 to najpoważniejsze aktualnie aktywne ostrzeżenie."
+}

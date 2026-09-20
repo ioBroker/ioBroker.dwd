@@ -1,0 +1,23 @@
+{
+    "custom_oids": "ID d'objets",
+    "instance": "Instance",
+    "layout": "Disposition",
+    "layout_normal": "Alerte complète",
+    "layout_small": "Compact",
+    "name": "Nom",
+    "oid_begin": "Début",
+    "oid_end": "Fin",
+    "oid_headline": "Titre",
+    "oid_instruction": "Consigne",
+    "oid_main": "Texte",
+    "oid_severity": "Gravité",
+    "show_instruction": "Afficher la consigne",
+    "time_format": "Format de l'heure",
+    "time_format_tooltip": "Jetons : YYYY, YY, MM, DD, hh, mm, ss",
+    "use_oids": "Définir les ID d'objets manuellement",
+    "use_oids_tooltip": "Normalement les ID sont dérivés de l'instance et du numéro d'alerte. À activer uniquement pour viser d'autres états.",
+    "warning_index": "Alerte",
+    "warning_index_tooltip": "0 est l'alerte la plus grave. L'adaptateur crée autant d'alertes que configuré dans ses paramètres.",
+    "warnings": "Alertes DWD",
+    "without_card": "Sans carte"
+}

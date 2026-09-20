@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "DWD-waarschuwing",
+    "dwddm_icon": "Pictogram",
+    "dwddm_instance": "Instantie",
+    "dwddm_name": "Naam",
+    "dwddm_no_warning": "Geen waarschuwing",
+    "dwddm_show_instruction": "Instructie tonen",
+    "dwddm_show_period": "Periode tonen",
+    "dwddm_time_format": "Tijdnotatie",
+    "dwddm_time_format_tooltip": "Plaatshouders: YYYY, YY, MM, DD, hh, mm, ss",
+    "dwddm_title": "DWD-waarschuwing",
+    "dwddm_warning": "Waarschuwing",
+    "dwddm_warning_tooltip": "0 is de zwaarste momenteel actieve waarschuwing."
+}

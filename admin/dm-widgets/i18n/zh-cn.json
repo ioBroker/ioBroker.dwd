@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "DWD 天气警告",
+    "dwddm_icon": "图标",
+    "dwddm_instance": "实例",
+    "dwddm_name": "名称",
+    "dwddm_no_warning": "无警告",
+    "dwddm_show_instruction": "显示行动建议",
+    "dwddm_show_period": "显示时间段",
+    "dwddm_time_format": "时间格式",
+    "dwddm_time_format_tooltip": "占位符：YYYY、YY、MM、DD、hh、mm、ss",
+    "dwddm_title": "DWD 天气警告",
+    "dwddm_warning": "警告",
+    "dwddm_warning_tooltip": "0 是当前最严重的有效警告。"
+}

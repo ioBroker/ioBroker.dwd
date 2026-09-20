@@ -156,6 +156,39 @@
     "adminUI": {
       "config": "json"
     },
+    "visWidgets": {
+      "vis2DwdWidgets": {
+        "i18n": "component",
+        "name": "vis2DwdWidgets",
+        "url": "dwd/customWidgets.js",
+        "bundlerType": "module",
+        "components": [
+          "DwdWarnings"
+        ]
+      }
+    },
+    "deviceWidgets": {
+      "components": [
+        {
+          "name": "DwdWarningsComponent",
+          "label": "DWD warning",
+          "description": {
+            "en": "Current weather warning of the German Weather Service",
+            "de": "Aktuelle Wetterwarnung des Deutschen Wetterdienstes",
+            "ru": "Текущее предупреждение о погоде Немецкой службы погоды",
+            "pt": "Aviso meteorológico atual do Serviço Meteorológico Alemão",
+            "nl": "Actuele weerwaarschuwing van de Duitse weerdienst",
+            "fr": "Alerte météo actuelle du service météorologique allemand",
+            "it": "Avviso meteo attuale del servizio meteorologico tedesco",
+            "es": "Aviso meteorológico actual del Servicio Meteorológico Alemán",
+            "pl": "Aktualne ostrzeżenie pogodowe niemieckiej służby pogodowej",
+            "uk": "Поточне попередження про погоду Німецької служби погоди",
+            "zh-cn": "德国气象局当前的天气警告"
+          },
+          "icon": "warnings.png"
+        }
+      ]
+    },
     "plugins": {
       "sentry": {
         "dsn": "https://4ddc70db4b554069a5595f0382c27e3f@sentry.iobroker.net/50"

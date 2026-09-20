@@ -1,0 +1,23 @@
+{
+    "custom_oids": "ID об'єктів",
+    "instance": "Екземпляр",
+    "layout": "Вигляд",
+    "layout_normal": "Повне попередження",
+    "layout_small": "Компактний",
+    "name": "Ім'я",
+    "oid_begin": "Початок",
+    "oid_end": "Кінець",
+    "oid_headline": "Заголовок",
+    "oid_instruction": "Рекомендації",
+    "oid_main": "Текст",
+    "oid_severity": "Рівень",
+    "show_instruction": "Показувати рекомендації",
+    "time_format": "Формат часу",
+    "time_format_tooltip": "Підстановки: YYYY, YY, MM, DD, hh, mm, ss",
+    "use_oids": "Задати ID об'єктів вручну",
+    "use_oids_tooltip": "Зазвичай ID виводяться з екземпляра та номера попередження. Вмикайте лише щоб вказати інші стани.",
+    "warning_index": "Попередження",
+    "warning_index_tooltip": "0 - найсерйозніше попередження. Адаптер створює стільки попереджень, скільки задано в його налаштуваннях.",
+    "warnings": "Попередження DWD",
+    "without_card": "Без картки"
+}

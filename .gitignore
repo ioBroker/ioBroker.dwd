@@ -8,3 +8,20 @@ admin/i18n/*/flat.txt
 iob_npm.done
 #ignore .commitinfo created by ioBroker release script
 .commitinfo
+
+# vis-2 widget set: sources are built by "npm run build:widgets" and shipped via prepublishOnly.
+# widgets/dwd/img/ is NOT ignored - it holds the preview images of the vis-1 widget set.
+src-widgets/node_modules/
+src-widgets/build/
+src-widgets/.__mf__temp/
+widgets/dwd/assets/
+widgets/dwd/customWidgets.js
+widgets/dwd/mf-stats.json
+widgets/dwd/mf-manifest.json
+
+# widgets for the ioBroker.devices dashboard: the sources are built with vite and the result is
+# committed (admin/dm-widgets/), because the module federation build pulls in the whole shared
+# GUI stack - see tasks.mts
+src-devices/node_modules/
+src-devices/build/
+src-devices/.__mf__temp/

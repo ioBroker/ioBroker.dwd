@@ -1,0 +1,23 @@
+{
+    "custom_oids": "IDs de objeto",
+    "instance": "Instância",
+    "layout": "Esquema",
+    "layout_normal": "Aviso completo",
+    "layout_small": "Compacto",
+    "name": "Nome",
+    "oid_begin": "Início",
+    "oid_end": "Fim",
+    "oid_headline": "Título",
+    "oid_instruction": "Instrução",
+    "oid_main": "Texto",
+    "oid_severity": "Gravidade",
+    "show_instruction": "Mostrar instrução",
+    "time_format": "Formato da hora",
+    "time_format_tooltip": "Marcadores: YYYY, YY, MM, DD, hh, mm, ss",
+    "use_oids": "Definir IDs de objeto manualmente",
+    "use_oids_tooltip": "Normalmente os IDs são derivados da instância e do número do aviso. Ative apenas para apontar o widget para outros estados.",
+    "warning_index": "Aviso",
+    "warning_index_tooltip": "0 é o aviso mais grave. O adaptador cria tantos avisos quantos estiverem configurados nas suas definições.",
+    "warnings": "Avisos do DWD",
+    "without_card": "Sem cartão"
+}

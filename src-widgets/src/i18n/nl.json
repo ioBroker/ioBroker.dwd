@@ -1,0 +1,23 @@
+{
+    "custom_oids": "Object-IDs",
+    "instance": "Instantie",
+    "layout": "Indeling",
+    "layout_normal": "Volledige waarschuwing",
+    "layout_small": "Compact",
+    "name": "Naam",
+    "oid_begin": "Begin",
+    "oid_end": "Einde",
+    "oid_headline": "Kop",
+    "oid_instruction": "Instructie",
+    "oid_main": "Tekst",
+    "oid_severity": "Ernst",
+    "show_instruction": "Instructie tonen",
+    "time_format": "Tijdnotatie",
+    "time_format_tooltip": "Plaatshouders: YYYY, YY, MM, DD, hh, mm, ss",
+    "use_oids": "Object-IDs handmatig instellen",
+    "use_oids_tooltip": "Normaal worden de object-IDs afgeleid uit instantie en waarschuwingsnummer. Alleen inschakelen om andere datapunten te gebruiken.",
+    "warning_index": "Waarschuwing",
+    "warning_index_tooltip": "0 is de zwaarste waarschuwing. De adapter maakt zoveel waarschuwingen aan als in zijn instellingen is ingesteld.",
+    "warnings": "DWD-waarschuwingen",
+    "without_card": "Zonder kaart"
+}

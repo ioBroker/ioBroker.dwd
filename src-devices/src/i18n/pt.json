@@ -1,0 +1,14 @@
+{
+    "DwdWarnings": "Aviso do DWD",
+    "dwddm_icon": "Ícone",
+    "dwddm_instance": "Instância",
+    "dwddm_name": "Nome",
+    "dwddm_no_warning": "Sem aviso",
+    "dwddm_show_instruction": "Mostrar instrução",
+    "dwddm_show_period": "Mostrar período",
+    "dwddm_time_format": "Formato da hora",
+    "dwddm_time_format_tooltip": "Marcadores: YYYY, YY, MM, DD, hh, mm, ss",
+    "dwddm_title": "Aviso do DWD",
+    "dwddm_warning": "Aviso",
+    "dwddm_warning_tooltip": "0 é o aviso mais grave atualmente ativo."
+}
