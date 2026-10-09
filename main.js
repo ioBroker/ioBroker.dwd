@@ -276,8 +276,9 @@ async function ensureWarncellWarningChannels() {
     const toDelete = [];
 
     for (const id of Object.keys(existing || {})) {
-        const match = id.match(/^.*\.warncell\.warning(\d+)$/);
-        if (!match || Number(match[1]) < warningCount) {
+        const match = id.match(/^.*\.warncell\.warning(\d*)$/);
+        const index = match && match[1] ? Number(match[1]) : 0;
+        if (!match || index < warningCount) {
             continue;
         }
         const channelId = `${prefix}${match[1]}`;
@@ -294,7 +295,7 @@ async function ensureWarncellWarningChannels() {
         template._id === 'warning' || template._id.startsWith('warning.')
     );
     for (let index = 0; index < warningCount; index++) {
-        const channelId = `warncell.warning${index}`;
+        const channelId = getWarncellWarningChannelId(index);
         for (const template of templates) {
             const suffix = template._id === 'warning' ? '' : template._id.slice('warning'.length);
             const object = {
@@ -315,6 +316,10 @@ async function ensureWarncellWarningChannels() {
             await adapter.setObjectAsync(channelId, channel);
         }
     }
+}
+
+function getWarncellWarningChannelId(index) {
+    return index === 0 ? 'warncell.warning' : `warncell.warning${index}`;
 }
 
 async function getWarncellName(warncellId) {
@@ -417,7 +422,7 @@ async function updateWarncellWarnings() {
     if (!warncellId) {
         await adapter.setStateAsync('warncell.numberOfWarnings', 0, true);
         for (let index = 0; index < adapter.config.warnings; index++) {
-            await placeWarning(`${adapter.namespace}.warncell.warning${index}`);
+            await placeWarning(`${adapter.namespace}.${getWarncellWarningChannelId(index)}`);
         }
         return;
     }
@@ -425,7 +430,7 @@ async function updateWarncellWarnings() {
         adapter.log.warn(`Invalid DWD Warncell ID: ${warncellId}. Expected 9 digits.`);
         await adapter.setStateAsync('warncell.numberOfWarnings', 0, true);
         for (let index = 0; index < adapter.config.warnings; index++) {
-            await placeWarning(`${adapter.namespace}.warncell.warning${index}`);
+            await placeWarning(`${adapter.namespace}.${getWarncellWarningChannelId(index)}`);
         }
         return;
     }
@@ -443,7 +448,7 @@ async function updateWarncellWarnings() {
         .sort(tools.sort);
     await adapter.setStateAsync('warncell.numberOfWarnings', warnings.length, true);
     for (let index = 0; index < adapter.config.warnings; index++) {
-        await placeWarning(`${adapter.namespace}.warncell.warning${index}`, warnings[index]);
+        await placeWarning(`${adapter.namespace}.${getWarncellWarningChannelId(index)}`, warnings[index]);
     }
 }
 
