@@ -437,6 +437,16 @@
   					"lg": 12,
   					"xl": 12
         },
+        "warncellId": {
+            "newLine": true,
+            "type": "text",
+            "label": "Warncell ID (optional)",
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
         "land": {
             "newLine": true,
             "type": "select",
