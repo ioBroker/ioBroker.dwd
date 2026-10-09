@@ -396,32 +396,6 @@
       "native": {}
     },
     {
-      "_id": "warncell.warnings",
-      "type": "state",
-      "common": {
-        "name": "Warnings",
-        "type": "string",
-        "role": "weather.json",
-        "read": true,
-        "write": false,
-        "def": "[]"
-      },
-      "native": {}
-    },
-    {
-      "_id": "warncell.lastUpdate",
-      "type": "state",
-      "common": {
-        "name": "Last update time",
-        "type": "number",
-        "role": "value.time",
-        "read": true,
-        "write": false,
-        "def": 0
-      },
-      "native": {}
-    },
-    {
       "_id": "info.lastUpdate",
       "type": "state",
       "common": {

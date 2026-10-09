@@ -264,16 +264,49 @@ async function ensureWarncellObjects() {
         common: { name: 'Number of warnings', type: 'number', role: 'value', read: true, write: false, def: 0 },
         native: {}
     });
-    await adapter.setObjectNotExistsAsync('warncell.warnings', {
-        type: 'state',
-        common: { name: 'Warnings', type: 'string', role: 'weather.json', read: true, write: false, def: '[]' },
-        native: {}
-    });
-    await adapter.setObjectNotExistsAsync('warncell.lastUpdate', {
-        type: 'state',
-        common: { name: 'Last update time', type: 'number', role: 'value.time', read: true, write: false, def: 0 },
-        native: {}
-    });
+    await ensureWarncellWarningChannels();
+}
+
+async function ensureWarncellWarningChannels() {
+    iopkg = iopkg || require('./io-package.json');
+    const warningCount = Math.max(1, parseInt(adapter.config.warnings, 10) || 1);
+    const prefix = `${adapter.namespace}.warncell.warning`;
+    const existing = await adapter.getForeignObjectsAsync(`${prefix}*`, 'channel');
+    const toDelete = [];
+
+    for (const id of Object.keys(existing || {})) {
+        const match = id.match(/^.*\.warncell\.warning(\d+)$/);
+        if (!match || Number(match[1]) < warningCount) {
+            continue;
+        }
+        const channelId = `${prefix}${match[1]}`;
+        for (const template of iopkg.instanceObjects) {
+            if (template._id === 'warning' || template._id.startsWith('warning.')) {
+                const suffix = template._id === 'warning' ? '' : template._id.slice('warning'.length);
+                toDelete.push(`${channelId}${suffix}`);
+            }
+        }
+    }
+    await deleteObjects(toDelete);
+
+    const templates = iopkg.instanceObjects.filter(template =>
+        template._id === 'warning' || template._id.startsWith('warning.')
+    );
+    for (let index = 0; index < warningCount; index++) {
+        const channelId = `warncell.warning${index}`;
+        for (const template of templates) {
+            const suffix = template._id === 'warning' ? '' : template._id.slice('warning'.length);
+            const object = {
+                type: template.type,
+                common: JSON.parse(JSON.stringify(template.common)),
+                native: JSON.parse(JSON.stringify(template.native || {}))
+            };
+            if (template._id === 'warning') {
+                object.common.name = `DWD Warnung für Warnzelle ${adapter.config.warncellId || ''}`;
+            }
+            await adapter.setObjectNotExistsAsync(`${channelId}${suffix}`, object);
+        }
+    }
 }
 
 function buildWarncellUrl(warncellId) {
@@ -345,13 +378,17 @@ async function updateWarncellWarnings() {
     const warncellId = adapter.config.warncellId;
     if (!warncellId) {
         await adapter.setStateAsync('warncell.numberOfWarnings', 0, true);
-        await adapter.setStateAsync('warncell.warnings', '[]', true);
+        for (let index = 0; index < adapter.config.warnings; index++) {
+            await placeWarning(`${adapter.namespace}.warncell.warning${index}`);
+        }
         return;
     }
     if (!/^\d{9}$/.test(warncellId)) {
         adapter.log.warn(`Invalid DWD Warncell ID: ${warncellId}. Expected 9 digits.`);
         await adapter.setStateAsync('warncell.numberOfWarnings', 0, true);
-        await adapter.setStateAsync('warncell.warnings', '[]', true);
+        for (let index = 0; index < adapter.config.warnings; index++) {
+            await placeWarning(`${adapter.namespace}.warncell.warning${index}`);
+        }
         return;
     }
 
@@ -367,8 +404,9 @@ async function updateWarncellWarnings() {
         .map(feature => normalizeWarncellWarning(feature.properties))
         .sort(tools.sort);
     await adapter.setStateAsync('warncell.numberOfWarnings', warnings.length, true);
-    await adapter.setStateAsync('warncell.warnings', JSON.stringify(warnings), true);
-    await adapter.setStateAsync('warncell.lastUpdate', Date.now(), true);
+    for (let index = 0; index < adapter.config.warnings; index++) {
+        await placeWarning(`${adapter.namespace}.warncell.warning${index}`, warnings[index]);
+    }
 }
 
 const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glatteis', 'tauwetter', 'hitze', 'uv'];
