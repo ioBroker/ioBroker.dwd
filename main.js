@@ -66,8 +66,11 @@ function startAdapter(options) {
 
     adapter.on('ready', async () => {
         adapter.config.warnings = parseInt(adapter.config.warnings, 10) || 1;
+        adapter.config.warncellId = String(adapter.config.warncellId || '').trim();
 
         adapter.config.url = adapter.config.url || 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
+
+        await ensureWarncellObjects();
 
         if (adapter.config.rainRadar === true) {
             await doRainRadar();
@@ -250,6 +253,124 @@ function ready() {
     tools.getFile(adapter.config.url, processFile);
 }
 
+async function ensureWarncellObjects() {
+    await adapter.setObjectNotExistsAsync('warncell', {
+        type: 'channel',
+        common: { name: 'DWD Warnzelle' },
+        native: {}
+    });
+    await adapter.setObjectNotExistsAsync('warncell.numberOfWarnings', {
+        type: 'state',
+        common: { name: 'Number of warnings', type: 'number', role: 'value', read: true, write: false, def: 0 },
+        native: {}
+    });
+    await adapter.setObjectNotExistsAsync('warncell.warnings', {
+        type: 'state',
+        common: { name: 'Warnings', type: 'string', role: 'weather.json', read: true, write: false, def: '[]' },
+        native: {}
+    });
+    await adapter.setObjectNotExistsAsync('warncell.lastUpdate', {
+        type: 'state',
+        common: { name: 'Last update time', type: 'number', role: 'value.time', read: true, write: false, def: 0 },
+        native: {}
+    });
+}
+
+function buildWarncellUrl(warncellId) {
+    const params = new URLSearchParams({
+        service: 'WFS',
+        version: '2.0.0',
+        request: 'GetFeature',
+        typeName: 'dwd:Warnungen_Gemeinden',
+        srsName: 'EPSG:4326',
+        outputFormat: 'application/json',
+        CQL_FILTER: `WARNCELLID='${warncellId}'`
+    });
+    return `https://maps.dwd.de/geoserver/dwd/ows?${params.toString()}`;
+}
+
+function normalizeWarncellWarning(properties) {
+    const severityLevels = { minor: 2, moderate: 3, severe: 4, extreme: 5 };
+    const warningTypes = {
+        THUNDERSTORM: 0,
+        WIND: 1,
+        RAIN: 2,
+        SNOW: 3,
+        FOG: 4,
+        FROST: 5,
+        GLAZE: 6,
+        THAW: 7,
+        HEAT: 8,
+        UV: 9
+    };
+    const severity = String(properties.SEVERITY || '').toLowerCase();
+    const group = String(properties.EC_GROUP || '').toUpperCase();
+    const event = String(properties.EVENT || '');
+    const eventTypes = [
+        [/GEWITTER|BLITZ/, 0],
+        [/WIND|STURM|ORKAN/, 1],
+        [/REGEN|NIEDERSCHLAG/, 2],
+        [/SCHNEE|SCHNEEFALL/, 3],
+        [/NEBEL/, 4],
+        [/FROST/, 5],
+        [/GLÄTTE|GLATTEIS|EIS/, 6],
+        [/TAUWETTER/, 7],
+        [/HITZE|WÄRME/, 8],
+        [/UV/, 9]
+    ];
+    let typeByEvent = null;
+    for (const [pattern, type] of eventTypes) {
+        if (pattern.test(event)) {
+            typeByEvent = type;
+            break;
+        }
+    }
+
+    return {
+        start: properties.ONSET ? Date.parse(properties.ONSET) : null,
+        end: properties.EXPIRES ? Date.parse(properties.EXPIRES) : null,
+        regionName: properties.NAME || properties.AREADESC || `Warnzelle ${properties.WARNCELLID || ''}`,
+        warncellId: properties.WARNCELLID,
+        level: severityLevels[severity] ?? null,
+        type: warningTypes[group] ?? typeByEvent,
+        event,
+        headline: properties.HEADLINE || '',
+        description: properties.DESCRIPTION || '',
+        instruction: properties.INSTRUCTION || '',
+        raw: properties
+    };
+}
+
+async function updateWarncellWarnings() {
+    const warncellId = adapter.config.warncellId;
+    if (!warncellId) {
+        await adapter.setStateAsync('warncell.numberOfWarnings', 0, true);
+        await adapter.setStateAsync('warncell.warnings', '[]', true);
+        return;
+    }
+    if (!/^\d{9}$/.test(warncellId)) {
+        adapter.log.warn(`Invalid DWD Warncell ID: ${warncellId}. Expected 9 digits.`);
+        await adapter.setStateAsync('warncell.numberOfWarnings', 0, true);
+        await adapter.setStateAsync('warncell.warnings', '[]', true);
+        return;
+    }
+
+    const result = await new Promise(resolve => {
+        tools.getFile(buildWarncellUrl(warncellId), (err, data) => resolve({ err, data }));
+    });
+    if (!result.data || !Array.isArray(result.data.features)) {
+        adapter.log.warn(`Could not read warnings for Warncell ${warncellId}: ${result.err || 'Invalid GeoJSON response'}`);
+        return;
+    }
+    const warnings = result.data.features
+        .filter(feature => feature && feature.properties)
+        .map(feature => normalizeWarncellWarning(feature.properties))
+        .sort(tools.sort);
+    await adapter.setStateAsync('warncell.numberOfWarnings', warnings.length, true);
+    await adapter.setStateAsync('warncell.warnings', JSON.stringify(warnings), true);
+    await adapter.setStateAsync('warncell.lastUpdate', Date.now(), true);
+}
+
 const maps = ['gewitter', 'sturm', 'regen', 'schnee', 'nebel', 'frost', 'glatteis', 'tauwetter', 'hitze', 'uv'];
 
 async function placeWarning(channelName, warnObj) {
@@ -315,6 +436,7 @@ async function processFile(err, data) {
             await placeWarning(channels[c], warnings[c]);
         }
     }
+    await updateWarncellWarnings();
     await adapter.setStateAsync('info.lastUpdate', Date.now(), true);
     isStopped = true;
     killSwitchTimeout && clearTimeout(killSwitchTimeout);
