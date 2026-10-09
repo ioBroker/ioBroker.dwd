@@ -270,6 +270,7 @@ async function ensureWarncellObjects() {
 async function ensureWarncellWarningChannels() {
     iopkg = iopkg || require('./io-package.json');
     const warningCount = Math.max(1, parseInt(adapter.config.warnings, 10) || 1);
+    const warncellName = await getWarncellName(adapter.config.warncellId);
     const prefix = `${adapter.namespace}.warncell.warning`;
     const existing = await adapter.getForeignObjectsAsync(`${prefix}*`, 'channel');
     const toDelete = [];
@@ -302,11 +303,48 @@ async function ensureWarncellWarningChannels() {
                 native: JSON.parse(JSON.stringify(template.native || {}))
             };
             if (template._id === 'warning') {
-                object.common.name = `DWD Warnung für Warnzelle ${adapter.config.warncellId || ''}`;
+                object.common.name = `DWD Warnung für ${warncellName}`;
             }
             await adapter.setObjectNotExistsAsync(`${channelId}${suffix}`, object);
         }
+
+        const channel = await adapter.getObjectAsync(channelId);
+        const channelName = `DWD Warnung für ${warncellName}`;
+        if (channel && channel.common.name !== channelName) {
+            channel.common.name = channelName;
+            await adapter.setObjectAsync(channelId, channel);
+        }
     }
+}
+
+async function getWarncellName(warncellId) {
+    if (!/^\d{9}$/.test(String(warncellId || ''))) {
+        return `Warnzelle ${warncellId || ''}`.trim();
+    }
+
+    const params = new URLSearchParams({
+        service: 'WFS',
+        version: '2.0.0',
+        request: 'GetFeature',
+        typeName: 'dwd:Warngebiete_Gemeinden',
+        srsName: 'EPSG:4326',
+        outputFormat: 'application/json',
+        CQL_FILTER: `WARNCELLID='${warncellId}'`
+    });
+    const url = `https://maps.dwd.de/geoserver/dwd/ows?${params.toString()}`;
+    const result = await new Promise(resolve => {
+        tools.getFile(url, (err, data) => resolve({ err, data }), 0);
+    });
+    const properties = result.data && Array.isArray(result.data.features) && result.data.features[0]
+        ? result.data.features[0].properties
+        : null;
+    const name = properties && (properties.NAME || properties.AREADESC);
+    if (name) {
+        return name;
+    }
+
+    adapter.log.debug(`Could not resolve place name for Warncell ${warncellId}: ${result.err || 'No matching area'}`);
+    return `Warnzelle ${warncellId}`;
 }
 
 function buildWarncellUrl(warncellId) {
