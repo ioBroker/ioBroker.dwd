@@ -1,6 +1,7 @@
 {
   "common": {
     "name": "dwd",
+    "title": "DWD",
     "titleLang": {
       "en": "DWD",
       "de": "DWD",
@@ -28,6 +29,7 @@
       "uk": "Попередження про погоду від Німецької служби погоди (DWD)"
     },
     "version": "2.8.7",
+    "license": "MIT",
     "news": {
       "2.8.7": {
         "en": "fix invalid JSON\nadd info.lastUpdate\nadd eslint\nDependencies have been updated\nfix hint dp in widget",
