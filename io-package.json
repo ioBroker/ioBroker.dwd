@@ -1,6 +1,7 @@
 {
   "common": {
     "name": "dwd",
+    "title": "DWD",
     "titleLang": {
       "en": "DWD",
       "de": "DWD",
@@ -28,6 +29,7 @@
       "uk": "Попередження про погоду від Німецької служби погоди (DWD)"
     },
     "version": "2.8.7",
+    "license": "MIT",
     "news": {
       "2.8.7": {
         "en": "fix invalid JSON\nadd info.lastUpdate\nadd eslint\nDependencies have been updated\nfix hint dp in widget",
@@ -174,6 +176,7 @@
   "native": {
     "url": "http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json",
     "region": "",
+    "warncellId": "",
     "land": "",
     "warnings": 1,
     "rainRadar": false
@@ -370,6 +373,27 @@
       "type": "channel",
       "common": {
         "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "warncell",
+      "type": "channel",
+      "common": {
+        "name": "DWD Warncell"
+      },
+      "native": {}
+    },
+    {
+      "_id": "warncell.numberOfWarnings",
+      "type": "state",
+      "common": {
+        "name": "Number of warnings",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "def": 0
       },
       "native": {}
     },

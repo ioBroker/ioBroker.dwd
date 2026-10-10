@@ -3,6 +3,7 @@
     "Get map for warning": "Gewünschte Karte für die Wetterwarnung auswählen",
     "Number of warnings": "Anzahl der Warnmeldungen",
     "Region": "Region",
+    "Warncell ID (optional)": "DWD-Warnzellen-ID (optional)",
     "Weather Warnings from German Weather Service (DWD)": "Wetterwarnungen des Deutschen Wetterdienstes (DWD)",
     "no map": "keine Karte"
 }
