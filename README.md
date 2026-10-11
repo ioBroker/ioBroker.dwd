@@ -24,15 +24,15 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 ### **WORK IN PROGRESS**
-- (bluefox) Optional warncell ID of a municipality: its warnings are read from the DWD geoserver and written below `warncell.`, in addition to the region (idea from #306 by BeSiRe1)
-- (bluefox) The vis-2 widget, the devices tile and the instance settings read the first warning from `warning` - `warning0` does not exist
-- (bluefox) The instance settings now show the warnings that are currently active
-- (bluefox) The vis widgets were ported to vis-2: the two templates became one widget with a layout setting ([documentation](docs/en/README.md))
-- (bluefox) New widget for the ioBroker.devices dashboard
-- (bluefox) Added the 24 missing inland lake regions (Bodensee, Chiemsee, Starnberger See, Müritz, Steinhuder Meer, ...)
-- (bluefox) The adapter was refactored to TypeScript, the sources are now in `src/` and are compiled to `build/`
-- (bluefox) The configuration dialog was migrated to JsonConfig
-- (copilot) Adapter requires node.js >= 22 now
+- (@BeSiRe1) Optional warncell ID of a municipality: its warnings are read from the DWD geoserver and written below `warncell.`, in addition to the region (idea from #306 by BeSiRe1)
+- (@GermanBluefox) The vis-2 widget, the devices tile and the instance settings read the first warning from `warning` - `warning0` does not exist
+- (@GermanBluefox) The instance settings now show the warnings that are currently active
+- (@GermanBluefox) The vis widgets were ported to vis-2: the two templates became one widget with a layout setting ([documentation](docs/en/README.md))
+- (@GermanBluefox) New widget for the ioBroker.devices dashboard
+- (@GermanBluefox) Added the 24 missing inland lake regions (Bodensee, Chiemsee, Starnberger See, Müritz, Steinhuder Meer, ...)
+- (@GermanBluefox) The adapter was refactored to TypeScript, the sources are now in `src/` and are compiled to `build/`
+- (@GermanBluefox) The configuration dialog was migrated to JsonConfig
+- (@GermanBluefox) Adapter requires node.js >= 22 now
 
 ### 2.8.7 (2026-05-19)
 * (arteck) fix invalid JSON
