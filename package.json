@@ -74,7 +74,7 @@
     "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "update-packages": "npx npm-check-updates --upgrade"
+    "update-packages": "npx npm-check-updates --upgrade && cd src-widgets && npx npm-check-updates --upgrade && cd ../src-devices && npx npm-check-updates --upgrade"
   },
   "readmeFilename": "README.md"
 }
