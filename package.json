@@ -57,10 +57,10 @@
     "main.js"
   ],
   "scripts": {
-    "test:js": "mocha --config .mocharc.json \"{!(node_modules|test)/**/*.test.js,*.test.js,test/**/test!(PackageFiles|Startup).js}\"",
+    "test:js": "npm run test:integration",
     "test:package": "mocha test/testPackageFiles.js --exit",
-    "test:integration": "mocha test/integration --exit",
-    "test": "npm run test:js && npm run test:package",
+    "test:integration": "mocha test/integration.js --exit",
+    "test": "npm run test:package && npm run test:integration",
     "check": "tsc --noEmit -p tsconfig.check.json",
     "lint": "eslint .",
     "translate": "translate-adapter",
