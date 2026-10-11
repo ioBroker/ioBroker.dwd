@@ -49,6 +49,7 @@ The integration test requires that **no** js-controller is running on the machin
 | --- | --- |
 | `src/main.ts` | the whole adapter: one `Dwd extends utils.Adapter` class |
 | `src/lib/tools.ts` | `getFile()` (HTTP + JSONP unwrapping) and `sort()` (warning order) |
+| `src/lib/warncell.ts` | geoserver URLs and conversion of the warncell warnings |
 | `src/lib/types.ts` | shape of `warnings.json` and of `instanceObjects` in io-package.json |
 | `src/lib/adapter-config.d.ts` | augments `ioBroker.AdapterConfig` |
 | `admin/jsonConfig.json` | the configuration dialog, `admin/i18n/<lang>.json` the translations |
@@ -108,6 +109,27 @@ only built when `config.land` is set; the file name per warning type comes from 
 `numberOfWarnings` holds the number of warnings found for the region, `info.lastUpdate` the timestamp of
 the last successful run.
 
+### Warncell: `src/lib/warncell.ts`
+
+Optional second source next to the region. `config.warncellId` is the 9 digit id of a **municipality**
+(`/^[78]\d{8}$/`). District ids (`1…`) are rejected on purpose: the geoserver keeps district warnings in
+`Warnungen_Landkreise` under different ids (`GC_WARNCELLID`, `9…`), and districts are what the region
+already covers.
+
+- The warnings come from the DWD geoserver (WFS, `dwd:Warnungen_Gemeinden`, GeoJSON), read with the same
+  `getFile()` - `parseBody()` only strips the JSONP wrapper when it is there. `toDwdWarning()` converts a
+  feature into the `warnings.json` shape so `sort()` and `placeWarning()` stay unchanged. The type comes
+  from the German `EVENT` name first (same names as in `warnings.json`), `EC_GROUP` is only the fallback
+  because it lists several groups (`THUNDERSTORM;WIND;RAIN`). Tests, cancellations and
+  "Vorabinformation" are dropped - the region path does not show `vorabInformation` either.
+- Objects live below the folder `warncell.` and exist **only** while an id is configured
+  (`syncWarncellObjects()` deletes the folder recursively otherwise). Same templates and count as the
+  region; the first channel is `warncell.warning`, then `warning1`, ...
+- The name (`NAME` of `dwd:Warngebiete_Gemeinden`) is looked up once and cached in the `native` of the
+  folder, keyed by the id. A failed lookup is not cached. An id the DWD does not know creates nothing.
+- `processFile()` updates the warncell even when `warnings.json` failed; `info.lastUpdate` still only
+  reflects `warnings.json`.
+
 ### Rain radar
 
 `doRainRadar()` creates 31 states below `rainradar.` with buienradar image URLs built from the latitude
@@ -131,7 +153,8 @@ Below the settings the dialog lists the **currently active warnings** (`_cur*` i
   and a channel that does not exist at all are therefore both hidden, without the expression having
   to know `data.warnings`.
 
-All ten blocks are always in the file; which ones are visible is decided at runtime. The items are
+All ten blocks are always in the file; which ones are visible is decided at runtime. The same ten
+blocks exist a second time as `_wc*` for `warncell.warning<n>`, additionally hidden by `!data.warncellId`. The items are
 generated, so if the shape has to change, change all ten. Requires admin >= 7.1.0 for `state` and a
 newer one for `dependsOnStates` - `common.globalDependencies` already asks for `admin >= 7.6.17`. The region list is a hard-coded
 `autocomplete` with `noTranslation: true` — the entries must match `regionName` in `warnings.json`

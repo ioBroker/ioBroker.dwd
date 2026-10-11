@@ -5,19 +5,19 @@ import { join } from 'node:path';
 
 import type { DwdWarning, DwdWarningsFile } from './types';
 
-export type GetFileCallback = (error: string | null, data: DwdWarningsFile | null) => void;
+export type GetFileCallback<T = DwdWarningsFile> = (error: string | null, data: T | null) => void;
 
 const JSONP_PREFIX = 'warnWetter.loadWarnings(';
 
 /**
- * Parse the body of `warnings.json`.
+ * Parse the body of `warnings.json` or of a geoserver answer.
  *
- * The DWD delivers the file as JSONP (`warnWetter.loadWarnings({...});`), so the wrapper has to be
- * stripped before `JSON.parse`. A body that cannot be parsed is written next to this module as
- * `problem.json` to make it analysable.
+ * The DWD delivers `warnings.json` as JSONP (`warnWetter.loadWarnings({...});`), so the wrapper has to
+ * be stripped before `JSON.parse`. Plain JSON - the geoserver - is parsed as it is. A body that cannot
+ * be parsed is written next to this module as `problem.json` to make it analysable.
  */
-function parseBody(body: string, cb: GetFileCallback): void {
-    let data: DwdWarningsFile;
+function parseBody<T>(body: string, cb: GetFileCallback<T>): void {
+    let data: T;
     try {
         if (body.startsWith(JSONP_PREFIX)) {
             body = body.substring(JSONP_PREFIX.length);
@@ -38,13 +38,13 @@ function parseBody(body: string, cb: GetFileCallback): void {
 }
 
 /**
- * Read the warnings from an URL or - for the tests - from a local file.
+ * Read a JSON(P) file from an URL or - for the tests - from a local file.
  *
  * @param url http(s) URL or a path to a local file
  * @param cb called with the parsed file or an error text
  * @param retries how often a failed HTTP request is repeated, 3 by default
  */
-export function getFile(url: string, cb: GetFileCallback, retries?: number): void {
+export function getFile<T = DwdWarningsFile>(url: string, cb: GetFileCallback<T>, retries?: number): void {
     if (retries === undefined) {
         retries = 3;
     }
@@ -90,6 +90,11 @@ export function getFile(url: string, cb: GetFileCallback, retries?: number): voi
     };
 
     attempt(retries);
+}
+
+/** `getFile()` as a promise. Never rejects, the error text is returned instead. */
+export function getFileAsync<T>(url: string, retries?: number): Promise<{ error: string | null; data: T | null }> {
+    return new Promise(resolve => getFile<T>(url, (error, data) => resolve({ error, data }), retries));
 }
 
 /**

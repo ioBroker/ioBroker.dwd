@@ -13,6 +13,12 @@ declare global {
             url: string;
             /** Region name, exactly as the DWD writes it into `regionName` */
             region: string;
+            /**
+             * Optional 9 digit warncell ID of a municipality (`8…`, `7…` for the districts of Berlin and
+             * Hamburg). When set, the warnings of that warncell are read from the DWD geoserver and
+             * written below `warncell.`, in addition to the region. `''` = not used.
+             */
+            warncellId: string;
             /** Shortcut of the federal state for the warning map, `''` = no map */
             land: string;
             /**

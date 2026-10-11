@@ -208,6 +208,7 @@
   "native": {
     "url": "http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json",
     "region": "",
+    "warncellId": "",
     "land": "",
     "warnings": 1,
     "rainRadar": false

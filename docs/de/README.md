@@ -39,6 +39,29 @@ Adapter-Konfiguration fest („Anzahl der Warnmeldungen", 1 … 10).
 Gibt es weniger Warnungen als Kanäle, werden die übrigen Kanäle geleert. Die Widgets zeigen dann
 „Keine Warnung".
 
+### Warnungen für eine Gemeinde (Warnzelle)
+
+Die Regionen sind Kreise, Küsten- und Seegebiete. Wer die Warnungen genauer für eine einzelne
+Gemeinde haben möchte, trägt zusätzlich deren **Warnzellen-ID** ein — 9 Ziffern, beginnend mit `8`
+(bei den Bezirken von Berlin und Hamburg mit `7`). Die ID steht in der
+[Warnzellen-Liste des DWD](https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3)
+(CSV, Zeilen mit `8…`/`7…`; die Zeilen mit `1…` sind Kreise und werden nicht angenommen).
+
+Die Warnungen der Warnzelle kommen aus dem Geoserver des DWD (`maps.dwd.de`) und landen **zusätzlich**
+zu denen der Region in einem eigenen Ordner, mit derselben Struktur und derselben Anzahl Kanäle:
+
+```
+dwd.0.warncell.numberOfWarnings
+dwd.0.warncell.warning.headline     schwerste Warnung der Gemeinde
+dwd.0.warncell.warning1.headline    zweitschwerste
+...
+```
+
+Der erste Kanal hat — wie bei der Region — keine Nummer. Kanal- und Ordnername enthalten den Namen
+der Gemeinde, den der Adapter einmalig beim DWD nachschlägt. Ohne Warnzellen-ID gibt es den Ordner
+nicht; wird die ID wieder gelöscht, entfernt der Adapter ihn beim nächsten Lauf. Die Karte (`map`)
+richtet sich weiterhin nach dem eingestellten Bundesland.
+
 ### Die Farbe
 
 Die Hintergrundfarbe kommt aus `severity` und ist in beiden Widgets und im alten
@@ -155,6 +178,9 @@ Eine Warnung mit leerer Überschrift wird ausgeblendet, ebenso die `warning<n>`-
 einer kleineren „Anzahl der Warnmeldungen" gar nicht gibt. Gibt es überhaupt keine Warnung, steht
 dort eine einzelne Zeile. Die Liste aktualisiert sich von selbst, sobald der Adapter neue Werte
 schreibt — der Dialog muss nicht neu geöffnet werden.
+
+Ist eine Warnzellen-ID eingetragen, folgen darunter in einer zweiten Liste derselben Art die
+Warnungen der Warnzelle.
 
 ---
 

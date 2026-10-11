@@ -10,8 +10,23 @@ import * as utils from '@iobroker/adapter-core';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { getFile, sort } from './lib/tools';
-import type { DwdWarning, DwdWarningsFile, InstanceObject, IoPackage } from './lib/types';
+import { getFile, getFileAsync, sort } from './lib/tools';
+import type {
+    DwdWarning,
+    DwdWarningsFile,
+    InstanceObject,
+    IoPackage,
+    WarncellAreaProperties,
+    WarncellWarningProperties,
+    WfsFeatureCollection,
+} from './lib/types';
+import {
+    isShownWarning,
+    toDwdWarning,
+    WARNCELL_ID_PATTERN,
+    warncellAreaUrl,
+    warncellWarningsUrl,
+} from './lib/warncell';
 
 /** The states that make up one `warning<n>` channel, in the order the old code created them */
 const WARNING_STATES = [
@@ -37,6 +52,8 @@ const KILL_SWITCH_TIMEOUT = 240_000;
 class Dwd extends utils.Adapter {
     /** Full ids of the existing `dwd.<i>.warning<n>` channels, sorted */
     private channels: string[] = [];
+    /** Full ids of the `dwd.<i>.warncell.warning<n>` channels, in index order. Empty when no warncell is used. */
+    private warncellChannels: string[] = [];
     /** Lazily read io-package.json, the source of the object definitions */
     private ioPackage: IoPackage | null = null;
     private isStopped = false;
@@ -96,6 +113,8 @@ class Dwd extends utils.Adapter {
         this.config.warnings = parseInt(this.config.warnings as unknown as string, 10) || 1;
 
         this.config.url ||= 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
+        // Not set at all in instances created before the setting existed
+        this.config.warncellId = String(this.config.warncellId ?? '').trim();
 
         if (this.config.rainRadar === true) {
             await this.doRainRadar();
@@ -170,6 +189,7 @@ class Dwd extends utils.Adapter {
 
         this.log.debug(`Final Channels: ${JSON.stringify(this.channels)}`);
         await this.checkNames();
+        await this.syncWarncellObjects();
         this.readWarnings();
     }
 
@@ -279,12 +299,22 @@ class Dwd extends utils.Adapter {
             return;
         }
 
-        if (!data) {
+        if (data) {
+            await this.placeRegionWarnings(data);
+        } else {
             this.log.error(`Empty or invalid JSON: ${err}`);
-            this.terminateAdapter();
-            return;
         }
 
+        // The warncell comes from another source, so it is updated even when warnings.json failed
+        await this.readWarncellWarnings();
+
+        if (data) {
+            await this.setStateAsync('info.lastUpdate', Date.now(), true);
+        }
+        this.terminateAdapter();
+    }
+
+    private async placeRegionWarnings(data: DwdWarningsFile): Promise<void> {
         this.log.debug(`Data: ${JSON.stringify(data)}`);
         this.log.debug(`Find Warnings for Region: ${this.config.region}`);
 
@@ -311,9 +341,158 @@ class Dwd extends utils.Adapter {
                 await this.placeWarning(this.channels[c], warnings[c]);
             }
         }
+    }
 
-        await this.setStateAsync('info.lastUpdate', Date.now(), true);
-        this.terminateAdapter();
+    /** A copy of an `instanceObjects` entry of io-package.json, without its `_id` */
+    private template(id: string): ioBroker.SettableObject {
+        const obj = this.getIoPackage().instanceObjects.find(o => o._id === id);
+        if (!obj) {
+            throw new Error(`Object ${id} not found in io-package.json`);
+        }
+        const { type, common, native } = JSON.parse(JSON.stringify(obj)) as InstanceObject;
+        return { type, common, native } as ioBroker.SettableObject;
+    }
+
+    /**
+     * Create, update or remove the objects below `warncell.` to match the configured warncell.
+     *
+     * The layout is the one of the region: a `numberOfWarnings` state and `config.warnings` channels
+     * `warning`, `warning1`, `warning2`, ... built from the same templates. Nothing exists while no
+     * warncell is configured. The name of the warncell is looked up once and cached in the native
+     * part of the `warncell` folder.
+     */
+    private async syncWarncellObjects(): Promise<void> {
+        const warncellId = this.config.warncellId;
+        const folderId = `${this.namespace}.warncell`;
+        const folder = await this.getForeignObjectAsync(folderId);
+
+        if (!warncellId) {
+            if (folder) {
+                this.log.info('No warncell configured any more, deleting the warncell objects');
+                await this.delForeignObjectAsync(folderId, { recursive: true });
+            }
+            return;
+        }
+        if (!WARNCELL_ID_PATTERN.test(warncellId)) {
+            this.log.warn(
+                `Invalid warncell ID "${warncellId}": expected the 9 digit ID of a municipality, starting with 7 or 8`,
+            );
+            return;
+        }
+
+        let name: string | undefined =
+            folder?.native?.warncellId === warncellId ? (folder.native.name as string | undefined) : undefined;
+        if (!name) {
+            const { error, data } = await getFileAsync<WfsFeatureCollection<WarncellAreaProperties>>(
+                warncellAreaUrl(warncellId),
+                1,
+            );
+            if (data && Array.isArray(data.features)) {
+                if (!data.features.length) {
+                    this.log.warn(`The DWD does not know the warncell ${warncellId}`);
+                    return;
+                }
+                name = data.features[0].properties?.NAME;
+            } else {
+                // Not cached, so the next run tries again
+                this.log.warn(`Cannot read the name of warncell ${warncellId}: ${error}`);
+            }
+        }
+        const label = name || `Warnzelle ${warncellId}`;
+
+        const folderObj: ioBroker.SettableFolderObject = {
+            type: 'folder',
+            common: { name: `DWD Warnzelle ${label}` },
+            native: name ? { warncellId, name } : {},
+        };
+        if (
+            !folder ||
+            JSON.stringify(folder.common.name) !== JSON.stringify(folderObj.common.name) ||
+            JSON.stringify(folder.native) !== JSON.stringify(folderObj.native)
+        ) {
+            await this.setForeignObjectAsync(folderId, folderObj);
+        }
+
+        const existing = await this.getForeignObjectsAsync(`${folderId}.*`);
+
+        // more channels than configured
+        for (const id of Object.keys(existing)) {
+            const m = id.match(/\.warncell\.warning(\d*)$/);
+            if (m && (parseInt(m[1], 10) || 0) >= this.config.warnings) {
+                this.log.debug(`Delete channel ${id}`);
+                await this.delForeignObjectAsync(id, { recursive: true });
+            }
+        }
+
+        // relative to the folder: `numberOfWarnings`, `warning3.begin`, ...
+        const toCreate: string[] = [];
+        if (!existing[`${folderId}.numberOfWarnings`]) {
+            toCreate.push('numberOfWarnings');
+        }
+        this.warncellChannels = [];
+        const channelName = `DWD Warnung für ${label}`;
+        for (let i = 0; i < this.config.warnings; i++) {
+            // the first channel has no number, like the first one of the region
+            const channel = `${folderId}.warning${i || ''}`;
+            this.warncellChannels.push(channel);
+
+            const channelObj = existing[channel];
+            if (!channelObj) {
+                const obj = this.template('warning');
+                if (obj.common) {
+                    obj.common.name = channelName;
+                }
+                await this.setForeignObjectAsync(channel, obj);
+            } else if (channelObj.common.name !== channelName) {
+                channelObj.common.name = channelName;
+                await this.setForeignObjectAsync(channel, channelObj);
+            }
+            for (const state of WARNING_STATES) {
+                if (!existing[`${channel}.${state}`]) {
+                    toCreate.push(`warning${i || ''}.${state}`);
+                }
+            }
+        }
+
+        for (const id of toCreate) {
+            // `warning3.begin` -> template `warning.begin`
+            await this.setForeignObjectAsync(`${folderId}.${id}`, this.template(id.replace(/^warning\d*/, 'warning')));
+        }
+    }
+
+    /** Read the warnings of the configured warncell from the DWD geoserver and write them into `warncell.` */
+    private async readWarncellWarnings(): Promise<void> {
+        if (!this.warncellChannels.length) {
+            return;
+        }
+        const warncellId = this.config.warncellId;
+
+        const { error, data } = await getFileAsync<WfsFeatureCollection<WarncellWarningProperties>>(
+            warncellWarningsUrl(warncellId),
+        );
+        if (!data || !Array.isArray(data.features)) {
+            // the old values stay, as they do for the region when warnings.json cannot be read
+            this.log.warn(`Cannot read the warnings of warncell ${warncellId}: ${error || 'invalid answer'}`);
+            return;
+        }
+
+        const warnings: DwdWarning[] = [];
+        for (const feature of data.features) {
+            if (!feature?.properties || !isShownWarning(feature.properties)) {
+                continue;
+            }
+            const warning = toDwdWarning(feature.properties);
+            if (!warnings.find(r => JSON.stringify(r) === JSON.stringify(warning))) {
+                warnings.push(warning);
+            }
+        }
+        warnings.sort(sort);
+        this.log.debug(`Warnings for warncell ${warncellId}: ${JSON.stringify(warnings)}`);
+
+        await this.setForeignStateAsync(`${this.namespace}.warncell.numberOfWarnings`, warnings.length, true);
+        for (let c = 0; c < this.warncellChannels.length; c++) {
+            await this.placeWarning(this.warncellChannels[c], warnings[c]);
+        }
     }
 
     private async doRainStates(device: string, value: string, name: string): Promise<void> {

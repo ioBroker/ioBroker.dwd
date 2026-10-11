@@ -39,6 +39,30 @@ number, there is no `warning0`. How many channels exist is set in the adapter co
 When there are fewer warnings than channels, the remaining channels are emptied. The widgets then
 show "No warning".
 
+### Warnings for one municipality (warncell)
+
+The regions are districts, coastal and lake areas. To get the warnings of a single municipality,
+additionally enter its **warncell ID** — 9 digits, starting with `8` (`7` for the districts of Berlin
+and Hamburg). The ID is listed in the
+[warncell list of the DWD](https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3)
+(CSV, the rows with `8…`/`7…`; the rows with `1…` are districts and are not accepted).
+
+The warnings of the warncell are read from the geoserver of the DWD (`maps.dwd.de`) and are written
+**in addition** to those of the region into a folder of their own, with the same structure and the
+same number of channels:
+
+```
+dwd.0.warncell.numberOfWarnings
+dwd.0.warncell.warning.headline     most severe warning of the municipality
+dwd.0.warncell.warning1.headline    second most severe
+...
+```
+
+As for the region, the first channel has no number. The folder and channel names contain the name of
+the municipality, which the adapter looks up once at the DWD. Without a warncell ID the folder does not
+exist; when the ID is removed again, the adapter deletes it on the next run. The map (`map`) still
+follows the configured federal state.
+
 ### The colour
 
 The background colour comes from `severity` and is the same in both widgets and in the old vis-1
@@ -154,6 +178,9 @@ running instance would usually time out.
 A warning whose headline is empty is hidden, and so are the `warning<n>` channels that do not exist
 because "Number of warnings" is set lower. If there is no warning at all, a single line says so. The
 list updates by itself when the adapter writes new values — the dialog does not have to be reopened.
+
+When a warncell ID is set, the warnings of the warncell follow below in a second list of the same
+kind.
 
 ---
 

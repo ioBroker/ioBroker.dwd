@@ -463,6 +463,21 @@
             "lg": 12,
             "xl": 12
         },
+        "warncellId": {
+            "type": "text",
+            "label": "Warncell ID",
+            "help": "Optional: 9 digit ID of a municipality from the DWD warncell list, e.g. 803251001",
+            "helpLink": "https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3",
+            "validator": "!data.warncellId || /^[78]\\d{8}$/.test(data.warncellId.trim())",
+            "validatorErrorText": "The ID of a municipality has 9 digits and starts with 7 or 8",
+            "validatorNoSaveOnError": true,
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
         "land": {
             "type": "select",
             "label": "Get map for warning",
@@ -2116,6 +2131,1529 @@
                 "instruction": ".warning9.instruction"
             },
             "hidden": "!_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wcDivider": {
+            "type": "divider",
+            "hidden": "!data.warncellId",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wcHeader": {
+            "type": "header",
+            "text": "Current warnings for the warncell",
+            "size": 2,
+            "hidden": "!data.warncellId",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wcNone": {
+            "type": "staticText",
+            "text": "No warnings for this warncell at the moment.",
+            "dependsOnStates": {
+                "count": ".warncell.numberOfWarnings"
+            },
+            "hidden": "!data.warncellId || !!_states.count?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc0Headline": {
+            "type": "state",
+            "oid": "warncell.warning.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning.headline",
+                "instruction": ".warncell.warning.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc0Severity": {
+            "type": "state",
+            "oid": "warncell.warning.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning.headline",
+                "instruction": ".warncell.warning.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc0Type": {
+            "type": "state",
+            "oid": "warncell.warning.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning.headline",
+                "instruction": ".warncell.warning.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc0Begin": {
+            "type": "state",
+            "oid": "warncell.warning.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning.headline",
+                "instruction": ".warncell.warning.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc0End": {
+            "type": "state",
+            "oid": "warncell.warning.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning.headline",
+                "instruction": ".warncell.warning.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc0Description": {
+            "type": "state",
+            "oid": "warncell.warning.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning.headline",
+                "instruction": ".warncell.warning.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc0Instruction": {
+            "type": "state",
+            "oid": "warncell.warning.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning.headline",
+                "instruction": ".warncell.warning.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc1Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning1.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc1Headline": {
+            "type": "state",
+            "oid": "warncell.warning1.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning1.headline",
+                "instruction": ".warncell.warning1.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc1Severity": {
+            "type": "state",
+            "oid": "warncell.warning1.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning1.headline",
+                "instruction": ".warncell.warning1.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc1Type": {
+            "type": "state",
+            "oid": "warncell.warning1.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning1.headline",
+                "instruction": ".warncell.warning1.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc1Begin": {
+            "type": "state",
+            "oid": "warncell.warning1.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning1.headline",
+                "instruction": ".warncell.warning1.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc1End": {
+            "type": "state",
+            "oid": "warncell.warning1.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning1.headline",
+                "instruction": ".warncell.warning1.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc1Description": {
+            "type": "state",
+            "oid": "warncell.warning1.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning1.headline",
+                "instruction": ".warncell.warning1.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc1Instruction": {
+            "type": "state",
+            "oid": "warncell.warning1.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning1.headline",
+                "instruction": ".warncell.warning1.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc2Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning2.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc2Headline": {
+            "type": "state",
+            "oid": "warncell.warning2.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning2.headline",
+                "instruction": ".warncell.warning2.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc2Severity": {
+            "type": "state",
+            "oid": "warncell.warning2.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning2.headline",
+                "instruction": ".warncell.warning2.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc2Type": {
+            "type": "state",
+            "oid": "warncell.warning2.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning2.headline",
+                "instruction": ".warncell.warning2.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc2Begin": {
+            "type": "state",
+            "oid": "warncell.warning2.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning2.headline",
+                "instruction": ".warncell.warning2.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc2End": {
+            "type": "state",
+            "oid": "warncell.warning2.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning2.headline",
+                "instruction": ".warncell.warning2.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc2Description": {
+            "type": "state",
+            "oid": "warncell.warning2.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning2.headline",
+                "instruction": ".warncell.warning2.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc2Instruction": {
+            "type": "state",
+            "oid": "warncell.warning2.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning2.headline",
+                "instruction": ".warncell.warning2.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc3Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning3.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc3Headline": {
+            "type": "state",
+            "oid": "warncell.warning3.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning3.headline",
+                "instruction": ".warncell.warning3.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc3Severity": {
+            "type": "state",
+            "oid": "warncell.warning3.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning3.headline",
+                "instruction": ".warncell.warning3.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc3Type": {
+            "type": "state",
+            "oid": "warncell.warning3.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning3.headline",
+                "instruction": ".warncell.warning3.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc3Begin": {
+            "type": "state",
+            "oid": "warncell.warning3.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning3.headline",
+                "instruction": ".warncell.warning3.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc3End": {
+            "type": "state",
+            "oid": "warncell.warning3.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning3.headline",
+                "instruction": ".warncell.warning3.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc3Description": {
+            "type": "state",
+            "oid": "warncell.warning3.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning3.headline",
+                "instruction": ".warncell.warning3.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc3Instruction": {
+            "type": "state",
+            "oid": "warncell.warning3.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning3.headline",
+                "instruction": ".warncell.warning3.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc4Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning4.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc4Headline": {
+            "type": "state",
+            "oid": "warncell.warning4.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning4.headline",
+                "instruction": ".warncell.warning4.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc4Severity": {
+            "type": "state",
+            "oid": "warncell.warning4.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning4.headline",
+                "instruction": ".warncell.warning4.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc4Type": {
+            "type": "state",
+            "oid": "warncell.warning4.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning4.headline",
+                "instruction": ".warncell.warning4.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc4Begin": {
+            "type": "state",
+            "oid": "warncell.warning4.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning4.headline",
+                "instruction": ".warncell.warning4.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc4End": {
+            "type": "state",
+            "oid": "warncell.warning4.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning4.headline",
+                "instruction": ".warncell.warning4.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc4Description": {
+            "type": "state",
+            "oid": "warncell.warning4.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning4.headline",
+                "instruction": ".warncell.warning4.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc4Instruction": {
+            "type": "state",
+            "oid": "warncell.warning4.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning4.headline",
+                "instruction": ".warncell.warning4.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc5Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning5.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc5Headline": {
+            "type": "state",
+            "oid": "warncell.warning5.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning5.headline",
+                "instruction": ".warncell.warning5.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc5Severity": {
+            "type": "state",
+            "oid": "warncell.warning5.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning5.headline",
+                "instruction": ".warncell.warning5.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc5Type": {
+            "type": "state",
+            "oid": "warncell.warning5.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning5.headline",
+                "instruction": ".warncell.warning5.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc5Begin": {
+            "type": "state",
+            "oid": "warncell.warning5.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning5.headline",
+                "instruction": ".warncell.warning5.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc5End": {
+            "type": "state",
+            "oid": "warncell.warning5.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning5.headline",
+                "instruction": ".warncell.warning5.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc5Description": {
+            "type": "state",
+            "oid": "warncell.warning5.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning5.headline",
+                "instruction": ".warncell.warning5.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc5Instruction": {
+            "type": "state",
+            "oid": "warncell.warning5.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning5.headline",
+                "instruction": ".warncell.warning5.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc6Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning6.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc6Headline": {
+            "type": "state",
+            "oid": "warncell.warning6.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning6.headline",
+                "instruction": ".warncell.warning6.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc6Severity": {
+            "type": "state",
+            "oid": "warncell.warning6.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning6.headline",
+                "instruction": ".warncell.warning6.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc6Type": {
+            "type": "state",
+            "oid": "warncell.warning6.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning6.headline",
+                "instruction": ".warncell.warning6.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc6Begin": {
+            "type": "state",
+            "oid": "warncell.warning6.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning6.headline",
+                "instruction": ".warncell.warning6.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc6End": {
+            "type": "state",
+            "oid": "warncell.warning6.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning6.headline",
+                "instruction": ".warncell.warning6.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc6Description": {
+            "type": "state",
+            "oid": "warncell.warning6.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning6.headline",
+                "instruction": ".warncell.warning6.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc6Instruction": {
+            "type": "state",
+            "oid": "warncell.warning6.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning6.headline",
+                "instruction": ".warncell.warning6.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc7Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning7.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc7Headline": {
+            "type": "state",
+            "oid": "warncell.warning7.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning7.headline",
+                "instruction": ".warncell.warning7.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc7Severity": {
+            "type": "state",
+            "oid": "warncell.warning7.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning7.headline",
+                "instruction": ".warncell.warning7.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc7Type": {
+            "type": "state",
+            "oid": "warncell.warning7.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning7.headline",
+                "instruction": ".warncell.warning7.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc7Begin": {
+            "type": "state",
+            "oid": "warncell.warning7.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning7.headline",
+                "instruction": ".warncell.warning7.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc7End": {
+            "type": "state",
+            "oid": "warncell.warning7.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning7.headline",
+                "instruction": ".warncell.warning7.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc7Description": {
+            "type": "state",
+            "oid": "warncell.warning7.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning7.headline",
+                "instruction": ".warncell.warning7.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc7Instruction": {
+            "type": "state",
+            "oid": "warncell.warning7.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning7.headline",
+                "instruction": ".warncell.warning7.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc8Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning8.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc8Headline": {
+            "type": "state",
+            "oid": "warncell.warning8.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning8.headline",
+                "instruction": ".warncell.warning8.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc8Severity": {
+            "type": "state",
+            "oid": "warncell.warning8.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning8.headline",
+                "instruction": ".warncell.warning8.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc8Type": {
+            "type": "state",
+            "oid": "warncell.warning8.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning8.headline",
+                "instruction": ".warncell.warning8.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc8Begin": {
+            "type": "state",
+            "oid": "warncell.warning8.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning8.headline",
+                "instruction": ".warncell.warning8.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc8End": {
+            "type": "state",
+            "oid": "warncell.warning8.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning8.headline",
+                "instruction": ".warncell.warning8.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc8Description": {
+            "type": "state",
+            "oid": "warncell.warning8.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning8.headline",
+                "instruction": ".warncell.warning8.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc8Instruction": {
+            "type": "state",
+            "oid": "warncell.warning8.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning8.headline",
+                "instruction": ".warncell.warning8.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc9Divider": {
+            "type": "divider",
+            "dependsOnStates": {
+                "head": ".warncell.warning9.headline"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc9Headline": {
+            "type": "state",
+            "oid": "warncell.warning9.headline",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "size": "large",
+            "label": "Headline",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning9.headline",
+                "instruction": ".warncell.warning9.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc9Severity": {
+            "type": "state",
+            "oid": "warncell.warning9.severity",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Severity",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning9.headline",
+                "instruction": ".warncell.warning9.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc9Type": {
+            "type": "state",
+            "oid": "warncell.warning9.type",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Type",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning9.headline",
+                "instruction": ".warncell.warning9.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc9Begin": {
+            "type": "state",
+            "oid": "warncell.warning9.begin",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "Begin",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning9.headline",
+                "instruction": ".warncell.warning9.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc9End": {
+            "type": "state",
+            "oid": "warncell.warning9.end",
+            "control": "text",
+            "readOnly": true,
+            "narrow": true,
+            "label": "End",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning9.headline",
+                "instruction": ".warncell.warning9.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 6,
+            "xl": 6
+        },
+        "_wc9Description": {
+            "type": "state",
+            "oid": "warncell.warning9.description",
+            "control": "text",
+            "readOnly": true,
+            "label": "Description",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning9.headline",
+                "instruction": ".warncell.warning9.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "_wc9Instruction": {
+            "type": "state",
+            "oid": "warncell.warning9.instruction",
+            "control": "text",
+            "readOnly": true,
+            "label": "Instruction",
+            "addColon": true,
+            "dependsOnStates": {
+                "head": ".warncell.warning9.headline",
+                "instruction": ".warncell.warning9.instruction"
+            },
+            "hidden": "!data.warncellId || !_states.head?.val || !_states.instruction?.val",
             "newLine": true,
             "xs": 12,
             "sm": 12,

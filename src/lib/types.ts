@@ -80,3 +80,65 @@ export type InstanceObject = ioBroker.SettableObject & {
 export interface IoPackage {
     instanceObjects: InstanceObject[];
 }
+
+/**
+ * The properties of one feature of the DWD geoserver layer `dwd:Warnungen_Gemeinden` - one warning
+ * for one municipality warncell. Only the attributes the adapter requests are listed.
+ *
+ * ```json
+ * {
+ *     "AREADESC": "Affinghausen",
+ *     "NAME": "Gemeinde Affinghausen",
+ *     "WARNCELLID": 803251001,
+ *     "STATUS": "Actual",
+ *     "MSGTYPE": "Alert",
+ *     "EVENT": "STARKES GEWITTER",
+ *     "SEVERITY": "Moderate",
+ *     "EC_GROUP": "THUNDERSTORM;WIND;RAIN",
+ *     "ONSET": "2026-10-11T14:00:00Z",
+ *     "EXPIRES": "2026-10-11T15:00:00Z",
+ *     "HEADLINE": "Amtliche WARNUNG vor STARKEM GEWITTER",
+ *     "ALTITUDE": 0,
+ *     "CEILING": 9842.5197
+ * }
+ * ```
+ */
+export interface WarncellWarningProperties {
+    AREADESC?: string;
+    NAME?: string;
+    WARNCELLID?: number;
+    /** `Actual`, `Exercise`, `Test`, ... */
+    STATUS?: string;
+    /** `Alert`, `Update`, `Cancel` */
+    MSGTYPE?: string;
+    EVENT?: string;
+    /** `Minor`, `Moderate`, `Severe`, `Extreme` */
+    SEVERITY?: string;
+    /** semicolon separated, e.g. `THUNDERSTORM;WIND;RAIN` */
+    EC_GROUP?: string;
+    /** ISO 8601 */
+    ONSET?: string;
+    /** ISO 8601, missing when the warning has no end */
+    EXPIRES?: string | null;
+    HEADLINE?: string;
+    DESCRIPTION?: string;
+    INSTRUCTION?: string | null;
+    /** feet above sea level */
+    ALTITUDE?: number | null;
+    /** feet above sea level */
+    CEILING?: number | null;
+}
+
+/** The properties of one feature of the DWD geoserver layer `dwd:Warngebiete_Gemeinden` */
+export interface WarncellAreaProperties {
+    WARNCELLID?: number;
+    /** e.g. `Gemeinde Affinghausen` */
+    NAME?: string;
+    KURZNAME?: string;
+}
+
+/** A GeoJSON answer of the DWD geoserver (WFS `GetFeature` with `outputFormat=application/json`) */
+export interface WfsFeatureCollection<P> {
+    type: 'FeatureCollection';
+    features?: { properties?: P | null }[];
+}
