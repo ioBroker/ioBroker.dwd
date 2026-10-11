@@ -81,6 +81,10 @@ All object definitions live in `io-package.json` → `instanceObjects` and are *
 `addObjects()`, which resolves the template by mapping `warning<n>.<state>` back to `warning.<state>`.
 `__dirname` is `build/`, so the file is read from `join(__dirname, '..', 'io-package.json')`.
 
+**The first channel is `warning`, not `warning0`**: it comes from `instanceObjects`, the further ones are
+added as `warning1`, `warning2`, ... Everything that derives an id from an index (admin `_cur*`, the vis-2
+widget, the devices tile, the docs) must map index `0` to `warning` (`warning${n || ''}`).
+
 `onReady()` reconciles the existing `warning<n>` channels with `config.warnings`:
 
 - more channels than configured → the surplus channels and all their states are deleted

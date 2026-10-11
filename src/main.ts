@@ -154,7 +154,7 @@ class Dwd extends utils.Adapter {
             toAdd.push(`${this.namespace}.numberOfWarnings`);
         }
 
-        // warning0 is checked by the loop above, so it deliberately starts at 1
+        // the first channel `warning` comes from instanceObjects, so it deliberately starts at 1
         for (let j = 1; j < this.channels.length; j++) {
             for (const state of WARNING_STATES) {
                 if (!states[`${this.namespace}.warning${j}.${state}`]) {

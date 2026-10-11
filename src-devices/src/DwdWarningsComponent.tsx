@@ -3,7 +3,8 @@
 // The object ids are derived from the instance and the warning number, exactly as the vis-2 widget
 // does: `dwd.<instance>.warning<n>.{headline,text,description,instruction,severity,begin,end}`.
 // The adapter creates as many `warning<n>` channels as configured in its settings, sorted by
-// severity - so warning 0 is always the most severe one currently active.
+// severity - so warning 0 is always the most severe one currently active. That first channel is
+// `warning` without a number (it comes from instanceObjects), the others are `warning1`, `warning2`, ...
 
 import WidgetGeneric, {
     React,
@@ -118,10 +119,10 @@ export class DwdWarningsComponent extends WidgetGeneric<DwdWarningsComponentStat
         return this.props.settings.instance || 'dwd.0';
     }
 
-    /** `dwd.<instance>.warning<n>` */
+    /** `dwd.<instance>.warning<n>` - the first channel is `warning` without a number */
     private get channel(): string {
         const warning = parseInt(String(this.props.settings.warning ?? '0'), 10) || 0;
-        return `${this.instance}.warning${warning}`;
+        return `${this.instance}.warning${warning || ''}`;
     }
 
     componentDidMount(): void {

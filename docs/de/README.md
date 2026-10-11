@@ -20,19 +20,20 @@ Die Instanzeinstellungen zeigen zusätzlich die gerade aktiven Warnungen, siehe
 Der Adapter schreibt die Warnungen der eingestellten Region in nummerierte Kanäle:
 
 ```
-dwd.0.warning0.headline      Amtliche WARNUNG vor WINDBÖEN
-dwd.0.warning0.text          WINDBÖEN
-dwd.0.warning0.description   Es treten Windböen mit Geschwindigkeiten ...
-dwd.0.warning0.instruction   Handlungsempfehlung des DWD, oft leer
-dwd.0.warning0.severity      0, 1 … 4, 9, 11, 19, 49, 50
-dwd.0.warning0.begin         Beginn, Millisekunden seit Epoch
-dwd.0.warning0.end           Ende, kann leer sein
+dwd.0.warning.headline       Amtliche WARNUNG vor WINDBÖEN
+dwd.0.warning.text           WINDBÖEN
+dwd.0.warning.description    Es treten Windböen mit Geschwindigkeiten ...
+dwd.0.warning.instruction    Handlungsempfehlung des DWD, oft leer
+dwd.0.warning.severity       0, 1 … 4, 9, 11, 19, 49, 50
+dwd.0.warning.begin          Beginn, Millisekunden seit Epoch
+dwd.0.warning.end            Ende, kann leer sein
 dwd.0.numberOfWarnings       wie viele Warnungen gerade aktiv sind
 ```
 
-**`warning0` ist immer die schwerste gerade aktive Warnung.** Die Liste wird bei jedem Lauf neu
-sortiert — ein Widget auf `warning0` zeigt also stets die wichtigste Warnung und bleibt nicht auf
-einem bestimmten Ereignis stehen. Wie viele `warning<n>`-Kanäle es gibt, legt die
+**`warning` ist immer die schwerste gerade aktive Warnung.** Die Liste wird bei jedem Lauf neu
+sortiert — ein Widget auf `warning` zeigt also stets die wichtigste Warnung und bleibt nicht auf
+einem bestimmten Ereignis stehen. Die weiteren Kanäle heißen `warning1`, `warning2`, … — der erste
+hat keine Nummer, ein `warning0` gibt es nicht. Wie viele Kanäle es gibt, legt die
 Adapter-Konfiguration fest („Anzahl der Warnmeldungen", 1 … 10).
 
 Gibt es weniger Warnungen als Kanäle, werden die übrigen Kanäle geleert. Die Widgets zeigen dann
@@ -78,7 +79,7 @@ Widget-Set `dwd`, Widget `DWD-Warnungen`.
 | --- | --- |
 | **Layout** | `Vollständige Warnung` — Überschrift, Beschreibung, Zeitraum und Handlungsempfehlung. `Kompakt` — eine Zeile mit dem kurzen Warntext. |
 | **Instanz** | welche `dwd`-Instanz gelesen wird |
-| **Warnung** | Nummer des `warning<n>`-Kanals. `0` ist die schwerste. |
+| **Warnung** | Nummer der Warnung. `0` ist die schwerste (Kanal `warning`), `1` steht für `warning1` usw. |
 | **Zeitformat** | wie Beginn und Ende ausgegeben werden. Platzhalter: `YYYY`, `YY`, `MM`, `DD`, `hh`, `mm`, `ss`. Vorgabe `DD.MM hh:mm`. Nur im vollständigen Layout. |
 | **Handlungsempfehlung anzeigen** | zeigt `instruction` — die Empfehlung des DWD. Sie ist oft leer. Nur im vollständigen Layout. |
 | **Ohne Karte** / **Name** | die übliche vis-2-Karte um das Widget |
@@ -119,7 +120,7 @@ Im Dashboard von `ioBroker.devices` das Widget **DWD-Warnung** hinzufügen.
 | Einstellung | Bedeutung |
 | --- | --- |
 | **Instanz** | welche `dwd`-Instanz gelesen wird |
-| **Warnung** | Nummer des `warning<n>`-Kanals. `0` ist die schwerste. |
+| **Warnung** | Nummer der Warnung. `0` ist die schwerste (Kanal `warning`), `1` steht für `warning1` usw. |
 | **Zeitformat** | wie Beginn und Ende ausgegeben werden, gleiche Platzhalter wie oben |
 | **Zeitraum anzeigen** | zeigt Beginn und Ende der Warnung |
 | **Handlungsempfehlung anzeigen** | zeigt die Empfehlung des DWD, standardmäßig aus |

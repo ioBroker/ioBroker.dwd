@@ -24,6 +24,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 ### **WORK IN PROGRESS**
+- (bluefox) The vis-2 widget, the devices tile and the instance settings read the first warning from `warning` - `warning0` does not exist
 - (bluefox) The instance settings now show the warnings that are currently active
 - (bluefox) The vis widgets were ported to vis-2: the two templates became one widget with a layout setting ([documentation](docs/en/README.md))
 - (bluefox) New widget for the ioBroker.devices dashboard

@@ -20,19 +20,20 @@ The instance settings show the warnings that are currently active as well, see
 The adapter writes the warnings of the configured region into numbered channels:
 
 ```
-dwd.0.warning0.headline      Amtliche WARNUNG vor WINDBÖEN
-dwd.0.warning0.text          WINDBÖEN
-dwd.0.warning0.description   Es treten Windböen mit Geschwindigkeiten ...
-dwd.0.warning0.instruction   recommendation of the DWD, often empty
-dwd.0.warning0.severity      0, 1 … 4, 9, 11, 19, 49, 50
-dwd.0.warning0.begin         start, milliseconds since epoch
-dwd.0.warning0.end           end, may be empty
+dwd.0.warning.headline       Amtliche WARNUNG vor WINDBÖEN
+dwd.0.warning.text           WINDBÖEN
+dwd.0.warning.description    Es treten Windböen mit Geschwindigkeiten ...
+dwd.0.warning.instruction    recommendation of the DWD, often empty
+dwd.0.warning.severity       0, 1 … 4, 9, 11, 19, 49, 50
+dwd.0.warning.begin          start, milliseconds since epoch
+dwd.0.warning.end            end, may be empty
 dwd.0.numberOfWarnings       how many warnings are currently active
 ```
 
-**`warning0` is always the most severe warning that is currently active.** The list is re-sorted on
-every run, so a widget pointed at `warning0` always shows the most important one — it does not stay
-on one particular event. How many `warning<n>` channels exist is set in the adapter configuration
+**`warning` is always the most severe warning that is currently active.** The list is re-sorted on
+every run, so a widget pointed at `warning` always shows the most important one — it does not stay
+on one particular event. The other channels are `warning1`, `warning2`, … — the first one has no
+number, there is no `warning0`. How many channels exist is set in the adapter configuration
 ("Number of warnings", 1 … 10).
 
 When there are fewer warnings than channels, the remaining channels are emptied. The widgets then
@@ -78,7 +79,7 @@ Widget set `dwd`, widget `DWD warnings`.
 | --- | --- |
 | **Layout** | `Full warning` — headline, description, period and instruction. `Compact` — one line with the short warning text. |
 | **Instance** | which `dwd` instance to read |
-| **Warning** | number of the `warning<n>` channel. `0` is the most severe one. |
+| **Warning** | number of the warning. `0` is the most severe one (channel `warning`), `1` means `warning1` and so on. |
 | **Time format** | how begin and end are printed. Placeholders: `YYYY`, `YY`, `MM`, `DD`, `hh`, `mm`, `ss`. Default `DD.MM hh:mm`. Only in the full layout. |
 | **Show instruction** | shows `instruction` — the recommendation of the DWD. It is often empty. Only in the full layout. |
 | **Without card** / **Name** | the usual vis-2 card around the widget |
@@ -119,7 +120,7 @@ In the dashboard of `ioBroker.devices`, add the widget **DWD warning**.
 | Setting | Meaning |
 | --- | --- |
 | **Instance** | which `dwd` instance to read |
-| **Warning** | number of the `warning<n>` channel. `0` is the most severe one. |
+| **Warning** | number of the warning. `0` is the most severe one (channel `warning`), `1` means `warning1` and so on. |
 | **Time format** | how begin and end are printed, same placeholders as above |
 | **Show period** | shows begin and end of the warning |
 | **Show instruction** | shows the recommendation of the DWD, off by default |

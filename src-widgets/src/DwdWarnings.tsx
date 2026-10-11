@@ -205,11 +205,11 @@ export default class DwdWarnings extends Generic<DwdWarningsRxData, DwdWarningsS
         return value === null || value === undefined ? '' : String(value);
     }
 
-    /** `dwd.<instance>.warning<n>` */
+    /** `dwd.<instance>.warning<n>` - the first channel is `warning` without a number */
     private channel(): string {
         const instance = parseInt(String(this.state.rxData.instance ?? '0'), 10) || 0;
         const warning = parseInt(String(this.state.rxData.warning ?? '0'), 10) || 0;
-        return `dwd.${instance}.warning${warning}`;
+        return `dwd.${instance}.warning${warning || ''}`;
     }
 
     /**

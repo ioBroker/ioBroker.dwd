@@ -638,7 +638,7 @@
         },
         "_cur0Headline": {
             "type": "state",
-            "oid": "warning0.headline",
+            "oid": "warning.headline",
             "control": "text",
             "readOnly": true,
             "narrow": true,
@@ -646,8 +646,8 @@
             "label": "Headline",
             "addColon": true,
             "dependsOnStates": {
-                "head": ".warning0.headline",
-                "instruction": ".warning0.instruction"
+                "head": ".warning.headline",
+                "instruction": ".warning.instruction"
             },
             "hidden": "!_states.head?.val",
             "newLine": true,
@@ -659,15 +659,15 @@
         },
         "_cur0Severity": {
             "type": "state",
-            "oid": "warning0.severity",
+            "oid": "warning.severity",
             "control": "text",
             "readOnly": true,
             "narrow": true,
             "label": "Severity",
             "addColon": true,
             "dependsOnStates": {
-                "head": ".warning0.headline",
-                "instruction": ".warning0.instruction"
+                "head": ".warning.headline",
+                "instruction": ".warning.instruction"
             },
             "hidden": "!_states.head?.val",
             "newLine": true,
@@ -679,15 +679,15 @@
         },
         "_cur0Type": {
             "type": "state",
-            "oid": "warning0.type",
+            "oid": "warning.type",
             "control": "text",
             "readOnly": true,
             "narrow": true,
             "label": "Type",
             "addColon": true,
             "dependsOnStates": {
-                "head": ".warning0.headline",
-                "instruction": ".warning0.instruction"
+                "head": ".warning.headline",
+                "instruction": ".warning.instruction"
             },
             "hidden": "!_states.head?.val",
             "xs": 12,
@@ -698,15 +698,15 @@
         },
         "_cur0Begin": {
             "type": "state",
-            "oid": "warning0.begin",
+            "oid": "warning.begin",
             "control": "text",
             "readOnly": true,
             "narrow": true,
             "label": "Begin",
             "addColon": true,
             "dependsOnStates": {
-                "head": ".warning0.headline",
-                "instruction": ".warning0.instruction"
+                "head": ".warning.headline",
+                "instruction": ".warning.instruction"
             },
             "hidden": "!_states.head?.val",
             "newLine": true,
@@ -718,15 +718,15 @@
         },
         "_cur0End": {
             "type": "state",
-            "oid": "warning0.end",
+            "oid": "warning.end",
             "control": "text",
             "readOnly": true,
             "narrow": true,
             "label": "End",
             "addColon": true,
             "dependsOnStates": {
-                "head": ".warning0.headline",
-                "instruction": ".warning0.instruction"
+                "head": ".warning.headline",
+                "instruction": ".warning.instruction"
             },
             "hidden": "!_states.head?.val",
             "xs": 12,
@@ -737,14 +737,14 @@
         },
         "_cur0Description": {
             "type": "state",
-            "oid": "warning0.description",
+            "oid": "warning.description",
             "control": "text",
             "readOnly": true,
             "label": "Description",
             "addColon": true,
             "dependsOnStates": {
-                "head": ".warning0.headline",
-                "instruction": ".warning0.instruction"
+                "head": ".warning.headline",
+                "instruction": ".warning.instruction"
             },
             "hidden": "!_states.head?.val",
             "newLine": true,
@@ -756,14 +756,14 @@
         },
         "_cur0Instruction": {
             "type": "state",
-            "oid": "warning0.instruction",
+            "oid": "warning.instruction",
             "control": "text",
             "readOnly": true,
             "label": "Instruction",
             "addColon": true,
             "dependsOnStates": {
-                "head": ".warning0.headline",
-                "instruction": ".warning0.instruction"
+                "head": ".warning.headline",
+                "instruction": ".warning.instruction"
             },
             "hidden": "!_states.head?.val || !_states.instruction?.val",
             "newLine": true,
