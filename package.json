@@ -64,7 +64,7 @@
     "prepublishOnly": "npm run build",
     "watch": "tsc -p tsconfig.build.json --watch",
     "check": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tasks.json --noEmit",
-    "lint": "eslint -c eslint.config.mjs src tasks.mts && cd src-widgets && npm run lint && cd ../src-devices && npm run lint",
+    "lint": "node tasks.mts --install && eslint -c eslint.config.mjs src tasks.mts && cd src-widgets && npm run lint && cd ../src-devices && npm run lint",
     "test:package": "mocha test/packageFiles --exit",
     "test:integration": "mocha test/integrationAdapter --exit",
     "test": "npm run test:package",

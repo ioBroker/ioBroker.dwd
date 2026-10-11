@@ -68,6 +68,13 @@ async function buildDevices(): Promise<void> {
 }
 
 async function main(): Promise<void> {
+    if (process.argv.includes('--install')) {
+        // `npm run lint` needs the dependencies of both front-ends - without them eslint cannot
+        // resolve the React and vis-2 types, and CI lints before anything is built
+        await installIfNeeded(SRC_WIDGETS);
+        await installIfNeeded(SRC_DEVICES);
+        return;
+    }
     if (process.argv.includes('--copy-files')) {
         copyWidgets();
         return;
