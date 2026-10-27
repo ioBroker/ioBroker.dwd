@@ -1,4 +1,8 @@
 # Older changes
+## 2.8.2 (2022-03-22)
+* (Apollon77) Add instruction text to warning data
+* (Apollon77) Check missing objects and add them
+
 ## 2.7.7 (2021-07-01)
 * (Apollon77) Fix start/end dates
 

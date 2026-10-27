@@ -23,7 +23,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 3.0.1 (2026-10-27)
 - (@GermanBluefox) A truncated JSONP answer of the DWD (no closing `}`) no longer hangs the adapter in an endless loop, it is logged as a parse error
 
 ### 3.0.0 (2026-10-11)
@@ -49,10 +49,6 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ### 2.8.3 (2022-03-23)
 * (Apollon77) Do not add unused warning0
-
-### 2.8.2 (2022-03-22)
-* (Apollon77) Add instruction text to warning data
-* (Apollon77) Check missing objects and add them
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

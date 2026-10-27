@@ -27,8 +27,21 @@
       "zh-cn": "德国气象局 (DWD) 的天气警告",
       "uk": "Попередження про погоду від Німецької служби погоди (DWD)"
     },
-    "version": "3.0.0",
+    "version": "3.0.1",
     "news": {
+      "3.0.1": {
+        "en": "A truncated JSONP answer of the DWD (no closing `}`) no longer hangs the adapter in an endless loop, it is logged as a parse error",
+        "de": "Eine gekürzte JSONP-Antwort des DWD (no closing `}`) hängt den Adapter nicht mehr, er wird als Parserfehler protokolliert",
+        "ru": "Усеченный JSONP-ответ DWD (без закрытия `}`) больше не зависает адаптер в бесконечном цикле, он регистрируется как ошибка синтаксического анализа",
+        "pt": "Uma resposta JSONP truncada do DWD (sem fechar `}`) não trava mais o adaptador, é registrada como um erro de análise",
+        "nl": "Een verkort JSONP-antwoord van de DWD (geen sluiting `}`) hangt de adapter niet langer in een eindeloze lus, maar wordt geregistreerd als een parseerfout",
+        "fr": "Une réponse JSONP tronquée du DWD (pas de fermeture `}`) ne bloque plus l'adaptateur en boucle, c'est enregistré comme erreur d'analyse",
+        "it": "Una risposta JSONP troncata del DWD (no closing `}`) non blocca più l'adattatore, ma come errore di analisi",
+        "es": "Una respuesta JSONP truncada del DWD (sin cerrar `}`) ya no bloquea el adaptador en un bucle sin fin, sino que se registra como error",
+        "pl": "Obcięta odpowiedź JSONP DWD (bez zamykania `}`) nie zawiesza już adaptera w niekończącej się pętli, jest rejestrowana jako błąd analizy",
+        "uk": "Урізана відповідь JSONP DWD (без закриття `}`) більше не зависає адаптер у нескінченному циклі, вона реєструється як помилка аналізу",
+        "zh-cn": "DWD 的截断 JSONP 答案（不关闭 `}`）不再使适配器陷入无休止的循环，它会被记录为解析错误"
+      },
       "3.0.0": {
         "en": "Optional warncell ID of a municipality: its warnings are read from the DWD geoserver and written below `warncell.`, in addition to the region (idea from #306 by BeSiRe1)\nThe vis-2 widget, the devices tile and the instance settings read the first warning from `warning` - `warning0` does not exist\nThe instance settings now show the warnings that are currently active\nThe vis widgets were ported to vis-2: the two templates became one widget with a layout setting ([documentation](docs/en/README.md))\nNew widget for the ioBroker.devices dashboard\nAdded the 24 missing inland lake regions (Bodensee, Chiemsee, Starnberger See, Müritz, Steinhuder Meer, ...)\nThe adapter was refactored to TypeScript, the sources are now in `src/` and are compiled to `build/`\nThe configuration dialog was migrated to JsonConfig\nAdapter requires node.js >= 22 now",
         "de": "Optionale Warnzellen-ID einer Gemeinde: Die Warnungen werden vom DWD-Geoserver gelesen und neben der Region (Idee von #306 von Besire1)\nDas Vis-2-Widget, die Gerätekachel und die Instanzeinstellungen lesen die erste Warnung von `warning0`\nDie Instanzeinstellungen zeigen nun die aktuell aktiven Warnungen\nDie Vis-Widgets wurden auf Vis-2 portiert: Die beiden Vorlagen wurden zu einem Widget mit Layouteinstellung (docs/en/README.md)\nNeues Widget für das ioBroker.Devices-Dashboard\n24 fehlende Binnenseengebiete hinzugefügt (Bodensee, Chiemsee, Starnberger See, Müritz, Steinhuder Meer,...)\nDer Adapter wurde auf TypeScript umgestellt, die Quellen sind jetzt in `src/“ kompiliert\nDer Konfigurationsdialog wurde zu JSONConfig migriert\nAdapter benötigt jetzt node.js >= 22",
@@ -106,19 +119,6 @@
         "pl": "Popraw daty rozpoczęcia/zakończenia",
         "zh-cn": "修复开始/结束日期",
         "uk": "Виправте дати початку/закінчення"
-      },
-      "2.7.6": {
-        "en": "Added new states to `warning.severity`\nRemoved warnings\nReplaces `request` packet with `axios`\nBreaking change: Rename state `numberofwarnings` to `numberOfWarnings`",
-        "de": "Neue Zustände zu `warning.severity` . hinzugefügt\nWarnungen entfernt\nErsetzt `request`-Paket durch `axios`\nBreaking Change: Benennen Sie den Zustand `numberofwarnings` um in `numberOfWarnings`",
-        "ru": "Добавлены новые состояния в `warning.severity`\nУдалены предупреждения\nЗаменяет пакет request на axios\nКритическое изменение: переименуйте состояние `numberofwarnings` в` numberOfWarnings`",
-        "pt": "Adicionados novos estados a `warning.severity`\nAvisos removidos\nSubstitui o pacote `request` por` axios`\nQuebrando a alteração: renomeie o estado `numberofwarnings` para` numberOfWarnings`",
-        "nl": "Nieuwe statussen toegevoegd aan `warning.severity`\nWaarschuwingen verwijderd\nVervangt `request`-pakket door `axios`\nBrekende wijziging: hernoem status `numberofwarnings` naar `numberOfWarnings`",
-        "fr": "Ajout de nouveaux états à `warning.severity`\nAvertissements supprimés\nRemplace le paquet « request » par « axios »\nChangement décisif : renommer l'état « numberofwarnings » en « numberOfWarnings »",
-        "it": "Aggiunti nuovi stati a `warning.severity`\nAvvisi rimossi\nSostituisce il pacchetto `request` con `axios`\nModifica importante: rinominare lo stato `numberofwarnings` in `numberOfWarnings`",
-        "es": "Se agregaron nuevos estados a `warning.severity`\nAdvertencias eliminadas\nReemplaza el paquete `request` con` axios`\nCambio rotundo: cambie el nombre del estado `numberofwarnings` a` numberOfWarnings`",
-        "pl": "Dodano nowe stany do `warning.severity`\nUsunięto ostrzeżenia\nZamienia pakiet `request` na `axios`\nWażna zmiana: Zmień nazwę stanu `numberofwarnings` na `numberOfWarnings`",
-        "zh-cn": "向 `warning.severity` 添加了新状态\n删除警告\n用 `axios` 替换 `request` 数据包\n重大变化：将状态“numberofwarnings”重命名为“numberOfWarnings”",
-        "uk": "Додано нові стани до `warning.severity`\nВидалені попередження\nЗамінює пакет `request` на `axios`\nКлючова зміна: перейменувати стан `numberofwarnings` на `numberOfWarnings`"
       }
     },
     "mode": "schedule",
