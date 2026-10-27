@@ -19,13 +19,9 @@ const JSONP_PREFIX = 'warnWetter.loadWarnings(';
 function parseBody<T>(body: string, cb: GetFileCallback<T>): void {
     let data: T;
     try {
-        if (body.startsWith(JSONP_PREFIX)) {
-            body = body.substring(JSONP_PREFIX.length);
-            while (body[body.length - 1] !== '}') {
-                body = body.substring(0, body.length - 1);
-            }
-        }
-        data = JSON.parse(body);
+        // Everything up to the last `}`. A truncated body without one ends up empty and JSON.parse throws.
+        const json = body.startsWith(JSONP_PREFIX) ? body.slice(JSONP_PREFIX.length, body.lastIndexOf('}') + 1) : body;
+        data = JSON.parse(json);
     } catch (e) {
         try {
             writeFileSync(join(__dirname, 'problem.json'), body);
