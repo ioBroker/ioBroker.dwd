@@ -23,7 +23,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 3.0.2 (2026-11-01)
 - (@GermanBluefox) Network errors while reading warnings.json are logged as warning instead of error (#319)
 
 ### 3.0.1 (2026-10-27)
@@ -49,9 +49,6 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ### 2.8.5 (2023-06-15)
 * (Quarkmax) added the hint for warning instructions
-
-### 2.8.3 (2022-03-23)
-* (Apollon77) Do not add unused warning0
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
