@@ -23,7 +23,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 3.0.3 (2026-11-01)
 - (@GermanBluefox) Removed `process.exit` from the code
 
 ### 3.0.2 (2026-11-01)
@@ -49,9 +49,6 @@ This adapter loads the weather warnings from the German weather service via JSON
 * (arteck) add eslint
 * (arteck) Dependencies have been updated
 * (arteck) fix hint dp in widget
-
-### 2.8.5 (2023-06-15)
-* (Quarkmax) added the hint for warning instructions
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
