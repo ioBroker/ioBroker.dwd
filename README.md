@@ -23,6 +23,9 @@ This adapter loads the weather warnings from the German weather service via JSON
 -->
 
 ## Changelog
+### **WORK IN PROGRESS**
+- (@GermanBluefox) Network errors while reading warnings.json are logged as warning instead of error (#319)
+
 ### 3.0.1 (2026-10-27)
 - (@GermanBluefox) A truncated JSONP answer of the DWD (no closing `}`) no longer hangs the adapter in an endless loop, it is logged as a parse error
 
