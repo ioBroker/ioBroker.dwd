@@ -99,7 +99,7 @@ class Dwd extends utils.Adapter {
             this.clearTimeout(this.killSwitchTimeout);
             this.killSwitchTimeout = null;
         }
-        this.terminate ? this.terminate() : process.exit(0);
+        this.terminate();
     }
 
     private getIoPackage(): IoPackage {

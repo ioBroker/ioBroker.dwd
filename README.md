@@ -23,6 +23,9 @@ This adapter loads the weather warnings from the German weather service via JSON
 -->
 
 ## Changelog
+### **WORK IN PROGRESS**
+- (@GermanBluefox) Removed `process.exit` from the code
+
 ### 3.0.2 (2026-11-01)
 - (@GermanBluefox) Network errors while reading warnings.json are logged as warning instead of error (#319)
 
