@@ -1,12 +1,14 @@
 /*!
  * Build tasks of ioBroker.dwd
  *
- * Two front-ends live next to the adapter, both built with vite and module federation:
+ * Three front-ends live next to the adapter, all built with vite - the first two with module federation:
  *
- *   src-widgets/  -> widgets/dwd/         the vis-2 widget set (loaded by vis-2)
- *   src-devices/  -> admin/dm-widgets/    the widgets ioBroker.devices shows in its dashboard
+ *   src-widgets/        -> widgets/dwd/           the vis-2 widget set (loaded by vis-2)
+ *   src-devices/        -> admin/dm-widgets/      the widgets ioBroker.devices shows in its dashboard
+ *   src-webcomponents/  -> admin/webcomponents/   the web component <iob-dwd-warnings> for Aura, admin and every
+ *                                                 other host of `@iobroker/web-components`
  *
- * `npm run build` builds the adapter and both front-ends - that is what CI and `npm publish` run.
+ * `npm run build` builds the adapter and all front-ends - that is what CI and `npm publish` run.
  *
  * This file is run straight from source - `node tasks.mts` - by the type stripping node brings
  * along, so it must stay free of syntax that a compiler would have to rewrite (`enum`,
@@ -21,6 +23,10 @@ const ROOT: string = import.meta.dirname;
 const SRC_WIDGETS = `${ROOT}/src-widgets`;
 /** Directory of the ioBroker.devices widget sources */
 const SRC_DEVICES = `${ROOT}/src-devices`;
+/** Directory of the web component sources */
+const SRC_WC = `${ROOT}/src-webcomponents`;
+/** Served as `/adapter/dwd/webcomponents/`; must match `common.webComponents` in io-package.json */
+const WC_DEST = 'admin/webcomponents/';
 
 /**
  * Copies the built vis-2 widgets into `widgets/dwd/`.
@@ -67,12 +73,26 @@ async function buildDevices(): Promise<void> {
     copyDevices();
 }
 
+/**
+ * Builds the web component: one ES module and its manifest (`dwd-warnings.js`, `dwd-warnings.json`). The build
+ * fails if the manifest does not pass `checkManifest`. The destination is emptied first, so no module of an earlier
+ * build is published with the next release.
+ */
+async function buildWebComponents(): Promise<void> {
+    deleteFoldersRecursive(`${ROOT}/${WC_DEST}`);
+    deleteFoldersRecursive(`${SRC_WC}/build`);
+    await installIfNeeded(SRC_WC);
+    await buildReact(SRC_WC, { rootDir: SRC_WC, vite: true });
+    copyFiles(['src-webcomponents/build/*.js', 'src-webcomponents/build/*.json'], WC_DEST);
+}
+
 async function main(): Promise<void> {
     if (process.argv.includes('--install')) {
         // `npm run lint` needs the dependencies of both front-ends - without them eslint cannot
         // resolve the React and vis-2 types, and CI lints before anything is built
         await installIfNeeded(SRC_WIDGETS);
         await installIfNeeded(SRC_DEVICES);
+        await installIfNeeded(SRC_WC);
         return;
     }
     if (process.argv.includes('--copy-files')) {
@@ -83,9 +103,14 @@ async function main(): Promise<void> {
         await buildDevices();
         return;
     }
+    if (process.argv.includes('--wc')) {
+        await buildWebComponents();
+        return;
+    }
     if (process.argv.includes('--all')) {
         await buildWidgets();
         await buildDevices();
+        await buildWebComponents();
         return;
     }
     await buildWidgets();

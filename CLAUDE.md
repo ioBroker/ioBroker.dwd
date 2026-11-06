@@ -20,10 +20,11 @@ after 4 minutes should anything hang.
 ## Commands
 
 ```bash
-npm run build                             # adapter + both front-ends
+npm run build                             # adapter + all front-ends
 npm run build:ts                          # tsc -p tsconfig.build.json  -> build/
 npm run build:widgets                     # vis-2 widget set            -> widgets/dwd/
 npm run build:devices                     # ioBroker.devices tile       -> admin/dm-widgets/
+npm run build:wc                          # web component               -> admin/webcomponents/
 npm run watch                             # same in watch mode
 npm run check                             # type check only (tsconfig.json, noEmit)
 npm run lint                              # eslint (@iobroker/eslint-config, flat config)
@@ -55,8 +56,9 @@ The integration test requires that **no** js-controller is running on the machin
 | `admin/jsonConfig.json` | the configuration dialog, `admin/i18n/<lang>.json` the translations |
 | `src-widgets/` | the vis-2 widget set (React), built to `widgets/dwd/` |
 | `src-devices/` | the ioBroker.devices dashboard tile (React), built to `admin/dm-widgets/` |
+| `src-webcomponents/` | the web component `<iob-dwd-warnings>` (React from the host), built to `admin/webcomponents/` |
 | `widgets/dwd.html` | the vis-1 widget set (plain JS, hand-maintained, still shipped) |
-| `tasks.mts` | builds the two front-ends, run straight from source by node's type stripping |
+| `tasks.mts` | builds the front-ends, run straight from source by node's type stripping |
 
 `src/lib/adapter-config.d.ts` is hand-maintained and must be kept in sync with `native` in
 `io-package.json` **and** with `admin/jsonConfig.json` — nothing generates it.
@@ -227,6 +229,24 @@ vis-1 widget and the `formatDate` replacement for `vis.binds.basic.formatDate`.
 The colours are the meaning of the warning, so they do not follow the theme. Only the text colour on
 top is derived from the background (`textColorOn`), because the view's text colour is unusable on
 both `#ffeb3b` and `#880e4f`.
+
+## The web component
+
+`src-webcomponents/` builds `<iob-dwd-warnings>` (`@iobroker/web-components`) for Aura, admin and every other host:
+one ES module `admin/webcomponents/dwd-warnings.js` plus its manifest `dwd-warnings.json`, named in
+`common.webComponents`. Both are **committed**, like `admin/dm-widgets/`. React is not bundled - the React imports
+point at `../../../lib/esm/react-19.js`, which web and admin serve. No MUI, no gui-components: plain React and CSS
+in the shadow root, the theme comes as `--iob-*` variables. It reads the same states as the two native widgets
+(`dwd.<n>.warning<k>` or `dwd.<n>.warncell.warning<k>`), writes nothing and imports `src-widgets/src/severity.ts`
+by relative path for the colours and the date format.
+
+The manifest is written by the build (`vite.config.ts`), checked with `checkManifest` (the build fails otherwise),
+from `src/manifest.ts` plus words read at build time: the **name and description are those of the devices widget in
+`io-package.json`**, the setting labels come from `src-devices/src/i18n/` and `src-widgets/src/i18n/`. vis-2 and
+devices hide a web component whose name equals the label of a native widget of the same adapter, per language - so
+keep `common.deviceWidgets.components[].label` translated, and the manifest follows it. Re-run `npm run build:wc`
+and commit `admin/webcomponents/` whenever something under `src-webcomponents/`, the devices label or one of those
+dictionaries changed.
 
 ## Documentation
 

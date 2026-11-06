@@ -1,13 +1,14 @@
 # DWD-Widgets
 
-Der `dwd`-Adapter bringt neben dem Adapter selbst zwei Oberflächen mit:
+Der `dwd`-Adapter bringt neben dem Adapter selbst drei Oberflächen mit:
 
 | Wo | Was |
 | --- | --- |
 | **vis / vis-2** | das Widget `DWD-Warnungen` im Widget-Set `dwd` |
 | **ioBroker.devices** | die Kachel `DWD-Warnung` fürs Dashboard |
+| **Aura, Admin und andere** | die Web-Komponente `<iob-dwd-warnings>`, siehe [Web-Komponente](#web-komponente-iob-dwd-warnings) |
 
-Beide zeigen dieselben Daten und werden gleich konfiguriert: Instanz auswählen und die Nummer der
+Alle zeigen dieselben Daten und werden gleich konfiguriert: Instanz auswählen und die Nummer der
 Warnung angeben. Alles andere ist optional.
 
 Die Instanzeinstellungen zeigen zusätzlich die gerade aktiven Warnungen, siehe
@@ -163,6 +164,34 @@ Akzent an — eine aktive Warnung ist im Dashboard also zu sehen, ohne den Text 
 
 ---
 
+## Web-Komponente: `<iob-dwd-warnings>`
+
+Der Adapter bringt die Warnung auch als [Web-Komponente](https://github.com/ioBroker/web-components) mit: ein
+Element, das jede ioBroker-Oberfläche mit Unterstützung für `@iobroker/web-components` gleich anzeigt - Aura, Admin,
+und auch vis-2 und devices. Sie heißt **DWD-Warnung** wie die devices-Kachel, deshalb bietet devices statt ihrer die
+eigene Kachel an.
+
+Sie zeigt eine Warnung einer Instanz: Überschrift, Zeitraum, Beschreibung und, wenn eingeschaltet, die
+Handlungsempfehlung, auf der Schweregrad-Farbe der Warnung - im kompakten Layout eine Zeile mit dem kurzen Warntext.
+Ohne Warnung steht dort „Keine Warnung“. Ein Klick auf die Warnung zeigt sie ganz in einem Dialog. Das Element
+übernimmt Farben und Schrift der Seite, in der es angezeigt wird, und skaliert mit der Größe seines Rahmens.
+
+| Einstellung | Bedeutung |
+| --- | --- |
+| **Instanz** | welche `dwd`-Instanz gelesen wird |
+| **Warnungen für** | `Region` - die Region der Instanzeinstellungen (`warning<n>`); `Gemeinde (Warnzelle)` - die Warnzellen-ID der Instanzeinstellungen (`warncell.warning<n>`) |
+| **Warnung** | Nummer der Warnung. `0` ist die schwerste (Kanal `warning`), `1` steht für `warning1` usw. |
+| **Layout** | `Vollständige Warnung` oder `Kompakt`, wie im vis-2-Widget |
+| **Name** | steht über der Warnung; leer: nichts |
+| **Zeitraum anzeigen** | zeigt Beginn und Ende der Warnung |
+| **Zeitformat** | wie Beginn und Ende ausgegeben werden, gleiche Platzhalter wie oben |
+| **Handlungsempfehlung anzeigen** | zeigt die Empfehlung des DWD, standardmäßig aus |
+
+Die Einstellungen des vis-2-Widgets für von Hand gesetzte Objekt-IDs haben kein Gegenstück: Es gibt sie für aus
+vis-1 übernommene Views. Die Gemeinde wird stattdessen mit **Warnungen für** gewählt.
+
+---
+
 ## Die Instanzeinstellungen
 
 Unter der Konfiguration listen die Instanzeinstellungen die Warnungen auf, die für die eingestellte
@@ -187,12 +216,15 @@ Warnungen der Warnzelle.
 ## Aus den Quellen bauen
 
 ```bash
-npm run build            # Adapter + beide Oberflächen
+npm run build            # Adapter + alle Oberflächen
 npm run build:widgets    # nur das vis-2-Widget-Set -> widgets/dwd/
 npm run build:devices    # nur die devices-Kachel   -> admin/dm-widgets/
+npm run build:wc         # nur die Web-Komponente   -> admin/webcomponents/
 ```
 
-Die Quellen liegen in `src-widgets/` (vis-2) und `src-devices/` (devices-Dashboard). Beide sind
-React + TypeScript, gebaut mit vite und Module Federation. Die Komponentennamen und die URL stehen
+Die Quellen liegen in `src-widgets/` (vis-2), `src-devices/` (devices-Dashboard) und `src-webcomponents/`
+(Web-Komponente). Die ersten beiden sind React + TypeScript, gebaut mit vite und Module Federation. Die
+Web-Komponente ist ebenfalls React + TypeScript, mit vite zu einem ES-Modul gebaut, das React vom Host nimmt
+(`lib/esm/react-19.js`). Die Komponentennamen und die URL stehen
 zusätzlich in `io-package.json` unter `common.visWidgets` bzw. `common.deviceWidgets` — ein neues
 Widget bedeutet also, `exposes` in der vite-Konfiguration **und** diesen Block anzufassen.
