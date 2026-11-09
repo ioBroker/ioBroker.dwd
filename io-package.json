@@ -171,7 +171,19 @@
       "components": [
         {
           "name": "DwdWarningsComponent",
-          "label": "DWD warning",
+          "label": {
+            "en": "DWD warning",
+            "de": "DWD-Warnung",
+            "ru": "Предупреждение DWD",
+            "pt": "Aviso do DWD",
+            "nl": "DWD-waarschuwing",
+            "fr": "Alerte DWD",
+            "it": "Avviso DWD",
+            "es": "Aviso del DWD",
+            "pl": "Ostrzeżenie DWD",
+            "uk": "Попередження DWD",
+            "zh-cn": "DWD 天气警告"
+          },
           "description": {
             "en": "Current weather warning of the German Weather Service",
             "de": "Aktuelle Wetterwarnung des Deutschen Wetterdienstes",
@@ -189,6 +201,9 @@
         }
       ]
     },
+    "webComponents": [
+      "webcomponents/dwd-warnings.json"
+    ],
     "plugins": {
       "sentry": {
         "dsn": "https://4ddc70db4b554069a5595f0382c27e3f@sentry.iobroker.net/50"

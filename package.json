@@ -56,25 +56,26 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "npm run build:ts && npm run build:widgets && npm run build:devices",
+    "build": "npm run build:ts && npm run build:widgets && npm run build:devices && npm run build:wc",
     "build:ts": "tsc -p tsconfig.build.json",
     "build:widgets": "node tasks.mts",
     "build:devices": "node tasks.mts --devices",
+    "build:wc": "node tasks.mts --wc",
     "docs:images": "node docs/severity-colors.mjs",
     "prepublishOnly": "npm run build",
     "watch": "tsc -p tsconfig.build.json --watch",
     "check": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tasks.json --noEmit",
-    "lint": "node tasks.mts --install && eslint -c eslint.config.mjs src tasks.mts && cd src-widgets && npm run lint && cd ../src-devices && npm run lint",
+    "lint": "node tasks.mts --install && eslint -c eslint.config.mjs src tasks.mts && cd src-widgets && npm run lint && cd ../src-devices && npm run lint && cd ../src-webcomponents && npm run lint",
     "test:package": "mocha test/packageFiles --exit",
     "test:integration": "mocha test/integrationAdapter --exit",
     "test": "npm run test:package",
     "translate": "translate-adapter -b admin/i18n/en.json",
-    "npm": "npm i && cd src-widgets && npm i && cd ../src-devices && npm i",
+    "npm": "npm i && cd src-widgets && npm i && cd ../src-devices && npm i && cd ../src-webcomponents && npm i",
     "release": "release-script --noPush -y",
     "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "update-packages": "npx npm-check-updates --upgrade && cd src-widgets && npx npm-check-updates --upgrade && cd ../src-devices && npx npm-check-updates --upgrade"
+    "update-packages": "npx npm-check-updates --upgrade && cd src-widgets && npx npm-check-updates --upgrade && cd ../src-devices && npx npm-check-updates --upgrade && cd ../src-webcomponents && npx npm-check-updates --upgrade"
   },
   "readmeFilename": "README.md"
 }

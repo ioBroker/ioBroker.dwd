@@ -11,5 +11,5 @@
         "types": ["node"]
     },
     "include": ["tasks.mts"],
-    "exclude": ["node_modules/**", "src/**", "src-widgets/**", "src-devices/**", "test/**", "build/**"]
+    "exclude": ["node_modules/**", "src/**", "src-widgets/**", "src-devices/**", "src-webcomponents/**", "test/**", "build/**"]
 }

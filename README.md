@@ -23,6 +23,9 @@ This adapter loads the weather warnings from the German weather service via JSON
 -->
 
 ## Changelog
+### **WORK IN PROGRESS**
+- (@GermanBluefox) Added the web component `<iob-dwd-warnings>` for Aura, admin and other hosts of `@iobroker/web-components` (`common.webComponents`), see the [documentation](docs/en/README.md#web-component-iob-dwd-warnings); the devices tile got a translated name
+
 ### 3.0.3 (2026-11-01)
 - (@GermanBluefox) Removed `process.exit` from the code
 

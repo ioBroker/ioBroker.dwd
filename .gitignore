@@ -25,3 +25,8 @@ widgets/dwd/mf-manifest.json
 src-devices/node_modules/
 src-devices/build/
 src-devices/.__mf__temp/
+
+# the web component: the sources are built with vite and the result is committed (admin/webcomponents/), like the
+# devices widgets - see tasks.mts
+src-webcomponents/node_modules/
+src-webcomponents/build/

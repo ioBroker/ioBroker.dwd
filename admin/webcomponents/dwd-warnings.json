@@ -1,0 +1,291 @@
+{
+    "$schema": "https://raw.githubusercontent.com/ioBroker/web-components/main/schemas/manifest.json",
+    "manifestVersion": 1,
+    "tag": "iob-dwd-warnings",
+    "name": {
+        "en": "DWD warning",
+        "de": "DWD-Warnung",
+        "ru": "Предупреждение DWD",
+        "pt": "Aviso do DWD",
+        "nl": "DWD-waarschuwing",
+        "fr": "Alerte DWD",
+        "it": "Avviso DWD",
+        "es": "Aviso del DWD",
+        "pl": "Ostrzeżenie DWD",
+        "uk": "Попередження DWD",
+        "zh-cn": "DWD 天气警告"
+    },
+    "description": {
+        "en": "Current weather warning of the German Weather Service",
+        "de": "Aktuelle Wetterwarnung des Deutschen Wetterdienstes",
+        "ru": "Текущее предупреждение о погоде Немецкой службы погоды",
+        "pt": "Aviso meteorológico atual do Serviço Meteorológico Alemão",
+        "nl": "Actuele weerwaarschuwing van de Duitse weerdienst",
+        "fr": "Alerte météo actuelle du service météorologique allemand",
+        "it": "Avviso meteo attuale del servizio meteorologico tedesco",
+        "es": "Aviso meteorológico actual del Servicio Meteorológico Alemán",
+        "pl": "Aktualne ostrzeżenie pogodowe niemieckiej służby pogodowej",
+        "uk": "Поточне попередження про погоду Німецької служби погоди",
+        "zh-cn": "德国气象局当前的天气警告"
+    },
+    "icon": "../dm-widgets/warnings.png",
+    "module": "dwd-warnings.js",
+    "size": {
+        "width": 585,
+        "height": 85
+    },
+    "settings": {
+        "type": "panel",
+        "items": {
+            "instance": {
+                "type": "instance",
+                "adapter": "dwd",
+                "default": "dwd.0",
+                "label": {
+                    "en": "Instance",
+                    "de": "Instanz",
+                    "ru": "Экземпляр",
+                    "pt": "Instância",
+                    "nl": "Instantie",
+                    "fr": "Instance",
+                    "it": "Istanza",
+                    "es": "Instancia",
+                    "pl": "Instancja",
+                    "uk": "Екземпляр",
+                    "zh-cn": "实例"
+                }
+            },
+            "source": {
+                "type": "select",
+                "default": "region",
+                "label": {
+                    "en": "Warnings for",
+                    "de": "Warnungen für",
+                    "ru": "Предупреждения для",
+                    "pt": "Avisos para",
+                    "nl": "Waarschuwingen voor",
+                    "fr": "Alertes pour",
+                    "it": "Avvisi per",
+                    "es": "Avisos para",
+                    "pl": "Ostrzeżenia dla",
+                    "uk": "Попередження для",
+                    "zh-cn": "警告范围"
+                },
+                "help": {
+                    "en": "The region of the instance settings, or the municipality of their warncell ID",
+                    "de": "Die Region der Instanzeinstellungen oder die Gemeinde ihrer Warnzellen-ID",
+                    "ru": "Область из настроек экземпляра или муниципалитет их ID ячейки предупреждений",
+                    "pt": "A região das configurações da instância ou o município do seu ID da célula de aviso",
+                    "nl": "De regio uit de instantie-instellingen of de gemeente van hun waarschuwingscel-ID",
+                    "fr": "La région des paramètres de l'instance ou la commune de leur ID de cellule d'alerte",
+                    "it": "La regione delle impostazioni dell'istanza o il comune del loro ID cella di allerta",
+                    "es": "La región de la configuración de la instancia o el municipio de su ID de celda de aviso",
+                    "pl": "Region z ustawień instancji lub gmina ich ID komórki ostrzeżeń",
+                    "uk": "Регіон із налаштувань екземпляра або громада їхнього ID комірки попереджень",
+                    "zh-cn": "实例设置中的地区，或其预警单元 ID 对应的市镇"
+                },
+                "options": [
+                    {
+                        "value": "region",
+                        "label": {
+                            "en": "Region",
+                            "de": "Region",
+                            "ru": "Область",
+                            "pt": "Região",
+                            "nl": "Regio",
+                            "fr": "Région",
+                            "it": "Regione",
+                            "es": "Región",
+                            "pl": "Region",
+                            "uk": "Регіон",
+                            "zh-cn": "地区"
+                        }
+                    },
+                    {
+                        "value": "warncell",
+                        "label": {
+                            "en": "Municipality (warncell)",
+                            "de": "Gemeinde (Warnzelle)",
+                            "ru": "Муниципалитет (ячейка предупреждений)",
+                            "pt": "Município (célula de aviso)",
+                            "nl": "Gemeente (waarschuwingscel)",
+                            "fr": "Commune (cellule d'alerte)",
+                            "it": "Comune (cella di allerta)",
+                            "es": "Municipio (celda de aviso)",
+                            "pl": "Gmina (komórka ostrzeżeń)",
+                            "uk": "Громада (комірка попереджень)",
+                            "zh-cn": "市镇（预警单元）"
+                        }
+                    }
+                ]
+            },
+            "warning": {
+                "type": "number",
+                "min": 0,
+                "max": 9,
+                "default": 0,
+                "label": {
+                    "en": "Warning",
+                    "de": "Warnung",
+                    "ru": "Предупреждение",
+                    "pt": "Aviso",
+                    "nl": "Waarschuwing",
+                    "fr": "Alerte",
+                    "it": "Avviso",
+                    "es": "Aviso",
+                    "pl": "Ostrzeżenie",
+                    "uk": "Попередження",
+                    "zh-cn": "警告"
+                },
+                "help": {
+                    "en": "0 is the most severe warning currently active.",
+                    "de": "0 ist die schwerste aktuell aktive Warnung.",
+                    "ru": "0 - самое серьёзное активное предупреждение.",
+                    "pt": "0 é o aviso mais grave atualmente ativo.",
+                    "nl": "0 is de zwaarste momenteel actieve waarschuwing.",
+                    "fr": "0 est l'alerte la plus grave actuellement active.",
+                    "it": "0 è l'avviso più grave attualmente attivo.",
+                    "es": "0 es el aviso más grave actualmente activo.",
+                    "pl": "0 to najpoważniejsze aktualnie aktywne ostrzeżenie.",
+                    "uk": "0 - найсерйозніше наразі активне попередження.",
+                    "zh-cn": "0 是当前最严重的有效警告。"
+                }
+            },
+            "layout": {
+                "type": "select",
+                "default": "normal",
+                "label": {
+                    "en": "Layout",
+                    "de": "Layout",
+                    "ru": "Вид",
+                    "pt": "Esquema",
+                    "nl": "Indeling",
+                    "fr": "Disposition",
+                    "it": "Layout",
+                    "es": "Diseño",
+                    "pl": "Układ",
+                    "uk": "Вигляд",
+                    "zh-cn": "布局"
+                },
+                "options": [
+                    {
+                        "value": "normal",
+                        "label": {
+                            "en": "Full warning",
+                            "de": "Vollständige Warnung",
+                            "ru": "Полное предупреждение",
+                            "pt": "Aviso completo",
+                            "nl": "Volledige waarschuwing",
+                            "fr": "Alerte complète",
+                            "it": "Avviso completo",
+                            "es": "Aviso completo",
+                            "pl": "Pełne ostrzeżenie",
+                            "uk": "Повне попередження",
+                            "zh-cn": "完整警告"
+                        }
+                    },
+                    {
+                        "value": "small",
+                        "label": {
+                            "en": "Compact",
+                            "de": "Kompakt",
+                            "ru": "Компактный",
+                            "pt": "Compacto",
+                            "nl": "Compact",
+                            "fr": "Compact",
+                            "it": "Compatto",
+                            "es": "Compacto",
+                            "pl": "Kompaktowy",
+                            "uk": "Компактний",
+                            "zh-cn": "紧凑"
+                        }
+                    }
+                ]
+            },
+            "title": {
+                "type": "text",
+                "label": {
+                    "en": "Name",
+                    "de": "Name",
+                    "ru": "Имя",
+                    "pt": "Nome",
+                    "nl": "Naam",
+                    "fr": "Nom",
+                    "it": "Nome",
+                    "es": "Nombre",
+                    "pl": "Nazwa",
+                    "uk": "Ім'я",
+                    "zh-cn": "名称"
+                },
+                "hidden": "data.layout === \"small\""
+            },
+            "showPeriod": {
+                "type": "checkbox",
+                "default": true,
+                "label": {
+                    "en": "Show period",
+                    "de": "Zeitraum anzeigen",
+                    "ru": "Показывать период",
+                    "pt": "Mostrar período",
+                    "nl": "Periode tonen",
+                    "fr": "Afficher la période",
+                    "it": "Mostra periodo",
+                    "es": "Mostrar periodo",
+                    "pl": "Pokaż okres",
+                    "uk": "Показувати період",
+                    "zh-cn": "显示时间段"
+                },
+                "hidden": "data.layout === \"small\""
+            },
+            "timeFormat": {
+                "type": "text",
+                "default": "DD.MM hh:mm",
+                "label": {
+                    "en": "Time format",
+                    "de": "Zeitformat",
+                    "ru": "Формат времени",
+                    "pt": "Formato da hora",
+                    "nl": "Tijdnotatie",
+                    "fr": "Format de l'heure",
+                    "it": "Formato ora",
+                    "es": "Formato de hora",
+                    "pl": "Format czasu",
+                    "uk": "Формат часу",
+                    "zh-cn": "时间格式"
+                },
+                "help": {
+                    "en": "Placeholders: YYYY, YY, MM, DD, hh, mm, ss",
+                    "de": "Platzhalter: YYYY, YY, MM, DD, hh, mm, ss",
+                    "ru": "Подстановки: YYYY, YY, MM, DD, hh, mm, ss",
+                    "pt": "Marcadores: YYYY, YY, MM, DD, hh, mm, ss",
+                    "nl": "Plaatshouders: YYYY, YY, MM, DD, hh, mm, ss",
+                    "fr": "Jetons : YYYY, YY, MM, DD, hh, mm, ss",
+                    "it": "Segnaposto: YYYY, YY, MM, DD, hh, mm, ss",
+                    "es": "Marcadores: YYYY, YY, MM, DD, hh, mm, ss",
+                    "pl": "Symbole: YYYY, YY, MM, DD, hh, mm, ss",
+                    "uk": "Підстановки: YYYY, YY, MM, DD, hh, mm, ss",
+                    "zh-cn": "占位符：YYYY、YY、MM、DD、hh、mm、ss"
+                },
+                "hidden": "data.layout === \"small\" || data.showPeriod === false"
+            },
+            "showInstruction": {
+                "type": "checkbox",
+                "default": false,
+                "label": {
+                    "en": "Show instruction",
+                    "de": "Handlungsempfehlung anzeigen",
+                    "ru": "Показывать рекомендации",
+                    "pt": "Mostrar instrução",
+                    "nl": "Instructie tonen",
+                    "fr": "Afficher la consigne",
+                    "it": "Mostra istruzioni",
+                    "es": "Mostrar instrucción",
+                    "pl": "Pokaż zalecenia",
+                    "uk": "Показувати рекомендації",
+                    "zh-cn": "显示行动建议"
+                },
+                "hidden": "data.layout === \"small\""
+            }
+        }
+    }
+}

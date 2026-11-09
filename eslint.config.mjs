@@ -19,9 +19,10 @@ export default [
             'node_modules/**/*',
             'test/**/*',
             'build/**/*',
-            // the two front-ends are built separately and have their own tsconfig and eslint config
+            // the front-ends are built separately and have their own tsconfig and eslint config
             'src-widgets/**/*',
             'src-devices/**/*',
+            'src-webcomponents/**/*',
             'tmp/**/*',
             '.**/*',
         ],
