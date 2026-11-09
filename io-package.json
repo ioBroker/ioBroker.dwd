@@ -27,8 +27,34 @@
       "zh-cn": "德国气象局 (DWD) 的天气警告",
       "uk": "Попередження про погоду від Німецької служби погоди (DWD)"
     },
-    "version": "3.0.1",
+    "version": "3.0.3",
     "news": {
+      "3.0.3": {
+        "en": "Removed `process.exit` from the code",
+        "de": "`process.exit` aus dem Code entfernt",
+        "ru": "Удален `process.exit` из кода",
+        "pt": "Removido `process.exit` do código",
+        "nl": "`process.exit` uit de code verwijderd",
+        "fr": "`process.exit` a été supprimé du code",
+        "it": "Rimosso `process.exit` dal codice",
+        "es": "Se quitó `process.exit` del código",
+        "pl": "Usunięto `process.exit` z kodu",
+        "uk": "Вилучено `process.exit` з коду",
+        "zh-cn": "从代码中删除了 `process.exit`"
+      },
+      "3.0.2": {
+        "en": "Network errors while reading warnings.json are logged as warning instead of error (#319)",
+        "de": "Netzwerkfehler beim Lesen von warnings.json werden als Warnung statt als Fehler geloggt (#319)",
+        "ru": "Сетевые ошибки при чтении warnings.json регистрируются как предупреждение, а не как ошибка (#319)",
+        "pt": "Erros de rede ao ler warnings.json são registrados como aviso em vez de erro (#319)",
+        "nl": "Netwerkfouten tijdens het lezen van warnings.json worden geregistreerd als waarschuwing in plaats van als fout (#319)",
+        "fr": "Les erreurs réseau lors de la lecture de warnings.json sont enregistrées comme un avertissement (#319)",
+        "it": "Gli errori di rete durante la lettura di warnings.json sono avvisi (#319)",
+        "es": "Los errores de red al leer warnings.json se registran como aviso y no como error (#319)",
+        "pl": "Błędy sieciowe podczas czytania warnings.json są rejestrowane jako ostrzeżenie zamiast błędu (#319)",
+        "uk": "Мережеві помилки під час читання warnings.json реєструються як попередження замість помилки (#319)",
+        "zh-cn": "读取 warnings.json 时出现的网络错误被记录为警告而不是错误 (#319)"
+      },
       "3.0.1": {
         "en": "A truncated JSONP answer of the DWD (no closing `}`) no longer hangs the adapter in an endless loop, it is logged as a parse error",
         "de": "Eine gekürzte JSONP-Antwort des DWD (no closing `}`) hängt den Adapter nicht mehr, er wird als Parserfehler protokolliert",
@@ -93,32 +119,6 @@
         "pl": "Nie dodawaj niewykorzystanego ostrzeżenia0",
         "zh-cn": "不要添加未使用的警告0",
         "uk": "Не додавайте невикористане попередження0"
-      },
-      "2.8.2": {
-        "en": "Add instruction text to warning data\nCheck missing objects and add them",
-        "de": "Anweisungstext zu Warndaten hinzufügen\nÜberprüfen Sie fehlende Objekte und fügen Sie sie hinzu",
-        "ru": "Добавить текст инструкции к данным предупреждения\nПроверьте недостающие объекты и добавьте их",
-        "pt": "Adicionar texto de instrução aos dados de aviso\nVerifique os objetos ausentes e adicione-os",
-        "nl": "Instructietekst toevoegen aan waarschuwingsgegevens\nControleer ontbrekende objecten en voeg ze toe",
-        "fr": "Ajouter un texte d'instruction aux données d'avertissement\nVérifiez les objets manquants et ajoutez-les",
-        "it": "Aggiungi il testo dell'istruzione ai dati di avviso\nControlla gli oggetti mancanti e aggiungili",
-        "es": "Agregar texto de instrucción a los datos de advertencia\nCompruebe los objetos que faltan y agréguelos",
-        "pl": "Dodaj tekst instrukcji do danych ostrzegawczych\nSprawdź brakujące obiekty i dodaj je",
-        "zh-cn": "将说明文本添加到警告数据\n检查丢失的对象并添加它们",
-        "uk": "Додайте текст інструкції до даних попередження\nПеревірте відсутні предмети та додайте їх"
-      },
-      "2.7.7": {
-        "en": "Fix start/end dates",
-        "de": "Start-/Enddatum festlegen",
-        "ru": "Исправьте даты начала / окончания",
-        "pt": "Fixar datas de início / término",
-        "nl": "Begin-/einddatums corrigeren",
-        "fr": "Fixer les dates de début/fin",
-        "it": "Fissa le date di inizio/fine",
-        "es": "Corregir fechas de inicio / finalización",
-        "pl": "Popraw daty rozpoczęcia/zakończenia",
-        "zh-cn": "修复开始/结束日期",
-        "uk": "Виправте дати початку/закінчення"
       }
     },
     "mode": "schedule",

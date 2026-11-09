@@ -10,7 +10,7 @@ import * as utils from '@iobroker/adapter-core';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { getFile, getFileAsync, sort } from './lib/tools';
+import { getFile, getFileAsync, READ_ERROR_PREFIX, sort } from './lib/tools';
 import type {
     DwdWarning,
     DwdWarningsFile,
@@ -99,7 +99,7 @@ class Dwd extends utils.Adapter {
             this.clearTimeout(this.killSwitchTimeout);
             this.killSwitchTimeout = null;
         }
-        this.terminate ? this.terminate() : process.exit(0);
+        this.terminate();
     }
 
     private getIoPackage(): IoPackage {
@@ -301,6 +301,9 @@ class Dwd extends utils.Adapter {
 
         if (data) {
             await this.placeRegionWarnings(data);
+        } else if (err?.startsWith(READ_ERROR_PREFIX)) {
+            // Network or HTTP error after all retries: the old values stay and the next run usually succeeds
+            this.log.warn(`Cannot read warnings from DWD: ${err}`);
         } else {
             this.log.error(`Empty or invalid JSON: ${err}`);
         }

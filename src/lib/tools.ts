@@ -7,6 +7,9 @@ import type { DwdWarning, DwdWarningsFile } from './types';
 
 export type GetFileCallback<T = DwdWarningsFile> = (error: string | null, data: T | null) => void;
 
+/** Prefix of the error text when the file could not be downloaded (network or HTTP error) */
+export const READ_ERROR_PREFIX = 'Cannot read JSON file';
+
 const JSONP_PREFIX = 'warnWetter.loadWarnings(';
 
 /**
@@ -72,7 +75,7 @@ export function getFile<T = DwdWarningsFile>(url: string, cb: GetFileCallback<T>
                 } else if (remaining > 0) {
                     setTimeout(() => attempt(remaining - 1), 2000);
                 } else {
-                    cb(`Cannot read JSON file: HTTP ${response.status}`, null);
+                    cb(`${READ_ERROR_PREFIX}: HTTP ${response.status}`, null);
                 }
             })
             .catch((error: AxiosError) => {
@@ -80,7 +83,7 @@ export function getFile<T = DwdWarningsFile>(url: string, cb: GetFileCallback<T>
                     const delay = error.code === 'EPROTO' || error.code === 'ECONNRESET' ? 3000 : 2000;
                     setTimeout(() => attempt(remaining - 1), delay);
                 } else {
-                    cb(`Cannot read JSON file: ${error}`, null);
+                    cb(`${READ_ERROR_PREFIX}: ${error}`, null);
                 }
             });
     };
