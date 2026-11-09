@@ -23,7 +23,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 3.1.0 (2026-11-09)
 - (@GermanBluefox) Added the web component `<iob-dwd-warnings>` for Aura, admin and other hosts of `@iobroker/web-components` (`common.webComponents`), see the [documentation](docs/en/README.md#web-component-iob-dwd-warnings); the devices tile got a translated name
 
 ### 3.0.3 (2026-11-01)
@@ -45,13 +45,6 @@ This adapter loads the weather warnings from the German weather service via JSON
 - (@GermanBluefox) The adapter was refactored to TypeScript, the sources are now in `src/` and are compiled to `build/`
 - (@GermanBluefox) The configuration dialog was migrated to JsonConfig
 - (@GermanBluefox) Adapter requires node.js >= 22 now
-
-### 2.8.7 (2026-05-19)
-* (arteck) fix invalid JSON
-* (arteck) add info.lastUpdate
-* (arteck) add eslint
-* (arteck) Dependencies have been updated
-* (arteck) fix hint dp in widget
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

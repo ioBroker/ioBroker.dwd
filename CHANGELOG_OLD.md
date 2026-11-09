@@ -1,4 +1,11 @@
 # Older changes
+## 2.8.7 (2026-05-19)
+* (arteck) fix invalid JSON
+* (arteck) add info.lastUpdate
+* (arteck) add eslint
+* (arteck) Dependencies have been updated
+* (arteck) fix hint dp in widget
+
 ## 2.8.5 (2023-06-15)
 * (Quarkmax) added the hint for warning instructions
 
