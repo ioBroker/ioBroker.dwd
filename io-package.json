@@ -202,7 +202,28 @@
       ]
     },
     "webComponents": [
-      "webcomponents/dwd-warnings.json"
+      {
+        "manifest": "webcomponents/dwd-warnings.json",
+        "tag": "iob-dwd-warnings",
+        "name": {
+          "en": "DWD warning",
+          "de": "DWD-Warnung",
+          "ru": "Предупреждение DWD",
+          "pt": "Aviso do DWD",
+          "nl": "DWD-waarschuwing",
+          "fr": "Alerte DWD",
+          "it": "Avviso DWD",
+          "es": "Aviso del DWD",
+          "pl": "Ostrzeżenie DWD",
+          "uk": "Попередження DWD",
+          "zh-cn": "DWD 天气警告"
+        },
+        "icon": "../dm-widgets/warnings.png",
+        "size": {
+          "width": 585,
+          "height": 85
+        }
+      }
     ],
     "plugins": {
       "sentry": {
