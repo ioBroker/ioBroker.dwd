@@ -1,7 +1,7 @@
 {
     "custom_oids": "Object-IDs",
     "instance": "Instantie",
-    "layout": "Indeling",
+    "layout": "Weergave",
     "layout_normal": "Volledige waarschuwing",
     "layout_small": "Compact",
     "name": "Naam",
