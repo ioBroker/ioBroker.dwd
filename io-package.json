@@ -121,6 +121,62 @@
         "zh-cn": "添加警告指示"
       }
     },
+    "messages": [
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<3.0.0",
+            "newVersion>=3.0.0"
+          ]
+        },
+        "title": {
+          "en": "Important changes in DWD 3.x",
+          "de": "Wichtige Änderungen in DWD 3.x",
+          "ru": "Важные изменения в DWD 3.x",
+          "pt": "Mudanças importantes no DWD 3.x",
+          "nl": "Belangrijke wijzigingen in DWD 3.x",
+          "fr": "Changements importants dans DWD 3.x",
+          "it": "Modifiche importanti in DWD 3.x",
+          "es": "Cambios importantes en DWD 3.x",
+          "pl": "Ważne zmiany w DWD 3.x",
+          "uk": "Важливі зміни в DWD 3.x",
+          "zh-cn": "DWD 3.x 中的重要变更"
+        },
+        "text": {
+          "en": "Version 3 requires Node.js >= 22.19, js-controller >= 6.0.11 and admin >= 7.6.17. The vis widgets were ported to vis-2: the two templates are now one widget with a layout setting, so existing views may need to be adjusted. The configuration dialog was migrated to JsonConfig, please check the settings after the update.",
+          "de": "Version 3 erfordert Node.js >= 22.19, js-controller >= 6.0.11 und admin >= 7.6.17. Die vis-Widgets wurden auf vis-2 portiert: Die beiden Vorlagen sind jetzt ein Widget mit einer Layout-Einstellung, daher müssen bestehende Views eventuell angepasst werden. Der Konfigurationsdialog wurde auf JsonConfig umgestellt, bitte prüfe die Einstellungen nach dem Update.",
+          "ru": "Версия 3 требует Node.js >= 22.19, js-controller >= 6.0.11 и admin >= 7.6.17. Виджеты vis перенесены на vis-2: два шаблона теперь объединены в один виджет с настройкой макета, поэтому существующие представления, возможно, придётся изменить. Диалог настроек переведён на JsonConfig, пожалуйста, проверьте настройки после обновления.",
+          "pt": "A versão 3 requer Node.js >= 22.19, js-controller >= 6.0.11 e admin >= 7.6.17. Os widgets vis foram portados para o vis-2: os dois modelos agora são um único widget com uma configuração de layout, portanto as visualizações existentes podem precisar de ajustes. A caixa de diálogo de configuração foi migrada para JsonConfig, verifique as configurações após a atualização.",
+          "nl": "Versie 3 vereist Node.js >= 22.19, js-controller >= 6.0.11 en admin >= 7.6.17. De vis-widgets zijn overgezet naar vis-2: de twee sjablonen zijn nu één widget met een lay-outinstelling, dus bestaande views moeten mogelijk worden aangepast. Het configuratiedialoogvenster is gemigreerd naar JsonConfig, controleer de instellingen na de update.",
+          "fr": "La version 3 nécessite Node.js >= 22.19, js-controller >= 6.0.11 et admin >= 7.6.17. Les widgets vis ont été portés vers vis-2 : les deux modèles forment désormais un seul widget avec un paramètre de mise en page, les vues existantes devront peut-être être adaptées. La boîte de dialogue de configuration a été migrée vers JsonConfig, veuillez vérifier les paramètres après la mise à jour.",
+          "it": "La versione 3 richiede Node.js >= 22.19, js-controller >= 6.0.11 e admin >= 7.6.17. I widget vis sono stati portati su vis-2: i due modelli ora sono un unico widget con un'impostazione di layout, quindi potrebbe essere necessario adattare le viste esistenti. La finestra di configurazione è stata migrata a JsonConfig, controlla le impostazioni dopo l'aggiornamento.",
+          "es": "La versión 3 requiere Node.js >= 22.19, js-controller >= 6.0.11 y admin >= 7.6.17. Los widgets de vis se han portado a vis-2: las dos plantillas son ahora un único widget con un ajuste de diseño, por lo que puede ser necesario adaptar las vistas existentes. El diálogo de configuración se ha migrado a JsonConfig, compruebe los ajustes después de la actualización.",
+          "pl": "Wersja 3 wymaga Node.js >= 22.19, js-controller >= 6.0.11 i admin >= 7.6.17. Widżety vis zostały przeniesione do vis-2: dwa szablony są teraz jednym widżetem z ustawieniem układu, więc istniejące widoki mogą wymagać dostosowania. Okno konfiguracji zostało przeniesione do JsonConfig, sprawdź ustawienia po aktualizacji.",
+          "uk": "Версія 3 потребує Node.js >= 22.19, js-controller >= 6.0.11 та admin >= 7.6.17. Віджети vis перенесено на vis-2: два шаблони тепер є одним віджетом із налаштуванням макета, тому наявні подання, можливо, доведеться змінити. Діалог налаштувань переведено на JsonConfig, будь ласка, перевірте налаштування після оновлення.",
+          "zh-cn": "版本 3 需要 Node.js >= 22.19、js-controller >= 6.0.11 和 admin >= 7.6.17。vis 小部件已移植到 vis-2：两个模板现在合并为一个带有布局设置的小部件，因此可能需要调整现有视图。配置对话框已迁移到 JsonConfig，请在更新后检查设置。"
+        },
+        "link": "https://github.com/ioBroker/ioBroker.dwd/blob/master/docs/en/README.md",
+        "level": "warn",
+        "linkText": {
+          "en": "Documentation",
+          "de": "Dokumentation",
+          "ru": "Документация",
+          "pt": "Documentação",
+          "nl": "Documentatie",
+          "fr": "Documentation",
+          "it": "Documentazione",
+          "es": "Documentación",
+          "pl": "Dokumentacja",
+          "uk": "Документація",
+          "zh-cn": "文档"
+        },
+        "buttons": [
+          "agree",
+          "cancel"
+        ]
+      }
+    ],
     "mode": "schedule",
     "schedule": "*/5 * * * *",
     "platform": "Javascript/Node.js",
